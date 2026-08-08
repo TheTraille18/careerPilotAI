@@ -29,6 +29,35 @@ def find_html_part(payload: dict) -> str | None:
     return None
 
 
+def find_text_part(payload: dict) -> str | None:
+    mime_type = payload.get("mimeType", "")
+    body_data = payload.get("body", {}).get("data")
+
+    if body_data and mime_type == "text/plain":
+        return decode_body_data(body_data)
+
+    for part in payload.get("parts", []):
+        text = find_text_part(part)
+        if text:
+            return text
+
+    return None
+
+
+def message_body_text(msg: dict, *, max_chars: int = 4000) -> str:
+    """Prefer plain text; fall back to HTML stripped to text. Truncate for LLM prompts."""
+    payload = msg.get("payload", {}) or {}
+    text = find_text_part(payload)
+    if not text:
+        html = find_html_part(payload)
+        if html:
+            text = BeautifulSoup(html, "lxml").get_text("\n", strip=True)
+    text = (text or "").strip()
+    if len(text) > max_chars:
+        text = text[:max_chars]
+    return text
+
+
 def header_value(headers: list[dict], name: str) -> str:
     for header in headers:
         if header.get("name", "").lower() == name.lower():

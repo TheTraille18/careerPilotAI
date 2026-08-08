@@ -20,3 +20,4 @@ class JobListing:
     job_description: str = "Not available"
     analysis_status: str = DEFAULT_ANALYSIS_STATUS
     applied: str = "No"
+    applied_date: str = ""

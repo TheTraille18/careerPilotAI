@@ -2,17 +2,20 @@ import config  # noqa: F401 — load .env before AWS modules
 
 from pathlib import Path
 
+from google.auth.exceptions import RefreshError
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
+from aiapply import fetch_aiapply_jobs
 from careerbuilder import fetch_careerbuilder_jobs
 from dice import fetch_dice_jobs
 from dynamodb_store import ensure_jobs_table, put_jobs
 from email_utils import format_date
 from indeed import fetch_indeed_jobs
 from linkedin import fetch_linkedin_jobs
+from remoterocketship import fetch_remoterocketship_jobs
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 
@@ -26,6 +29,8 @@ SOURCE_LABELS = {
     "dice": "Dice",
     "indeed": "Indeed",
     "careerbuilder": "CareerBuilder",
+    "remoterocketship": "Remote Rocketship",
+    "aiapply": "AIApply",
 }
 
 
@@ -36,9 +41,18 @@ def get_gmail_service():
         creds = Credentials.from_authorized_user_file(str(TOKEN_FILE), SCOPES)
 
     if not creds or not creds.valid:
+        refreshed = False
         if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
+            try:
+                creds.refresh(Request())
+                refreshed = True
+            except RefreshError:
+                # Refresh token revoked/expired — force a new browser login.
+                print("Gmail token expired or revoked; opening browser to re-authenticate...")
+                TOKEN_FILE.unlink(missing_ok=True)
+                creds = None
+
+        if not refreshed:
             flow = InstalledAppFlow.from_client_secrets_file(str(CREDENTIALS_FILE), SCOPES)
             creds = flow.run_local_server(port=0)
 
@@ -52,17 +66,23 @@ if __name__ == "__main__":
     profile = service.users().getProfile(userId="me").execute()
     print(f"Authenticated as {profile['emailAddress']}\n")
 
-    print("Fetching emails from the last 1 day (LinkedIn, Dice, Indeed, CareerBuilder)...\n")
+    print(
+        "Fetching emails from the last 7 days "
+        "(LinkedIn, Dice, Indeed, CareerBuilder, Remote Rocketship, AIApply)...\n"
+    )
 
-    jobs = fetch_linkedin_jobs(service, max_results=50, days=1)
-    jobs.extend(fetch_dice_jobs(service, max_results=50, days=1))
-    jobs.extend(fetch_indeed_jobs(service, max_results=50, days=1))
-    jobs.extend(fetch_careerbuilder_jobs(service, max_results=50, days=1))
+    jobs = fetch_linkedin_jobs(service, max_results=100, days=7)
+    jobs.extend(fetch_dice_jobs(service, max_results=100, days=7))
+    jobs.extend(fetch_indeed_jobs(service, max_results=100, days=7))
+    jobs.extend(fetch_careerbuilder_jobs(service, max_results=100, days=7))
+    jobs.extend(fetch_remoterocketship_jobs(service, max_results=100, days=7))
+    jobs.extend(fetch_aiapply_jobs(service, max_results=100, days=7))
 
     if not jobs:
         print(
             "No jobs found in today's emails for label:jobs-linkedin, label:jobs-dice, "
-            "label:jobs-indeed, or label:Jobs-Careerbuilder"
+            "label:jobs-indeed, label:Jobs-Careerbuilder, label:jobs-remoterocketship, "
+            "or label:Jobs-AiApply"
         )
     else:
         by_source: dict[str, int] = {}

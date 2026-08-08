@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Justin Traille — Cloud Software Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1a1a1a;
+      --muted: #555;
+      --accent: #4aa3d9;
+      --line: #d0d5dd;
+      --dot: #c5cad3;
+      --page: #ffffff;
+      --tag-bg: #f7f8fa;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page {
+      size: Letter;
+      margin: 0.45in 0.5in;
+    }
+
+    body {
+      font-family: Inter, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: #e8eaed;
+      line-height: 1.35;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      width: 8.5in;
+      min-height: 11in;
+      margin: 24px auto;
+      background: var(--page);
+      padding: 0.45in 0.5in 0.4in;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    /* Header */
+    .header { margin-bottom: 14px; }
+    .name {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      line-height: 1.05;
+      text-transform: uppercase;
+    }
+    .title {
+      margin-top: 4px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .contact {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 16px;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+    .contact span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .contact svg {
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+    .contact a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    /* Layout */
+    .grid {
+      display: grid;
+      grid-template-columns: 1.65fr 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    /* Sections */
+    .section { margin-bottom: 14px; }
+    .section-title {
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      padding-bottom: 4px;
+      border-bottom: 2.5px solid var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .summary {
+      font-size: 11.5px;
+      color: #333;
+      line-height: 1.45;
+    }
+
+    /* Experience */
+    .job-header { margin-bottom: 6px; }
+    .job-role {
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .job-company {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .job-meta {
+      margin-top: 3px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .job-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .job-meta svg {
+      width: 11px;
+      height: 11px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 2;
+    }
+    .job-blurb {
+      font-size: 11px;
+      color: #444;
+      margin: 6px 0 8px;
+      line-height: 1.4;
+    }
+
+    .client {
+      margin: 10px 0 8px;
+      padding-top: 8px;
+      border-top: 1px dotted var(--dot);
+    }
+    .client:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+    .client-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+    .client-dates {
+      font-size: 10.5px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    ul.bullets {
+      list-style: none;
+      padding: 0;
+    }
+    ul.bullets li {
+      position: relative;
+      padding-left: 12px;
+      font-size: 11px;
+      margin-bottom: 3px;
+      line-height: 1.4;
+      color: #2a2a2a;
+    }
+    ul.bullets li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--ink);
+    }
+
+    /* Sidebar achievements */
+    .achievement {
+      padding: 8px 0;
+      border-bottom: 1px dotted var(--dot);
+    }
+    .achievement:first-of-type { padding-top: 0; }
+    .achievement:last-of-type { border-bottom: none; }
+    .achievement h4 {
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .achievement p {
+      font-size: 11px;
+      color: #444;
+      line-height: 1.4;
+    }
+
+    /* Skill tags */
+    .skill-group {
+      padding: 8px 0;
+      border-bottom: 1px dotted var(--dot);
+    }
+    .skill-group:last-child { border-bottom: none; }
+    .skill-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .tag {
+      font-size: 10px;
+      font-weight: 500;
+      padding: 3px 7px;
+      background: var(--tag-bg);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      color: #333;
+      white-space: nowrap;
+    }
+
+    /* Projects / certs shared */
+    .project {
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px dotted var(--dot);
+    }
+    .project:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .project-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .project-link {
+      font-size: 10px;
+      color: var(--muted);
+      margin: 2px 0 4px;
+    }
+    .project-link a { color: var(--muted); }
+
+    .cert-list {
+      font-size: 11px;
+      line-height: 1.5;
+      color: #333;
+    }
+    .cert-list li {
+      margin-bottom: 3px;
+      padding-left: 12px;
+      position: relative;
+      list-style: none;
+    }
+    .cert-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .prev-exp {
+      font-size: 11px;
+      color: #333;
+      line-height: 1.45;
+      margin-bottom: 6px;
+    }
+    .edu {
+      font-size: 11.5px;
+      line-height: 1.4;
+    }
+    .edu strong { font-weight: 700; }
+
+    .online a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      padding: 12px;
+      background: #111;
+    }
+    .toolbar button, .toolbar a {
+      font: 600 13px Inter, sans-serif;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #fff;
+      background: var(--accent);
+    }
+    .toolbar .secondary { background: #333; }
+
+    @media print {
+      body { background: white; }
+      .toolbar { display: none !important; }
+      .page {
+        margin: 0;
+        box-shadow: none;
+        width: auto;
+        min-height: auto;
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button onclick="window.print()">Print / Save as PDF</button>
+    <a class="secondary" href="file:///home/justintraille/projects/careerPilotAI/data/resume/Justin_Traille_Enhancv.html">Open file</a>
+  </div>
+
+  <!-- PAGE 1 -->
+  <article class="page">
+    <header class="header">
+      <div class="name">Justin Traille</div>
+      <div class="title">Cloud Software Engineer</div>
+      <div class="contact">
+        <span>
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          (404) 561-8686
+        </span>
+        <span>
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/></svg>
+          jtraille07@gmail.com
+        </span>
+        <span>
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <a href="https://ablackcloudapp.com">ablackcloudapp.com</a>
+        </span>
+        <span>
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Atlanta, GA
+        </span>
+      </div>
+    </header>
+
+    <div class="grid">
+      <main>
+        <section class="section">
+          <h2 class="section-title">Professional Summary</h2>
+          <p class="summary">
+            Cloud Software Engineer with 5+ years of experience delivering enterprise software solutions using AWS, Python, Go, Terraform, and Kubernetes. AWS Certified Solutions Architect – Professional with hands-on experience in AWS Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures.
+          </p>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Professional Experience</h2>
+
+          <div class="job-header">
+            <div class="job-role">Software Engineer Consultant</div>
+            <div class="job-company">Atos (Cloudreach)</div>
+            <div class="job-meta">
+              <span>
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                11/2021 – 06/2026
+              </span>
+              <span>
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Remote / Atlanta, GA
+              </span>
+            </div>
+            <p class="job-blurb">
+              Delivering cloud engineering, platform engineering, IaC, Kubernetes, software development, database modernization, and AI-powered automation for enterprise clients including Blackstone, OCC, Capital One, and Mayo Clinic.
+            </p>
+          </div>
+
+          <div class="client">
+            <div class="client-name">Atos Client: Capital One</div>
+            <div class="client-dates">11/2024 – 06/2025</div>
+            <ul class="bullets">
+              <li>Led the first successful migration of Aurora PostgreSQL Global Clusters from a legacy IaC platform.</li>
+              <li>Planned PostgreSQL major version upgrades, including multi-stage upgrade paths required by Aurora PostgreSQL.</li>
+              <li>Coordinated production database migrations through formal change management.</li>
+              <li>Validated Terraform configurations for multi-region Aurora PostgreSQL deployments.</li>
+              <li>Audited Go dependencies, remediated technical debt, and developed Go unit tests.</li>
+            </ul>
+          </div>
+
+          <div class="client">
+            <div class="client-name">Atos Client: The Options Clearing Corporation</div>
+            <div class="client-dates">06/2023 – 06/2024</div>
+            <ul class="bullets">
+              <li>Developed Java Cucumber test frameworks and Python integration/unit tests.</li>
+              <li>Managed monthly Kubernetes deployments using Rancher and Helm.</li>
+              <li>Investigated production issues using Rancher, kubectl, Docker, and application logs.</li>
+              <li>Supported Kubernetes platform initiatives including cluster provisioning, migrations, and modernization.</li>
+            </ul>
+          </div>
+
+          <div class="client">
+            <div class="client-name">Atos Client: Blackstone</div>
+            <div class="client-dates">01/2022 – 04/2023</div>
+            <ul class="bullets">
+              <li>Supported migration from Terraform Enterprise to HCP Terraform as part of the Platform Engineering team.</li>
+              <li>Imported AWS infrastructure, users, teams, and platform resources into Terraform-managed IaC.</li>
+              <li>Developed Python AWS Lambda functions integrating with the HCP Terraform API to automate workspace lifecycle operations through a React-based self-service platform.</li>
+              <li>Provisioned AWS infrastructure across development, test, and production using standardized Terraform modules.</li>
+              <li>Optimized legacy automation workflows from 15 minutes to 1 minute.</li>
+            </ul>
+          </div>
+        </section>
+      </main>
+
+      <aside>
+        <section class="section">
+          <h2 class="section-title">Key Achievements</h2>
+          <div class="achievement">
+            <h4>Streamlined Incident Response</h4>
+            <p>Reduced investigation time from 60 to 15 minutes by implementing an AI-driven incident response platform.</p>
+          </div>
+          <div class="achievement">
+            <h4>Database Migration Success</h4>
+            <p>Improved database reliability by leading Aurora PostgreSQL Global Cluster migrations and major version upgrades.</p>
+          </div>
+          <div class="achievement">
+            <h4>Enhanced Workflow Efficiency</h4>
+            <p>Optimized legacy automation workflows from 15 minutes to 1 minute.</p>
+          </div>
+          <div class="achievement">
+            <h4>Boosted Platform Engagement</h4>
+            <p>Increased usage through React UI enhancements and Azure authentication improvements.</p>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Technical Skills</h2>
+          <div class="skill-group">
+            <div class="skill-label">Languages</div>
+            <div class="tags">
+              <span class="tag">Python</span>
+              <span class="tag">Go</span>
+              <span class="tag">Java</span>
+              <span class="tag">JavaScript</span>
+              <span class="tag">GraphQL</span>
+              <span class="tag">SQL</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-label">Cloud</div>
+            <div class="tags">
+              <span class="tag">AWS</span>
+              <span class="tag">Azure</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-label">Infrastructure</div>
+            <div class="tags">
+              <span class="tag">Terraform</span>
+              <span class="tag">HCP Terraform</span>
+              <span class="tag">Kubernetes</span>
+              <span class="tag">Helm</span>
+              <span class="tag">Docker</span>
+              <span class="tag">Linux</span>
+              <span class="tag">CI/CD</span>
+              <span class="tag">Git</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-label">AI/ML</div>
+            <div class="tags">
+              <span class="tag">AWS Bedrock</span>
+              <span class="tag">LangChain</span>
+              <span class="tag">LangGraph</span>
+              <span class="tag">AI Agents</span>
+              <span class="tag">RAG</span>
+              <span class="tag">ChromaDB</span>
+              <span class="tag">Titan Embeddings</span>
+              <span class="tag">Semantic Search</span>
+              <span class="tag">Prompt Engineering</span>
+              <span class="tag">Vector Databases</span>
+              <span class="tag">AI Evaluation</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-label">Databases</div>
+            <div class="tags">
+              <span class="tag">Aurora PostgreSQL</span>
+              <span class="tag">PostgreSQL</span>
+              <span class="tag">DynamoDB</span>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </article>
+
+  <!-- PAGE 2 -->
+  <article class="page">
+    <div class="grid">
+      <main>
+        <section class="section">
+          <h2 class="section-title">Professional Experience</h2>
+
+          <div class="client" style="border-top:none;padding-top:0;">
+            <div class="client-name">Atos Client: Mayo Clinic</div>
+            <div class="client-dates">03/2026 – 05/2026</div>
+            <ul class="bullets">
+              <li>Developed React application enhancements for a healthcare platform.</li>
+              <li>Implemented Azure App Registration authentication.</li>
+              <li>Worked with BigQuery, Pub/Sub, and Artifact Registry.</li>
+              <li>Resolved Azure DevOps CI/CD pipeline issues and remediated security vulnerabilities.</li>
+              <li>Leveraged Cursor AI to accelerate React development while maintaining code quality.</li>
+            </ul>
+          </div>
+
+          <div class="client">
+            <div class="client-name">Internal Innovation Initiative — AI Driven Incident Response Platform</div>
+            <ul class="bullets">
+              <li>Collaborated within a three-person team to build an AI-driven incident response platform using AWS Bedrock, Lambda, Step Functions, EventBridge, DynamoDB, Slack, CloudWatch, and AWS DevOps Agent capabilities for root cause analysis.</li>
+              <li>Automated incident investigation workflows and generated AI-powered summaries, remediation recommendations, rollback plans, and validation procedures.</li>
+              <li>Reduced incident investigation effort from over 60 minutes to approximately 15 minutes.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">AI &amp; Cloud Projects</h2>
+
+          <div class="project">
+            <div class="project-title">AI Agent-Powered RAG Platform</div>
+            <div class="project-link"><a href="https://github.com/TheTraille18/jet_rag_ai_project">github.com/TheTraille18/jet_rag_ai_project</a></div>
+            <ul class="bullets">
+              <li>Designed and developed an AI agent-powered RAG application using Python, AWS Bedrock, LangChain, LangGraph, ChromaDB, and Amazon Titan Embeddings.</li>
+              <li>Built a document ingestion pipeline to process PDFs, generate semantic embeddings, and store vectors in ChromaDB.</li>
+              <li>Integrated Amazon Bedrock foundation models for context-aware responses using semantic search and grounded LLM workflows.</li>
+            </ul>
+          </div>
+
+          <div class="project">
+            <div class="project-title">CareerPilot AI</div>
+            <ul class="bullets">
+              <li>Built an AI-powered career optimization platform that tailors resumes and cover letters to job descriptions while preserving DOCX formatting.</li>
+              <li>Implemented a RAG pipeline with Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings.</li>
+              <li>Developed REST APIs for resume ingestion, job analysis, semantic retrieval, resume tailoring, cover letter generation, and AI evaluation.</li>
+              <li>Implemented structured resume parsing, JSON knowledge schemas, and document-aware editing for ATS-friendly updates without fabricated experience.</li>
+            </ul>
+          </div>
+
+          <div class="project">
+            <div class="project-title">KubeSentry AI (In Progress)</div>
+            <div class="project-link"><a href="https://github.com/TheTraille18/kubeSentryAI">github.com/TheTraille18/kubeSentryAI</a></div>
+            <ul class="bullets">
+              <li>Developing an AI-powered Kubernetes troubleshooting platform using Go, Kubernetes (client-go), AWS Bedrock, and RAG.</li>
+              <li>Designing an agent-based architecture with shared state, planner logic, and modular workflow nodes to automate incident investigations.</li>
+              <li>Building a modular AI agent framework for Kubernetes diagnostics and intelligent root cause analysis.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Previous Experience</h2>
+          <p class="prev-exp"><strong>Kapsch TrafficCom (2015–2021)</strong> — Staff System Engineer developing Java applications and automation solutions for intelligent transportation systems.</p>
+          <p class="prev-exp"><strong>Logical Systems Inc. (2012–2015)</strong> — Control System Engineer developing industrial automation and control system solutions.</p>
+        </section>
+      </main>
+
+      <aside>
+        <section class="section">
+          <h2 class="section-title">Certifications</h2>
+          <ul class="cert-list">
+            <li>AWS Certified Solutions Architect – Professional</li>
+            <li>AWS Certified Developer – Associate</li>
+            <li>AWS Certified SysOps Administrator – Associate</li>
+            <li>AWS Certified Cloud Practitioner</li>
+            <li>AWS Certified AI Practitioner</li>
+            <li>HashiCorp Terraform Associate</li>
+            <li>Microsoft Azure Fundamentals (AZ-900)</li>
+          </ul>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Education</h2>
+          <p class="edu">
+            <strong>Bachelor of Science in Mechatronics Engineering</strong><br />
+            Southern Polytechnic State University
+          </p>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Find Me Online</h2>
+          <p class="online" style="margin-bottom:6px;">
+            <a href="https://linkedin.com/in/justin-traille-b9a1708a">linkedin.com/in/justin-traille-b9a1708a</a>
+          </p>
+          <p class="online">
+            <a href="https://github.com/TheTraille18">github.com/TheTraille18</a>
+          </p>
+        </section>
+      </aside>
+    </div>
+  </article>
+</body>
+</html>

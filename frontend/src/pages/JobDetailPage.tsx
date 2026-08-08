@@ -1,8 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { fetchJob, formatTailorSuccessMessage, tailorResume } from '../api/jobs';
-import type { AnalysisStatus, JobListing } from '../types/job';
-import { ANALYSIS_STATUSES } from '../types/job';
+import {
+  downloadCoverLetter,
+  downloadTailoredResume,
+  fetchJob,
+  formatCoverLetterSuccessMessage,
+  formatTailorSuccessMessage,
+  generateCoverLetter,
+  tailorResume,
+  updateJobStatus,
+} from '../api/jobs';
+import type { AnalysisStatus, EvalResult, JobListing, JobStatus } from '../types/job';
+import { ANALYSIS_STATUSES, JOB_STATUSES } from '../types/job';
 import '../App.css';
 
 const SOURCE_LABELS: Record<string, string> = {
@@ -10,14 +19,36 @@ const SOURCE_LABELS: Record<string, string> = {
   dice: 'Dice',
   indeed: 'Indeed',
   careerbuilder: 'CareerBuilder',
+  remoterocketship: 'Remote Rocketship',
+  aiapply: 'AIApply',
   manual: 'Manual',
 };
+
+const SCORE_LABELS: { key: keyof NonNullable<EvalResult['scores']>; label: string }[] = [
+  { key: 'grounding', label: 'Grounding' },
+  { key: 'ruleCompliance', label: 'Rule compliance' },
+  { key: 'jobFit', label: 'Job fit' },
+  { key: 'minimalChange', label: 'Minimal change' },
+  { key: 'readability', label: 'Readability' },
+];
 
 function formatDate(value: string): string {
   if (!value) return 'n/a';
   const parsed = Date.parse(value);
   if (Number.isNaN(parsed)) return value;
   return new Date(parsed).toLocaleString();
+}
+
+function formatAppliedDate(value: string | undefined): string {
+  const text = value?.trim() || '';
+  if (!text) return '';
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+    const [year, month, day] = text.split('-').map(Number);
+    return new Date(year, month - 1, day).toLocaleDateString();
+  }
+  const parsed = Date.parse(text);
+  if (Number.isNaN(parsed)) return text;
+  return new Date(parsed).toLocaleDateString();
 }
 
 function normalizeAnalysisStatus(value: string | undefined): AnalysisStatus {
@@ -28,14 +59,236 @@ function normalizeAnalysisStatus(value: string | undefined): AnalysisStatus {
   return 'Pending';
 }
 
+function normalizeJobStatus(value: string | undefined): JobStatus {
+  const text = value?.trim() || '';
+  if ((JOB_STATUSES as readonly string[]).includes(text)) {
+    return text as JobStatus;
+  }
+  const matched = JOB_STATUSES.find((status) => status.toLowerCase() === text.toLowerCase());
+  return matched ?? 'Active';
+}
+
 function normalizeJob(job: JobListing): JobListing {
   return {
     ...job,
-    status: job.status?.trim() || 'Active',
+    status: normalizeJobStatus(job.status),
     jobDescription: job.jobDescription?.trim() || 'Not available',
     analysisStatus: normalizeAnalysisStatus(job.analysisStatus),
     applied: job.applied?.trim() || 'No',
+    appliedDate: job.appliedDate?.trim() || '',
+    evalResult: job.evalResult ?? null,
   };
+}
+
+function tokenizeWords(text: string): string[] {
+  return text.match(/\s+|[^\s]+/g) ?? [];
+}
+
+type DiffToken = { text: string; type: 'equal' | 'add' | 'del' };
+
+/** Word-level LCS diff for before/after highlighting. */
+function diffWords(before: string, after: string): DiffToken[] {
+  const a = tokenizeWords(before);
+  const b = tokenizeWords(after);
+  const n = a.length;
+  const m = b.length;
+  const dp: number[][] = Array.from({ length: n + 1 }, () => Array(m + 1).fill(0));
+
+  for (let i = n - 1; i >= 0; i -= 1) {
+    for (let j = m - 1; j >= 0; j -= 1) {
+      dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+    }
+  }
+
+  const tokens: DiffToken[] = [];
+  let i = 0;
+  let j = 0;
+  while (i < n && j < m) {
+    if (a[i] === b[j]) {
+      tokens.push({ text: a[i], type: 'equal' });
+      i += 1;
+      j += 1;
+    } else if (dp[i + 1][j] >= dp[i][j + 1]) {
+      tokens.push({ text: a[i], type: 'del' });
+      i += 1;
+    } else {
+      tokens.push({ text: b[j], type: 'add' });
+      j += 1;
+    }
+  }
+  while (i < n) {
+    tokens.push({ text: a[i], type: 'del' });
+    i += 1;
+  }
+  while (j < m) {
+    tokens.push({ text: b[j], type: 'add' });
+    j += 1;
+  }
+  return tokens;
+}
+
+function HighlightedDiff({
+  before,
+  after,
+  mode,
+}: {
+  before: string;
+  after: string;
+  mode: 'before' | 'after';
+}) {
+  const tokens = diffWords(before, after);
+  const visible =
+    mode === 'before'
+      ? tokens.filter((token) => token.type !== 'add')
+      : tokens.filter((token) => token.type !== 'del');
+
+  return (
+    <span className="eval-diff-text">
+      {visible.map((token, index) => {
+        if (token.type === 'equal') {
+          return <span key={index}>{token.text}</span>;
+        }
+        return (
+          <mark
+            key={index}
+            className={token.type === 'add' ? 'eval-diff-add' : 'eval-diff-del'}
+          >
+            {token.text}
+          </mark>
+        );
+      })}
+    </span>
+  );
+}
+
+function EvalResultPanel({ result }: { result: EvalResult }) {
+  const passed = result.pass === true;
+  const scores = result.scores ?? {};
+
+  return (
+    <section className={`eval-result-panel ${passed ? 'eval-pass' : 'eval-fail'}`}>
+      <div className="eval-result-header">
+        <h3>Resume eval</h3>
+        <span className={`eval-badge ${passed ? 'pass' : 'fail'}`}>
+          {passed ? 'PASS' : 'FAIL'}
+        </span>
+        {typeof result.overallScore === 'number' && (
+          <span className="eval-overall">
+            Overall {result.overallScore}/25
+            {` · ${Math.round((result.overallScore / 25) * 100)}%`}
+          </span>
+        )}
+        {typeof result.changedParagraphCount === 'number' && (
+          <span className="eval-meta">{result.changedParagraphCount} paragraphs changed</span>
+        )}
+        {result.evaluatedAt && (
+          <span className="eval-meta">Last run {formatDate(result.evaluatedAt)}</span>
+        )}
+      </div>
+
+      <p className="eval-compare-note">
+        Compares tailored resume vs job description and vs original resume.
+      </p>
+
+      {result.summary && <p className="eval-summary">{result.summary}</p>}
+
+      <div className="eval-score-grid">
+        {SCORE_LABELS.map(({ key, label }) => (
+          <div key={key} className="eval-score-item">
+            <span className="eval-score-label">{label}</span>
+            <span className="eval-score-value">
+              {typeof scores[key] === 'number' ? `${scores[key]}/5` : '—'}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {!!result.hardFails?.length && (
+        <div className="eval-section">
+          <h4>Hard fails</h4>
+          <ul>
+            {result.hardFails.map((item, index) => (
+              <li key={`${item}-${index}`}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {!!result.changes?.length && (
+        <div className="eval-section">
+          <h4>Changes</h4>
+          <ul className="eval-changes">
+            {result.changes.map((change, index) => {
+              const before = change.originalText?.trim() || '';
+              const after = change.newText?.trim() || '';
+              return (
+                <li key={`${change.paragraphId ?? 'c'}-${index}`}>
+                  <strong>
+                    {[change.paragraphId, change.operation].filter(Boolean).join(' · ') ||
+                      'Change'}
+                  </strong>
+                  {change.reason && (
+                    <p className="eval-change-reason">
+                      <span className="eval-change-label">Reason:</span> {change.reason}
+                    </p>
+                  )}
+                  {change.operation === 'delete' ? (
+                    before ? (
+                      <blockquote className="eval-change-before">
+                        <span className="eval-change-label">Removed:</span>{' '}
+                        <mark className="eval-diff-del">{before}</mark>
+                      </blockquote>
+                    ) : null
+                  ) : (
+                    <>
+                      {before && (
+                        <blockquote className="eval-change-before">
+                          <span className="eval-change-label">Before:</span>{' '}
+                          {after ? (
+                            <HighlightedDiff before={before} after={after} mode="before" />
+                          ) : (
+                            <mark className="eval-diff-del">{before}</mark>
+                          )}
+                        </blockquote>
+                      )}
+                      {after && (
+                        <blockquote className="eval-change-after">
+                          <span className="eval-change-label">After:</span>{' '}
+                          {before ? (
+                            <HighlightedDiff before={before} after={after} mode="after" />
+                          ) : (
+                            <mark className="eval-diff-add">{after}</mark>
+                          )}
+                        </blockquote>
+                      )}
+                    </>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+
+      {!!result.violations?.length && (
+        <div className="eval-section">
+          <h4>Violations</h4>
+          <ul className="eval-violations">
+            {result.violations.map((violation, index) => (
+              <li key={`${violation.paragraphId ?? 'v'}-${index}`}>
+                <strong>
+                  {[violation.paragraphId, violation.type].filter(Boolean).join(' · ') ||
+                    'Violation'}
+                </strong>
+                {violation.quote && <blockquote>{violation.quote}</blockquote>}
+                {violation.explanation && <p>{violation.explanation}</p>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
+  );
 }
 
 export default function JobDetailPage() {
@@ -49,6 +302,10 @@ export default function JobDetailPage() {
   const [tailorError, setTailorError] = useState<string | null>(null);
   const [tailorSuccess, setTailorSuccess] = useState<string | null>(null);
   const [tailoring, setTailoring] = useState(false);
+  const [generatingCoverLetter, setGeneratingCoverLetter] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+  const [downloadingCoverLetter, setDownloadingCoverLetter] = useState(false);
+  const [savingStatus, setSavingStatus] = useState(false);
 
   const loadJob = useCallback(async () => {
     if (!jobId || !source) {
@@ -82,15 +339,91 @@ export default function JobDetailPage() {
         { label: 'Company', value: job.company || 'n/a' },
         { label: 'Location', value: job.location || 'n/a' },
         { label: 'Source', value: SOURCE_LABELS[job.source] ?? job.source ?? 'n/a' },
-        { label: 'Status', value: job.status },
         { label: 'Job Description', value: job.jobDescription },
         { label: 'Analysis Status', value: normalizeAnalysisStatus(job.analysisStatus) },
-        { label: 'Applied', value: job.applied },
+        { label: 'Applied', value: formatAppliedDate(job.appliedDate) || job.applied },
         { label: 'Date', value: formatDate(job.date) },
         { label: 'Email ID', value: job.emailId || 'n/a' },
         { label: 'Updated At', value: job.updatedAt ? formatDate(job.updatedAt) : 'n/a' },
       ]
     : [];
+
+  const statusValue = job ? normalizeJobStatus(job.status) : 'Active';
+  const analysisStatus = job ? normalizeAnalysisStatus(job.analysisStatus) : 'Pending';
+  const canDownloadResume =
+    !!job && (analysisStatus === 'Tailored Resume' || analysisStatus === 'Cover Letter');
+  const canGenerateCoverLetter =
+    !!job && (analysisStatus === 'Tailored Resume' || analysisStatus === 'Cover Letter');
+  const canDownloadCoverLetter = !!job && analysisStatus === 'Cover Letter';
+  const busy =
+    tailoring ||
+    generatingCoverLetter ||
+    downloading ||
+    downloadingCoverLetter ||
+    savingStatus;
+
+  const onStatusChange = async (next: JobStatus) => {
+    if (!job || next === statusValue) return;
+    setSavingStatus(true);
+    setTailorError(null);
+    try {
+      const updated = await updateJobStatus(job.jobId, job.source, next);
+      setJob(normalizeJob(updated));
+    } catch (err) {
+      setTailorError(err instanceof Error ? err.message : 'Failed to update Status');
+    } finally {
+      setSavingStatus(false);
+    }
+  };
+
+  const onDownloadResume = async () => {
+    if (!job) return;
+    setDownloading(true);
+    setTailorError(null);
+    try {
+      await downloadTailoredResume(job.jobId);
+    } catch (err) {
+      setTailorError(err instanceof Error ? err.message : 'Failed to download tailored resume');
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  const onDownloadCoverLetter = async () => {
+    if (!job) return;
+    setDownloadingCoverLetter(true);
+    setTailorError(null);
+    try {
+      await downloadCoverLetter(job.jobId);
+    } catch (err) {
+      setTailorError(err instanceof Error ? err.message : 'Failed to download cover letter');
+    } finally {
+      setDownloadingCoverLetter(false);
+    }
+  };
+
+  const onGenerateCoverLetter = async () => {
+    if (!job) return;
+    if (job.jobDescription?.trim() !== 'Available') {
+      setTailorError('Job description is not available. Paste and save a description first.');
+      setTailorSuccess(null);
+      return;
+    }
+
+    setGeneratingCoverLetter(true);
+    setTailorError(null);
+    setTailorSuccess(null);
+    try {
+      const result = await generateCoverLetter(job);
+      setJob(normalizeJob(result.job));
+      setTailorSuccess(formatCoverLetterSuccessMessage(result.s3));
+    } catch (err) {
+      setTailorError(err instanceof Error ? err.message : 'Failed to generate cover letter');
+      setTailorSuccess(null);
+    } finally {
+      setGeneratingCoverLetter(false);
+    }
+  };
 
   return (
     <div className="app-shell">
@@ -122,7 +455,7 @@ export default function JobDetailPage() {
               <h2>{job.title || 'Untitled'}</h2>
               <p>
                 {job.company || 'n/a'}
-                {job.location ? ` � ${job.location}` : ''}
+                {job.location ? ` · ${job.location}` : ''}
               </p>
               {job.url ? (
                 <p>
@@ -140,7 +473,27 @@ export default function JobDetailPage() {
                   <dd title={value}>{value}</dd>
                 </div>
               ))}
+              <div className="job-detail-row">
+                <dt>Status</dt>
+                <dd>
+                  <select
+                    className="job-status-select"
+                    aria-label="Status"
+                    value={statusValue}
+                    disabled={savingStatus || busy}
+                    onChange={(event) => void onStatusChange(event.target.value as JobStatus)}
+                  >
+                    {JOB_STATUSES.map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                </dd>
+              </div>
             </dl>
+
+            {job.evalResult && <EvalResultPanel result={job.evalResult} />}
 
             {tailorError && <div className="job-panel-error">{tailorError}</div>}
             {tailorSuccess && <div className="job-panel-success">{tailorSuccess}</div>}
@@ -148,8 +501,47 @@ export default function JobDetailPage() {
             <div className="job-full-detail-actions">
               <button
                 type="button"
+                className="btn-secondary"
+                disabled={!canDownloadResume || busy}
+                onClick={() => void onDownloadResume()}
+                title={
+                  canDownloadResume
+                    ? 'Download tailored resume'
+                    : 'Tailor a resume first to enable download'
+                }
+              >
+                {downloading ? 'Downloading...' : 'Download Tailored Resume'}
+              </button>
+              <button
+                type="button"
+                className="btn-secondary"
+                disabled={!canDownloadCoverLetter || busy}
+                onClick={() => void onDownloadCoverLetter()}
+                title={
+                  canDownloadCoverLetter
+                    ? 'Download cover letter'
+                    : 'Generate a cover letter first to enable download'
+                }
+              >
+                {downloadingCoverLetter ? 'Downloading...' : 'Download Cover Letter'}
+              </button>
+              <button
+                type="button"
+                className="btn-secondary"
+                disabled={!canGenerateCoverLetter || busy}
+                onClick={() => void onGenerateCoverLetter()}
+                title={
+                  canGenerateCoverLetter
+                    ? 'Generate cover letter'
+                    : 'Tailor a resume first to generate a cover letter'
+                }
+              >
+                {generatingCoverLetter ? 'Generating cover letter...' : 'Generate Cover Letter'}
+              </button>
+              <button
+                type="button"
                 className="btn-primary"
-                disabled={tailoring}
+                disabled={busy}
                 onClick={() => {
                   void (async () => {
                     if (job.jobDescription?.trim() !== 'Available') {
@@ -165,8 +557,15 @@ export default function JobDetailPage() {
                     setTailorSuccess(null);
                     try {
                       const result = await tailorResume(job);
-                      setJob(normalizeJob(result.job));
-                      setTailorSuccess(formatTailorSuccessMessage(result.s3));
+                      setJob(
+                        normalizeJob({
+                          ...result.job,
+                          evalResult: result.job.evalResult ?? result.eval ?? null,
+                        }),
+                      );
+                      setTailorSuccess(
+                        `${formatTailorSuccessMessage(result.s3)} Eval completed.`,
+                      );
                     } catch (err) {
                       setTailorError(
                         err instanceof Error ? err.message : 'Failed to tailor resume',
@@ -178,7 +577,7 @@ export default function JobDetailPage() {
                   })();
                 }}
               >
-                {tailoring ? 'Tailoring...' : 'Tailor Resume'}
+                {tailoring ? 'Tailoring & evaluating...' : 'Tailor Resume'}
               </button>
             </div>
           </section>

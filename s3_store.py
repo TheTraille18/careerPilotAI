@@ -12,6 +12,8 @@ SOURCE_LABELS = {
     "dice": "Dice",
     "indeed": "Indeed",
     "careerbuilder": "CareerBuilder",
+    "remoterocketship": "Remote Rocketship",
+    "aiapply": "AIApply",
 }
 
 
@@ -122,5 +124,90 @@ def get_job_description(job_id: str):
 
     text = response["Body"].read().decode("utf-8")
 
-    return text 
+    return text
+
+
+def list_resume_dir_objects(job_id: str, *, bucket: str | None = None) -> list[dict]:
+    """List objects under jobs/<job_id>/resume/."""
+    bucket = bucket or get_bucket_name()
+    prefix = f"jobs/{job_id}/resume/"
+    client = get_s3_client()
+    objects: list[dict] = []
+    token: str | None = None
+
+    while True:
+        kwargs: dict = {"Bucket": bucket, "Prefix": prefix}
+        if token:
+            kwargs["ContinuationToken"] = token
+        response = client.list_objects_v2(**kwargs)
+        for item in response.get("Contents", []):
+            key = item.get("Key") or ""
+            if key.endswith("/") or key == prefix:
+                continue
+            objects.append(item)
+        if not response.get("IsTruncated"):
+            break
+        token = response.get("NextContinuationToken")
+
+    return objects
+
+
+def list_tailored_resume_objects(job_id: str, *, bucket: str | None = None) -> list[dict]:
+    """List resume objects under jobs/<job_id>/resume/ (excludes cover letters)."""
+    return [
+        item
+        for item in list_resume_dir_objects(job_id, bucket=bucket)
+        if not str(item.get("Key") or "").rsplit("/", 1)[-1].startswith("Cover_Letter_")
+    ]
+
+
+def _download_latest_matching(
+    job_id: str,
+    *,
+    objects: list[dict],
+    missing_message: str,
+    bucket: str | None = None,
+) -> tuple[str, bytes, str]:
+    if not objects:
+        raise FileNotFoundError(missing_message)
+    bucket = bucket or get_bucket_name()
+    latest = max(objects, key=lambda item: item.get("LastModified") or 0)
+    key = str(latest["Key"])
+    filename = key.rsplit("/", 1)[-1] or "document.docx"
+    response = get_s3_client().get_object(Bucket=bucket, Key=key)
+    body = response["Body"].read()
+    return key, body, filename
+
+
+def get_latest_tailored_resume(
+    job_id: str,
+    *,
+    bucket: str | None = None,
+) -> tuple[str, bytes, str]:
+    """Return (key, body, filename) for the newest tailored resume, or raise FileNotFoundError."""
+    return _download_latest_matching(
+        job_id,
+        objects=list_tailored_resume_objects(job_id, bucket=bucket),
+        missing_message=f"No tailored resume found for job {job_id}",
+        bucket=bucket,
+    )
+
+
+def get_latest_cover_letter(
+    job_id: str,
+    *,
+    bucket: str | None = None,
+) -> tuple[str, bytes, str]:
+    """Return (key, body, filename) for the newest cover letter, or raise FileNotFoundError."""
+    objects = [
+        item
+        for item in list_resume_dir_objects(job_id, bucket=bucket)
+        if str(item.get("Key") or "").rsplit("/", 1)[-1].startswith("Cover_Letter_")
+    ]
+    return _download_latest_matching(
+        job_id,
+        objects=objects,
+        missing_message=f"No cover letter found for job {job_id}",
+        bucket=bucket,
+    )
 
