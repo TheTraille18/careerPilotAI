@@ -8,3 +8,23 @@ __pycache__/
 frontend/node_modules/
 frontend/dist/
 data/knowledge/
+chroma_db/*
+
+# Local / generated data
+chroma_db/
+eval/outputs/
+
+# Editor lock files
+.~lock.*
+**/.~lock.*
+
+# Personal resume artifacts (keep only what you intentionally track)
+data/resume/*.pdf
+data/resume/*.html
+data/resume/*_Tailored.docx
+data/resume/*_2.docx
+data/resume/*Enhancv*
+
+# Misc local docs
+Customer_Reply_*.pdf
+*.pdf
