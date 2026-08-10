@@ -12,8 +12,10 @@ class Job(BaseModel):
     jobDescription: str = ""
     analysisStatus: str = ""
     applied: str = ""
+    appliedDate: str = ""
     emailId: str = ""
     updatedAt: str = ""
+    evalResult: dict | None = None
 
 
 class JobCreate(BaseModel):

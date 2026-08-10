@@ -2,10 +2,8 @@ from __future__ import annotations
 
 ANALYSIS_STATUSES = (
     "Pending",
-    "In_Progress",
-    "Completed",
-    "Failed",
-    "Retry",
+    "Tailored Resume",
+    "Cover Letter",
 )
 
 DEFAULT_ANALYSIS_STATUS = "Pending"

@@ -71,6 +71,29 @@ def normalize_text(value: str) -> str:
     return _WHITESPACE_RE.sub(" ", value.strip().lower())
 
 
+_CORP_SUFFIX_RE = re.compile(
+    r",?\s*\b(incorporated|corporation|company|limited|inc|corp|llc|ltd|co)\.?$",
+    re.I,
+)
+
+
+def normalize_company(value: str) -> str:
+    """Normalize company names for cross-source matching (strip Inc/LLC/etc.)."""
+    text = normalize_text(value)
+    # Strip common suffixes repeatedly ("Acme Inc." / "Acme, Inc")
+    for _ in range(3):
+        updated = _CORP_SUFFIX_RE.sub("", text).strip(" ,.-")
+        if updated == text:
+            break
+        text = updated
+    return text
+
+
+def application_match_key(title: str, company: str) -> tuple[str, str]:
+    """Key used to match AIApply applications to alert listings."""
+    return (normalize_text(title), normalize_company(company))
+
+
 def normalize_location(value: str) -> str:
     location = normalize_text(value)
 

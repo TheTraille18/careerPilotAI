@@ -1,20 +1,32 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { fetchJobs, createJob, formatTailorSuccessMessage, tailorResume, updateAnalysisStatus, updateJobDescription } from './api/jobs';
-import type { AnalysisStatus, JobListing } from './types/job';
-import { ANALYSIS_STATUSES } from './types/job';
+import { fetchJobs, createJob, formatTailorSuccessMessage, tailorResume, updateJobStatus, updateJobDescription, fetchJobDescriptionFromUrl } from './api/jobs';
+import type { AnalysisStatus, JobListing, JobStatus } from './types/job';
+import { ANALYSIS_STATUSES, JOB_STATUSES } from './types/job';
 import JobDetailPage from './pages/JobDetailPage';
 import './App.css';
+
+const INACTIVE_STATUSES = new Set(['Closed', 'Rejected', 'Not Enough Experience']);
 
 const SOURCE_LABELS: Record<string, string> = {
   linkedin: 'LinkedIn',
   dice: 'Dice',
   indeed: 'Indeed',
   careerbuilder: 'CareerBuilder',
+  remoterocketship: 'Remote Rocketship',
+  aiapply: 'AIApply',
   manual: 'Manual',
 };
 
-const JOB_SOURCE_OPTIONS = ['manual', 'linkedin', 'dice', 'indeed', 'careerbuilder'] as const;
+const JOB_SOURCE_OPTIONS = [
+  'manual',
+  'linkedin',
+  'dice',
+  'indeed',
+  'careerbuilder',
+  'remoterocketship',
+  'aiapply',
+] as const;
 
 type ColumnKey =
   | 'jobId'
@@ -37,7 +49,7 @@ const COLUMN_FILTERS: { key: ColumnKey; label: string }[] = [
   { key: 'source', label: 'Source' },
   { key: 'status', label: 'Status' },
   { key: 'analysisStatus', label: 'Analysis Status' },
-  { key: 'applied', label: 'Applied' },
+  { key: 'applied', label: 'Applied Date' },
   { key: 'date', label: 'Date' },
 ];
 
@@ -61,6 +73,20 @@ function formatDate(value: string): string {
   return new Date(parsed).toLocaleString();
 }
 
+/** Format AppliedDate (YYYY-MM-DD or ISO) for table/detail display. */
+function formatAppliedDate(value: string | undefined): string {
+  const text = value?.trim() || '';
+  if (!text) return '';
+  // Date-only values parse as UTC midnight; format as local calendar date.
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+    const [year, month, day] = text.split('-').map(Number);
+    return new Date(year, month - 1, day).toLocaleDateString();
+  }
+  const parsed = Date.parse(text);
+  if (Number.isNaN(parsed)) return text;
+  return new Date(parsed).toLocaleDateString();
+}
+
 function getColumnValue(job: JobListing, key: ColumnKey): string {
   switch (key) {
     case 'jobId':
@@ -76,11 +102,11 @@ function getColumnValue(job: JobListing, key: ColumnKey): string {
     case 'source':
       return SOURCE_LABELS[job.source] ?? job.source ?? 'n/a';
     case 'status':
-      return job.status?.trim() || 'Active';
+      return normalizeJobStatus(job.status);
     case 'analysisStatus':
       return normalizeAnalysisStatus(job.analysisStatus);
     case 'applied':
-      return job.applied?.trim() || 'No';
+      return formatAppliedDate(job.appliedDate) || job.applied?.trim() || 'No';
     case 'date':
       return formatDate(job.date);
   }
@@ -92,6 +118,15 @@ function normalizeAnalysisStatus(value: string | undefined): AnalysisStatus {
     return text as AnalysisStatus;
   }
   return 'Pending';
+}
+
+function normalizeJobStatus(value: string | undefined): JobStatus {
+  const text = value?.trim() || '';
+  if ((JOB_STATUSES as readonly string[]).includes(text)) {
+    return text as JobStatus;
+  }
+  const matched = JOB_STATUSES.find((status) => status.toLowerCase() === text.toLowerCase());
+  return matched ?? 'Active';
 }
 
 function CopyIcon() {
@@ -174,7 +209,13 @@ function JobDescriptionCell({
   );
 }
 
-function AnalysisStatusCell({
+function AnalysisStatusCell({ job }: { job: JobListing }) {
+  return (
+    <td className="analysis-status-cell">{normalizeAnalysisStatus(job.analysisStatus)}</td>
+  );
+}
+
+function JobStatusCell({
   job,
   onUpdated,
 }: {
@@ -182,13 +223,13 @@ function AnalysisStatusCell({
   onUpdated: (job: JobListing) => void;
 }) {
   const [saving, setSaving] = useState(false);
-  const value = normalizeAnalysisStatus(job.analysisStatus);
+  const value = normalizeJobStatus(job.status);
 
-  const onChange = async (next: AnalysisStatus) => {
+  const onChange = async (next: JobStatus) => {
     if (next === value) return;
     setSaving(true);
     try {
-      const updated = await updateAnalysisStatus(job.jobId, job.source, next);
+      const updated = await updateJobStatus(job.jobId, job.source, next);
       onUpdated(normalizeJob(updated));
     } catch {
       // Keep previous value in the select via controlled value from job state.
@@ -198,15 +239,15 @@ function AnalysisStatusCell({
   };
 
   return (
-    <td className="analysis-status-cell" onClick={(event) => event.stopPropagation()}>
+    <td className="job-status-cell" onClick={(event) => event.stopPropagation()}>
       <select
-        className="analysis-status-select"
-        aria-label="Analysis Status"
+        className="job-status-select"
+        aria-label="Status"
         value={value}
         disabled={saving}
-        onChange={(event) => void onChange(event.target.value as AnalysisStatus)}
+        onChange={(event) => void onChange(event.target.value as JobStatus)}
       >
-        {ANALYSIS_STATUSES.map((status) => (
+        {JOB_STATUSES.map((status) => (
           <option key={status} value={status}>
             {status}
           </option>
@@ -405,7 +446,7 @@ function JobDetailModal({
     { label: 'Status', value: job.status?.trim() || 'Active' },
     { label: 'Job Description', value: job.jobDescription?.trim() || 'Not available' },
     { label: 'Analysis Status', value: normalizeAnalysisStatus(job.analysisStatus) },
-    { label: 'Applied', value: job.applied?.trim() || 'No' },
+    { label: 'Applied', value: formatAppliedDate(job.appliedDate) || job.applied?.trim() || 'No' },
     { label: 'Date', value: formatDate(job.date) },
   ];
 
@@ -524,15 +565,16 @@ function JobDescriptionModal({
       : (job.jobDescription ?? '');
   const [text, setText] = useState(initial);
   const [saving, setSaving] = useState(false);
+  const [fetching, setFetching] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && !saving) onClose();
+      if (event.key === 'Escape' && !saving && !fetching) onClose();
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [onClose, saving]);
+  }, [onClose, saving, fetching]);
 
   const save = async () => {
     setSaving(true);
@@ -545,6 +587,28 @@ function JobDescriptionModal({
       setError(err instanceof Error ? err.message : 'Failed to save description');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const fetchFromUrl = async () => {
+    if (!job.url?.trim()) {
+      setError('This job has no URL to fetch');
+      return;
+    }
+    setFetching(true);
+    setError(null);
+    try {
+      const result = await fetchJobDescriptionFromUrl(job.jobId, job.source);
+      setText(result.fetchedText);
+      onSaved(normalizeJob(result.job));
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Failed to fetch description from URL — paste it instead',
+      );
+    } finally {
+      setFetching(false);
     }
   };
 
@@ -586,7 +650,7 @@ function JobDescriptionModal({
             type="button"
             className="btn-secondary modal-close"
             onClick={onClose}
-            disabled={saving}
+            disabled={saving || fetching}
             aria-label="Close"
           >
             Close
@@ -597,18 +661,38 @@ function JobDescriptionModal({
           className="job-description-textarea"
           value={text}
           onChange={(event) => setText(event.target.value)}
-          placeholder="Paste the job description here..."
+          placeholder="Paste the job description here, or fetch from the public job URL..."
           autoFocus
           spellCheck
+          disabled={saving || fetching}
         />
 
         {error && <div className="job-panel-error">{error}</div>}
 
         <div className="modal-actions">
-          <button type="button" className="btn-secondary" onClick={onClose} disabled={saving}>
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={() => void fetchFromUrl()}
+            disabled={saving || fetching || !job.url?.trim()}
+            title={job.url ? 'Try fetching a public job posting URL' : 'No job URL on this listing'}
+          >
+            {fetching ? 'Fetching...' : 'Fetch from URL'}
+          </button>
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={onClose}
+            disabled={saving || fetching}
+          >
             Cancel
           </button>
-          <button type="button" className="btn-primary" onClick={() => void save()} disabled={saving}>
+          <button
+            type="button"
+            className="btn-primary"
+            onClick={() => void save()}
+            disabled={saving || fetching}
+          >
             {saving ? 'Saving...' : 'Save'}
           </button>
         </div>
@@ -620,10 +704,11 @@ function JobDescriptionModal({
 function normalizeJob(job: JobListing): JobListing {
   return {
     ...job,
-    status: job.status?.trim() || 'Active',
+    status: normalizeJobStatus(job.status),
     jobDescription: job.jobDescription?.trim() || 'Not available',
     analysisStatus: normalizeAnalysisStatus(job.analysisStatus),
     applied: job.applied?.trim() || 'No',
+    appliedDate: job.appliedDate?.trim() || '',
   };
 }
 
@@ -632,6 +717,8 @@ function JobsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<Record<ColumnKey, string>>(EMPTY_FILTERS);
+  const [globalSearch, setGlobalSearch] = useState('');
+  const [activeTab, setActiveTab] = useState<'active' | 'applied' | 'interview' | 'inactive'>('active');
   const [editingJob, setEditingJob] = useState<JobListing | null>(null);
   const [selectedJob, setSelectedJob] = useState<JobListing | null>(null);
   const [addingJob, setAddingJob] = useState(false);
@@ -673,6 +760,10 @@ function JobsPage() {
         options.analysisStatus = [...ANALYSIS_STATUSES];
         continue;
       }
+      if (column.key === 'status') {
+        options.status = [...JOB_STATUSES];
+        continue;
+      }
       const values = new Set<string>();
       for (const job of jobs) {
         values.add(getColumnValue(job, column.key));
@@ -683,23 +774,54 @@ function JobsPage() {
     return options;
   }, [jobs]);
 
+  const tabOf = useCallback((job: JobListing): 'active' | 'applied' | 'interview' | 'inactive' => {
+    const status = normalizeJobStatus(job.status);
+    if (INACTIVE_STATUSES.has(status)) return 'inactive';
+    if (status === 'Interview') return 'interview';
+    if (status === 'Applied') return 'applied';
+    return 'active';
+  }, []);
+
+  const tabJobs = useMemo(
+    () => jobs.filter((job) => tabOf(job) === activeTab),
+    [jobs, activeTab, tabOf],
+  );
+
+  const tabCounts = useMemo(() => {
+    const counts = { active: 0, applied: 0, interview: 0, inactive: 0 };
+    for (const job of jobs) counts[tabOf(job)] += 1;
+    return counts;
+  }, [jobs, tabOf]);
+
   const filteredJobs = useMemo(() => {
-    return jobs.filter((job) =>
-      COLUMN_FILTERS.every(({ key }) => {
-        const selected = filters[key];
-        if (!selected) return true;
-        return getColumnValue(job, key) === selected;
-      }),
-    );
-  }, [jobs, filters]);
+    const globalQuery = globalSearch.trim().toLowerCase();
+
+    return tabJobs.filter((job) => {
+      const matchesColumns = COLUMN_FILTERS.every(({ key }) => {
+        const query = filters[key].trim().toLowerCase();
+        if (!query) return true;
+        return getColumnValue(job, key).toLowerCase().includes(query);
+      });
+      if (!matchesColumns) return false;
+
+      if (!globalQuery) return true;
+      return COLUMN_FILTERS.some(({ key }) =>
+        getColumnValue(job, key).toLowerCase().includes(globalQuery),
+      );
+    });
+  }, [tabJobs, filters, globalSearch]);
 
   const updateFilter = (key: ColumnKey, value: string) => {
     setFilters((current) => ({ ...current, [key]: value }));
   };
 
-  const clearFilters = () => setFilters(EMPTY_FILTERS);
+  const clearFilters = () => {
+    setFilters(EMPTY_FILTERS);
+    setGlobalSearch('');
+  };
 
-  const hasActiveFilters = Object.values(filters).some((value) => value !== '');
+  const hasActiveFilters =
+    Object.values(filters).some((value) => value !== '') || globalSearch.trim() !== '';
 
   const handleJobCreated = (created: JobListing) => {
     setJobs((current) => [created, ...current.filter(
@@ -728,10 +850,18 @@ function JobsPage() {
             <h1>CareerPilot AI</h1>
             <p>
               Jobs from DynamoDB
-              {!loading && ` · showing ${filteredJobs.length} of ${jobs.length}`}
+              {!loading && ` · showing ${filteredJobs.length} of ${tabJobs.length}`}
             </p>
           </div>
           <div className="header-actions">
+            <input
+              type="search"
+              className="global-search-input"
+              aria-label="Search all columns"
+              placeholder="Search all columns..."
+              value={globalSearch}
+              onChange={(e) => setGlobalSearch(e.target.value)}
+            />
             <button
               type="button"
               className="btn-add-job"
@@ -754,17 +884,60 @@ function JobsPage() {
       </header>
 
       <main className="page-main">
+        <div className="job-tabs" role="tablist" aria-label="Job status tabs">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'active'}
+            className={`job-tab${activeTab === 'active' ? ' active' : ''}`}
+            onClick={() => setActiveTab('active')}
+          >
+            Active ({tabCounts.active})
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'applied'}
+            className={`job-tab${activeTab === 'applied' ? ' active' : ''}`}
+            onClick={() => setActiveTab('applied')}
+          >
+            Applied ({tabCounts.applied})
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'interview'}
+            className={`job-tab${activeTab === 'interview' ? ' active' : ''}`}
+            onClick={() => setActiveTab('interview')}
+          >
+            Interview ({tabCounts.interview})
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'inactive'}
+            className={`job-tab${activeTab === 'inactive' ? ' active' : ''}`}
+            onClick={() => setActiveTab('inactive')}
+          >
+            Inactive ({tabCounts.inactive})
+          </button>
+        </div>
+
         {error && <div className="job-panel-error">{error}</div>}
 
         {!loading && !error && jobs.length === 0 && (
           <div className="job-panel-empty">No jobs in DynamoDB yet. Run python gmail.py to import alerts.</div>
         )}
 
-        {!loading && !error && jobs.length > 0 && filteredJobs.length === 0 && (
-          <div className="job-panel-empty">No jobs match the current column filters.</div>
+        {!loading && !error && jobs.length > 0 && tabJobs.length === 0 && (
+          <div className="job-panel-empty">No {activeTab} jobs.</div>
         )}
 
-        {(jobs.length > 0 || loading) && (
+        {!loading && !error && tabJobs.length > 0 && filteredJobs.length === 0 && (
+          <div className="job-panel-empty">No jobs match the current search filters.</div>
+        )}
+
+        {(tabJobs.length > 0 || loading) && (
           <div className="table-wrap">
             <table className="jobs-table">
               <thead>
@@ -775,22 +948,28 @@ function JobsPage() {
                   <th>Link</th>
                 </tr>
                 <tr className="filter-row">
-                  {COLUMN_FILTERS.map(({ key, label }) => (
-                    <th key={key}>
-                      <select
-                        aria-label={`Filter ${label}`}
-                        value={filters[key]}
-                        onChange={(e) => updateFilter(key, e.target.value)}
-                      >
-                        <option value="">All</option>
-                        {columnOptions[key].map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-                    </th>
-                  ))}
+                  {COLUMN_FILTERS.map(({ key, label }) => {
+                    const listId = `filter-options-${key}`;
+                    return (
+                      <th key={key}>
+                        <input
+                          type="search"
+                          className="column-filter-input"
+                          list={listId}
+                          aria-label={`Search ${label}`}
+                          placeholder={`Search ${label}`}
+                          value={filters[key]}
+                          onChange={(e) => updateFilter(key, e.target.value)}
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                        <datalist id={listId}>
+                          {columnOptions[key].map((option) => (
+                            <option key={option} value={option} />
+                          ))}
+                        </datalist>
+                      </th>
+                    );
+                  })}
                   <th />
                 </tr>
               </thead>
@@ -815,14 +994,17 @@ function JobsPage() {
                           />
                         );
                       }
-                      if (key === 'analysisStatus') {
+                      if (key === 'status') {
                         return (
-                          <AnalysisStatusCell
+                          <JobStatusCell
                             key={key}
                             job={job}
                             onUpdated={handleJobUpdated}
                           />
                         );
+                      }
+                      if (key === 'analysisStatus') {
+                        return <AnalysisStatusCell key={key} job={job} />;
                       }
                       return <td key={key}>{value}</td>;
                     })}

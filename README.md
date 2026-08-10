@@ -4,7 +4,7 @@ Track job listings from email alerts, manage them in a web UI, and tailor your r
 
 ## Features
 
-- **Gmail import** — Parses job alerts from LinkedIn, Dice, Indeed, and CareerBuilder Gmail labels
+- **Gmail import** — Parses job alerts from LinkedIn, Dice, Indeed, CareerBuilder, and Remote Rocketship Gmail labels
 - **Jobs dashboard** — Filterable table with job details, analysis status, and applied tracking
 - **Manual job entry** — Add jobs from the UI with an optional job description
 - **Job descriptions** — Paste descriptions in the UI; stored in S3 and marked `Available` in DynamoDB
@@ -65,6 +65,7 @@ Edit `.env` with your AWS region, Bedrock model IDs, and optional bucket/table o
 | `BEDROCK_MODEL_ID` | Claude Sonnet 4.5 | LLM for resume tailoring |
 | `BEDROCK_EMBEDDING_MODEL_ID` | Titan Embed Text v2 | Embeddings for RAG |
 | `RESUME_FILENAME` | `Justin_Traille.docx` | Base resume in `data/resume/` |
+| `TAILORED_RESUME_FILENAME_PREFIX` | `Justin_Traille` | Prefix for tailored resume filenames (`<prefix>_<Company>_<Position>.docx`) |
 | `CHROMA_PERSIST_DIR` | `chroma_db` | Chroma vector store path |
 
 ### 3. Gmail API (optional, for email import)
@@ -81,6 +82,8 @@ Gmail labels used:
 | Dice | `jobs-dice` |
 | Indeed | `jobs-indeed` |
 | CareerBuilder | `Jobs-Careerbuilder` |
+| Remote Rocketship | `jobs-remoterocketship` |
+| AIApply | `Jobs-AiApply` |
 
 ### 4. Resume and RAG data
 
@@ -160,6 +163,7 @@ python gmail.py
 ```
 careerPilotAI/
   api/                  # FastAPI routes and schemas
+  aiapply/              # AIApply email parser
   careerbuilder/        # CareerBuilder email parser
   dice/                 # Dice email parser
   indeed/               # Indeed email parser
