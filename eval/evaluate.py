@@ -32,6 +32,26 @@ def parse_eval_response(response_text: str) -> dict[str, Any]:
 
     if not isinstance(payload, dict):
         raise ValueError("Eval response JSON must be an object")
+    return normalize_eval_scores(payload)
+
+
+def normalize_eval_scores(payload: dict[str, Any]) -> dict[str, Any]:
+    """Force overallScore to the sum of the five 0-5 dimension scores when present."""
+    scores = payload.get("scores")
+    if not isinstance(scores, dict):
+        return payload
+
+    keys = ("grounding", "ruleCompliance", "jobFit", "minimalChange", "readability")
+    total = 0
+    have_all = True
+    for key in keys:
+        value = scores.get(key)
+        if not isinstance(value, (int, float)):
+            have_all = False
+            break
+        total += int(value)
+    if have_all:
+        payload["overallScore"] = total
     return payload
 
 

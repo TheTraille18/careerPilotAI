@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { fetchJobs, createJob, formatTailorSuccessMessage, tailorResume, updateJobStatus, updateJobDescription, fetchJobDescriptionFromUrl } from './api/jobs';
-import type { AnalysisStatus, JobListing, JobStatus } from './types/job';
-import { ANALYSIS_STATUSES, JOB_STATUSES } from './types/job';
+import { fetchJobs, createJob, updateJobStatus, updateJobDescription, fetchJobDescriptionFromUrl, checkTodaysFit, checkJobFit } from './api/jobs';
+import type { AnalysisStatus, FitStatus, JobListing, JobStatus } from './types/job';
+import { ANALYSIS_STATUSES, FIT_STATUSES, JOB_STATUSES } from './types/job';
 import JobDetailPage from './pages/JobDetailPage';
+import { AdminProvider, useAdmin } from './auth/AdminContext';
+import ProfileButton from './components/ProfileButton';
+import DemoModeBanner from './components/DemoModeBanner';
+import Tip from './components/Tip';
 import './App.css';
 
 const INACTIVE_STATUSES = new Set(['Closed', 'Rejected', 'Not Enough Experience']);
@@ -36,6 +40,7 @@ type ColumnKey =
   | 'location'
   | 'source'
   | 'status'
+  | 'fit'
   | 'analysisStatus'
   | 'applied'
   | 'date';
@@ -48,6 +53,7 @@ const COLUMN_FILTERS: { key: ColumnKey; label: string }[] = [
   { key: 'location', label: 'Location' },
   { key: 'source', label: 'Source' },
   { key: 'status', label: 'Status' },
+  { key: 'fit', label: 'Fit' },
   { key: 'analysisStatus', label: 'Analysis Status' },
   { key: 'applied', label: 'Applied Date' },
   { key: 'date', label: 'Date' },
@@ -61,6 +67,7 @@ const EMPTY_FILTERS: Record<ColumnKey, string> = {
   location: '',
   source: '',
   status: '',
+  fit: '',
   analysisStatus: '',
   applied: '',
   date: '',
@@ -103,6 +110,8 @@ function getColumnValue(job: JobListing, key: ColumnKey): string {
       return SOURCE_LABELS[job.source] ?? job.source ?? 'n/a';
     case 'status':
       return normalizeJobStatus(job.status);
+    case 'fit':
+      return normalizeFitStatus(job.fit);
     case 'analysisStatus':
       return normalizeAnalysisStatus(job.analysisStatus);
     case 'applied':
@@ -127,6 +136,15 @@ function normalizeJobStatus(value: string | undefined): JobStatus {
   }
   const matched = JOB_STATUSES.find((status) => status.toLowerCase() === text.toLowerCase());
   return matched ?? 'Active';
+}
+
+function normalizeFitStatus(value: string | undefined): FitStatus {
+  const text = value?.trim() || '';
+  if ((FIT_STATUSES as readonly string[]).includes(text)) {
+    return text as FitStatus;
+  }
+  const matched = FIT_STATUSES.find((status) => status.toLowerCase() === text.toLowerCase());
+  return matched ?? 'Unset';
 }
 
 function CopyIcon() {
@@ -171,18 +189,21 @@ function JobIdCell({ jobId }: { jobId: string }) {
   };
 
   return (
-    <td className="job-id-cell" title={jobId} onClick={(event) => event.stopPropagation()}>
+    <td className="job-id-cell" onClick={(event) => event.stopPropagation()}>
       <div className="job-id-row">
-        <button
-          type="button"
-          className={`copy-job-id${copied ? ' copied' : ''}`}
-          onClick={() => void copyJobId()}
-          aria-label={copied ? 'Job ID copied' : 'Copy Job ID'}
-          title={copied ? 'Copied!' : 'Copy Job ID'}
-        >
-          {copied ? <CheckIcon /> : <CopyIcon />}
-        </button>
-        <span className="job-id-text">{jobId}</span>
+        <Tip text="Copy this job ID to the clipboard">
+          <button
+            type="button"
+            className={`copy-job-id${copied ? ' copied' : ''}`}
+            onClick={() => void copyJobId()}
+            aria-label={copied ? 'Job ID copied' : 'Copy Job ID'}
+          >
+            {copied ? <CheckIcon /> : <CopyIcon />}
+          </button>
+        </Tip>
+        <span className="job-id-text" title={jobId}>
+          {jobId}
+        </span>
       </div>
     </td>
   );
@@ -195,16 +216,25 @@ function JobDescriptionCell({
   value: string;
   onOpen: () => void;
 }) {
+  const { canEdit } = useAdmin();
   return (
     <td className="job-description-cell" onClick={(event) => event.stopPropagation()}>
-      <button
-        type="button"
-        className="job-description-trigger"
-        onClick={onOpen}
-        title="Click to paste or edit job description"
+      <Tip
+        text={
+          canEdit
+            ? 'Open the job description editor to paste, fetch, or update the JD'
+            : 'Admin sign-in required to edit job descriptions'
+        }
       >
-        {value}
-      </button>
+        <button
+          type="button"
+          className="job-description-trigger"
+          onClick={onOpen}
+          disabled={!canEdit}
+        >
+          {value}
+        </button>
+      </Tip>
     </td>
   );
 }
@@ -215,6 +245,23 @@ function AnalysisStatusCell({ job }: { job: JobListing }) {
   );
 }
 
+function FitCell({ job }: { job: JobListing }) {
+  const fit = normalizeFitStatus(job.fit);
+  const reason = job.fitReason?.trim() || '';
+  const tip =
+    reason ||
+    (fit === 'Unset'
+      ? 'Fit not scored yet — use Check fit after a job description is available'
+      : `Fit verdict: ${fit}`);
+  return (
+    <td className="fit-cell" onClick={(event) => event.stopPropagation()}>
+      <Tip text={tip}>
+        <span className={`fit-badge fit-${fit.toLowerCase()}`}>{fit}</span>
+      </Tip>
+    </td>
+  );
+}
+
 function JobStatusCell({
   job,
   onUpdated,
@@ -222,6 +269,7 @@ function JobStatusCell({
   job: JobListing;
   onUpdated: (job: JobListing) => void;
 }) {
+  const { canEdit } = useAdmin();
   const [saving, setSaving] = useState(false);
   const value = normalizeJobStatus(job.status);
 
@@ -240,19 +288,27 @@ function JobStatusCell({
 
   return (
     <td className="job-status-cell" onClick={(event) => event.stopPropagation()}>
-      <select
-        className="job-status-select"
-        aria-label="Status"
-        value={value}
-        disabled={saving}
-        onChange={(event) => void onChange(event.target.value as JobStatus)}
+      <Tip
+        text={
+          canEdit
+            ? 'Change this job’s pipeline status (Active, Applied, Interview, etc.)'
+            : 'Admin sign-in required to change job status'
+        }
       >
-        {JOB_STATUSES.map((status) => (
-          <option key={status} value={status}>
-            {status}
-          </option>
-        ))}
-      </select>
+        <select
+          className="job-status-select"
+          aria-label="Status"
+          value={value}
+          disabled={saving || !canEdit}
+          onChange={(event) => void onChange(event.target.value as JobStatus)}
+        >
+          {JOB_STATUSES.map((status) => (
+            <option key={status} value={status}>
+              {status}
+            </option>
+          ))}
+        </select>
+      </Tip>
     </td>
   );
 }
@@ -327,15 +383,17 @@ function AddJobModal({
             <h2 id="add-job-modal-title">Add Job</h2>
             <p>Enter job details to add a new listing.</p>
           </div>
-          <button
-            type="button"
-            className="btn-secondary modal-close"
-            onClick={onClose}
-            disabled={saving}
-            aria-label="Close"
-          >
-            Close
-          </button>
+          <Tip text="Close without adding a job">
+            <button
+              type="button"
+              className="btn-secondary modal-close"
+              onClick={onClose}
+              disabled={saving}
+              aria-label="Close"
+            >
+              Close
+            </button>
+          </Tip>
         </div>
 
         <div className="job-form-fields">
@@ -401,12 +459,16 @@ function AddJobModal({
         {error && <div className="job-panel-error">{error}</div>}
 
         <div className="modal-actions">
-          <button type="button" className="btn-secondary" onClick={onClose} disabled={saving}>
-            Cancel
-          </button>
-          <button type="button" className="btn-primary" onClick={() => void save()} disabled={saving}>
-            {saving ? 'Adding...' : 'Add Job'}
-          </button>
+          <Tip text="Close without adding a job">
+            <button type="button" className="btn-secondary" onClick={onClose} disabled={saving}>
+              Cancel
+            </button>
+          </Tip>
+          <Tip text="Create this job listing in CareerPilot">
+            <button type="button" className="btn-primary" onClick={() => void save()} disabled={saving}>
+              {saving ? 'Adding...' : 'Add Job'}
+            </button>
+          </Tip>
         </div>
       </div>
     </div>
@@ -425,17 +487,23 @@ function JobDetailModal({
   onUpdated: (job: JobListing) => void;
 }) {
   const navigate = useNavigate();
-  const [tailorError, setTailorError] = useState<string | null>(null);
-  const [tailorSuccess, setTailorSuccess] = useState<string | null>(null);
-  const [tailoring, setTailoring] = useState(false);
+  const { canEdit } = useAdmin();
+  const [checkingFit, setCheckingFit] = useState(false);
+  const [fitError, setFitError] = useState<string | null>(null);
+  const [fitSuccess, setFitSuccess] = useState<string | null>(null);
+
+  const desc = job.jobDescription?.trim() || 'Not available';
+  const hasDescription =
+    desc === 'Available' || (desc !== 'Not available' && desc.length >= 40);
+  const busy = checkingFit;
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && !tailoring) onClose();
+      if (event.key === 'Escape' && !busy) onClose();
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [onClose, tailoring]);
+  }, [onClose, busy]);
 
   const fields: { label: string; value: string }[] = [
     { label: 'Job ID', value: job.jobId || 'n/a' },
@@ -444,6 +512,8 @@ function JobDetailModal({
     { label: 'Location', value: job.location || 'n/a' },
     { label: 'Source', value: SOURCE_LABELS[job.source] ?? job.source ?? 'n/a' },
     { label: 'Status', value: job.status?.trim() || 'Active' },
+    { label: 'Fit', value: normalizeFitStatus(job.fit) },
+    { label: 'Fit reason', value: job.fitReason?.trim() || 'n/a' },
     { label: 'Job Description', value: job.jobDescription?.trim() || 'Not available' },
     { label: 'Analysis Status', value: normalizeAnalysisStatus(job.analysisStatus) },
     { label: 'Applied', value: formatAppliedDate(job.appliedDate) || job.applied?.trim() || 'No' },
@@ -455,25 +525,28 @@ function JobDetailModal({
     navigate(`/jobs/${encodeURIComponent(job.jobId)}?${params}`);
   };
 
-  const onTailorResume = async () => {
-    if (job.jobDescription?.trim() !== 'Available') {
-      setTailorError('Job description is not available. Paste and save a description first.');
-      setTailorSuccess(null);
+  const onCheckFit = async () => {
+    if (!hasDescription) {
+      setFitError('Paste and save a job description before checking fit');
+      setFitSuccess(null);
       return;
     }
 
-    setTailoring(true);
-    setTailorError(null);
-    setTailorSuccess(null);
+    setCheckingFit(true);
+    setFitError(null);
+    setFitSuccess(null);
     try {
-      const result = await tailorResume(job);
-      onUpdated(normalizeJob(result.job));
-      setTailorSuccess(formatTailorSuccessMessage(result.s3));
+      // Empty paste → backend uses Available/S3 or inline stored text.
+      const pasted = desc === 'Available' || desc === 'Not available' ? '' : desc;
+      const result = await checkJobFit(job.jobId, job.source, pasted);
+      const updated = normalizeJob(result.job);
+      onUpdated(updated);
+      setFitSuccess(`${updated.fit}: ${updated.fitReason || 'No reason provided.'}`);
     } catch (err) {
-      setTailorError(err instanceof Error ? err.message : 'Failed to tailor resume');
-      setTailorSuccess(null);
+      setFitError(err instanceof Error ? err.message : 'Fit check failed');
+      setFitSuccess(null);
     } finally {
-      setTailoring(false);
+      setCheckingFit(false);
     }
   };
 
@@ -482,7 +555,7 @@ function JobDetailModal({
       className="modal-backdrop"
       role="presentation"
       onMouseDown={(event) => {
-        if (event.target === event.currentTarget) onClose();
+        if (event.target === event.currentTarget && !busy) onClose();
       }}
     >
       <div
@@ -499,9 +572,17 @@ function JobDetailModal({
               {job.company ? ` · ${job.company}` : ''}
             </p>
           </div>
-          <button type="button" className="btn-secondary modal-close" onClick={onClose} aria-label="Close">
-            Close
-          </button>
+          <Tip text="Close this dialog">
+            <button
+              type="button"
+              className="btn-secondary modal-close"
+              onClick={onClose}
+              disabled={busy}
+              aria-label="Close"
+            >
+              Close
+            </button>
+          </Tip>
         </div>
 
         <dl className="job-detail-fields">
@@ -515,9 +596,11 @@ function JobDetailModal({
             <dt>Source URL</dt>
             <dd>
               {job.url ? (
-                <a href={job.url} target="_blank" rel="noreferrer">
-                  Open job posting
-                </a>
+                <Tip text="Open the original job posting in a new tab">
+                  <a href={job.url} target="_blank" rel="noreferrer">
+                    Open job posting
+                  </a>
+                </Tip>
               ) : (
                 'n/a'
               )}
@@ -525,24 +608,44 @@ function JobDetailModal({
           </div>
         </dl>
 
-        {tailorError && <div className="job-panel-error">{tailorError}</div>}
-        {tailorSuccess && <div className="job-panel-success">{tailorSuccess}</div>}
+        {fitError && <div className="job-panel-error">{fitError}</div>}
+        {fitSuccess && <div className="job-panel-success">{fitSuccess}</div>}
 
         <div className="modal-actions">
-          <button type="button" className="btn-secondary" onClick={onEditDescription}>
-            Edit description
-          </button>
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={() => void onTailorResume()}
-            disabled={tailoring}
+          <Tip
+            text={
+              canEdit
+                ? 'Open the editor to paste, fetch, or update this job description'
+                : 'Admin sign-in required to edit descriptions'
+            }
           >
-            {tailoring ? 'Tailoring...' : 'Tailor Resume'}
-          </button>
-          <button type="button" className="btn-primary" onClick={openFullDetails}>
-            Full details
-          </button>
+            <button type="button" className="btn-secondary" onClick={onEditDescription} disabled={busy || !canEdit}>
+              Edit description
+            </button>
+          </Tip>
+          <Tip
+            text={
+              !canEdit
+                ? 'Admin sign-in required for AI fit checks'
+                : hasDescription
+                  ? 'Run AI fit scoring using the saved or pasted job description'
+                  : 'Add a job description before checking fit'
+            }
+          >
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => void onCheckFit()}
+              disabled={busy || !hasDescription || !canEdit}
+            >
+              {checkingFit ? 'Checking fit...' : 'Check fit'}
+            </button>
+          </Tip>
+          <Tip text="Open the full job details page with eval results and resume tools">
+            <button type="button" className="btn-primary" onClick={openFullDetails} disabled={busy}>
+              Full details
+            </button>
+          </Tip>
         </div>
       </div>
     </div>
@@ -558,6 +661,7 @@ function JobDescriptionModal({
   onClose: () => void;
   onSaved: (job: JobListing) => void;
 }) {
+  const { canEdit } = useAdmin();
   const initial =
     job.jobDescription?.trim() === 'Not available' ||
     job.jobDescription?.trim() === 'Available'
@@ -566,15 +670,24 @@ function JobDescriptionModal({
   const [text, setText] = useState(initial);
   const [saving, setSaving] = useState(false);
   const [fetching, setFetching] = useState(false);
+  const [checkingFit, setCheckingFit] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fitMessage, setFitMessage] = useState<string | null>(null);
+  const [currentFit, setCurrentFit] = useState(normalizeFitStatus(job.fit));
+  const [currentFitReason, setCurrentFitReason] = useState(job.fitReason?.trim() || '');
+
+  const hasStoredDescription = job.jobDescription?.trim() === 'Available';
+  const hasPastedText = text.trim().length >= 40;
+  const canCheckFit = hasPastedText || hasStoredDescription;
+  const busy = saving || fetching || checkingFit;
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && !saving && !fetching) onClose();
+      if (event.key === 'Escape' && !busy) onClose();
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [onClose, saving, fetching]);
+  }, [onClose, busy]);
 
   const save = async () => {
     setSaving(true);
@@ -612,12 +725,34 @@ function JobDescriptionModal({
     }
   };
 
+  const runFitCheck = async () => {
+    if (!canCheckFit) {
+      setError('Paste a job description (or save/fetch one) before checking fit');
+      return;
+    }
+    setCheckingFit(true);
+    setError(null);
+    setFitMessage(null);
+    try {
+      const result = await checkJobFit(job.jobId, job.source, text.trim());
+      const updated = normalizeJob(result.job);
+      onSaved(updated);
+      setCurrentFit(normalizeFitStatus(updated.fit));
+      setCurrentFitReason(updated.fitReason?.trim() || '');
+      setFitMessage(`${updated.fit}: ${updated.fitReason || 'No reason provided.'}`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Fit check failed');
+    } finally {
+      setCheckingFit(false);
+    }
+  };
+
   return (
     <div
       className="modal-backdrop"
       role="presentation"
       onMouseDown={(event) => {
-        if (event.target === event.currentTarget && !saving) onClose();
+        if (event.target === event.currentTarget && !busy) onClose();
       }}
     >
       <div
@@ -638,63 +773,113 @@ function JobDescriptionModal({
             </p>
             {job.url ? (
               <p className="modal-job-link">
-                <a href={job.url} target="_blank" rel="noreferrer">
-                  Open job posting
-                </a>
+                <Tip text="Open the original job posting in a new tab">
+                  <a href={job.url} target="_blank" rel="noreferrer">
+                    Open job posting
+                  </a>
+                </Tip>
               </p>
             ) : (
               <p className="modal-job-link muted">No job URL available</p>
             )}
+            {currentFit !== 'Unset' && (
+              <p className="modal-fit-line">
+                Fit:{' '}
+                <Tip text={currentFitReason || `Fit verdict: ${currentFit}`}>
+                  <span className={`fit-badge fit-${currentFit.toLowerCase()}`}>{currentFit}</span>
+                </Tip>
+                {currentFitReason ? ` — ${currentFitReason}` : ''}
+              </p>
+            )}
           </div>
-          <button
-            type="button"
-            className="btn-secondary modal-close"
-            onClick={onClose}
-            disabled={saving || fetching}
-            aria-label="Close"
-          >
-            Close
-          </button>
+          <Tip text="Close without saving">
+            <button
+              type="button"
+              className="btn-secondary modal-close"
+              onClick={onClose}
+              disabled={busy}
+              aria-label="Close"
+            >
+              Close
+            </button>
+          </Tip>
         </div>
 
         <textarea
           className="job-description-textarea"
           value={text}
           onChange={(event) => setText(event.target.value)}
-          placeholder="Paste the job description here, or fetch from the public job URL..."
+          placeholder={
+            hasStoredDescription
+              ? 'Description already saved — paste to replace, or Check fit using the saved JD...'
+              : 'Paste the job description here, or fetch from the public job URL...'
+          }
           autoFocus
           spellCheck
-          disabled={saving || fetching}
+          disabled={busy}
         />
 
         {error && <div className="job-panel-error">{error}</div>}
+        {fitMessage && <div className="job-panel-success">{fitMessage}</div>}
 
         <div className="modal-actions">
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={() => void fetchFromUrl()}
-            disabled={saving || fetching || !job.url?.trim()}
-            title={job.url ? 'Try fetching a public job posting URL' : 'No job URL on this listing'}
+          <Tip
+            text={
+              !canEdit
+                ? 'Admin sign-in required'
+                : job.url
+                  ? 'Try fetching the public job posting text from the job URL'
+                  : 'This listing has no URL to fetch from'
+            }
           >
-            {fetching ? 'Fetching...' : 'Fetch from URL'}
-          </button>
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={onClose}
-            disabled={saving || fetching}
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => void fetchFromUrl()}
+              disabled={busy || !job.url?.trim() || !canEdit}
+            >
+              {fetching ? 'Fetching...' : 'Fetch from URL'}
+            </button>
+          </Tip>
+          <Tip
+            text={
+              !canEdit
+                ? 'Admin sign-in required for AI fit checks'
+                : canCheckFit
+                  ? 'Run AI fit scoring using the pasted or saved description'
+                  : 'Paste or save a job description before checking fit'
+            }
           >
-            Cancel
-          </button>
-          <button
-            type="button"
-            className="btn-primary"
-            onClick={() => void save()}
-            disabled={saving || fetching}
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => void runFitCheck()}
+              disabled={busy || !canCheckFit || !canEdit}
+            >
+              {checkingFit ? 'Checking fit...' : 'Check fit'}
+            </button>
+          </Tip>
+          <Tip text="Close without saving">
+            <button type="button" className="btn-secondary" onClick={onClose} disabled={busy}>
+              Cancel
+            </button>
+          </Tip>
+          <Tip
+            text={
+              canEdit
+                ? 'Save this job description text to CareerPilot storage'
+                : 'Admin sign-in required to save descriptions'
+            }
           >
-            {saving ? 'Saving...' : 'Save'}
-          </button>
+            <button
+              type="button"
+              className="btn-primary"
+              onClick={() => void save()}
+              disabled={busy || !canEdit}
+            >
+              {saving ? 'Saving...' : 'Save'}
+            </button>
+          </Tip>
         </div>
       </div>
     </div>
@@ -709,10 +894,14 @@ function normalizeJob(job: JobListing): JobListing {
     analysisStatus: normalizeAnalysisStatus(job.analysisStatus),
     applied: job.applied?.trim() || 'No',
     appliedDate: job.appliedDate?.trim() || '',
+    fit: normalizeFitStatus(job.fit),
+    fitReason: job.fitReason?.trim() || '',
+    fitCheckedAt: job.fitCheckedAt?.trim() || '',
   };
 }
 
 function JobsPage() {
+  const { authEnabled, isAdmin, email, canEdit } = useAdmin();
   const [jobs, setJobs] = useState<JobListing[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -722,6 +911,8 @@ function JobsPage() {
   const [editingJob, setEditingJob] = useState<JobListing | null>(null);
   const [selectedJob, setSelectedJob] = useState<JobListing | null>(null);
   const [addingJob, setAddingJob] = useState(false);
+  const [checkingFit, setCheckingFit] = useState(false);
+  const [fitMessage, setFitMessage] = useState<string | null>(null);
 
   const loadJobs = useCallback(async () => {
     setLoading(true);
@@ -750,6 +941,7 @@ function JobsPage() {
       location: [],
       source: [],
       status: [],
+      fit: [],
       analysisStatus: [],
       applied: [],
       date: [],
@@ -762,6 +954,10 @@ function JobsPage() {
       }
       if (column.key === 'status') {
         options.status = [...JOB_STATUSES];
+        continue;
+      }
+      if (column.key === 'fit') {
+        options.fit = [...FIT_STATUSES];
         continue;
       }
       const values = new Set<string>();
@@ -842,85 +1038,176 @@ function JobsPage() {
     );
   };
 
+  const handleCheckTodaysFit = async () => {
+    setCheckingFit(true);
+    setFitMessage(null);
+    setError(null);
+    try {
+      const result = await checkTodaysFit({ force: true, limit: 50 });
+      await loadJobs();
+      const errorNote =
+        result.errorCount > 0 ? ` · ${result.errorCount} error(s)` : '';
+      setFitMessage(
+        `Today (${result.date}): evaluated ${result.evaluated}` +
+          ` (${result.withDescription ?? 0} with JD), skipped ${result.skippedExisting}` +
+          `, of ${result.candidateCount}${errorNote}`,
+      );
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Fit check failed');
+    } finally {
+      setCheckingFit(false);
+    }
+  };
+
   return (
     <div className="app-shell">
       <header className="page-header">
         <div className="page-header-top">
           <div>
-            <h1>CareerPilot AI</h1>
+            <h1>
+              CareerPilot AI
+              {authEnabled && !isAdmin ? <span className="demo-title-badge">Demo</span> : null}
+            </h1>
             <p>
-              Jobs from DynamoDB
+              {authEnabled && !isAdmin
+                ? 'Sample showcase data'
+                : 'Jobs from DynamoDB'}
               {!loading && ` · showing ${filteredJobs.length} of ${tabJobs.length}`}
+              {authEnabled && isAdmin && email && ` · Admin (${email})`}
             </p>
           </div>
           <div className="header-actions">
-            <input
-              type="search"
-              className="global-search-input"
-              aria-label="Search all columns"
-              placeholder="Search all columns..."
-              value={globalSearch}
-              onChange={(e) => setGlobalSearch(e.target.value)}
-            />
-            <button
-              type="button"
-              className="btn-add-job"
-              onClick={() => setAddingJob(true)}
-              aria-label="Add job"
-              title="Add job"
-            >
-              +
-            </button>
-            {hasActiveFilters && (
-              <button type="button" className="btn-secondary" onClick={clearFilters}>
-                Clear filters
+            <Tip text="Search across all visible job columns">
+              <input
+                type="search"
+                className="global-search-input"
+                aria-label="Search all columns"
+                placeholder="Search all columns..."
+                value={globalSearch}
+                onChange={(e) => setGlobalSearch(e.target.value)}
+              />
+            </Tip>
+            <Tip text={canEdit ? 'Add a new job listing manually' : 'Admin sign-in required to add jobs'}>
+              <button
+                type="button"
+                className="btn-add-job"
+                onClick={() => setAddingJob(true)}
+                aria-label="Add job"
+                disabled={!canEdit}
+              >
+                +
               </button>
+            </Tip>
+            {hasActiveFilters && (
+              <Tip text="Clear all column filters and the global search">
+                <button type="button" className="btn-secondary" onClick={clearFilters}>
+                  Clear filters
+                </button>
+              </Tip>
             )}
-            <button type="button" className="btn-primary" onClick={() => void loadJobs()} disabled={loading}>
-              {loading ? 'Loading...' : 'Refresh'}
-            </button>
+            <Tip
+              text={
+                canEdit
+                  ? "Score today's jobs with AI (fetches public JDs when possible)"
+                  : 'Admin sign-in required for AI fit checks'
+              }
+            >
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => void handleCheckTodaysFit()}
+                disabled={loading || checkingFit || !canEdit}
+              >
+                {checkingFit ? 'Checking fit...' : "Check today's fit"}
+              </button>
+            </Tip>
+            <Tip text="Reload the job list from the server">
+              <button
+                type="button"
+                className="icon-action-button"
+                onClick={() => void loadJobs()}
+                disabled={loading}
+                aria-label={loading ? 'Refreshing jobs' : 'Refresh jobs'}
+              >
+                <svg
+                  className={`refresh-icon-svg${loading ? ' is-spinning' : ''}`}
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M20 12a8 8 0 1 1-2.2-5.4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M20 4v5h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </Tip>
+            <ProfileButton />
           </div>
         </div>
+        {fitMessage && <div className="fit-check-message">{fitMessage}</div>}
+        <DemoModeBanner />
       </header>
 
       <main className="page-main">
         <div className="job-tabs" role="tablist" aria-label="Job status tabs">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === 'active'}
-            className={`job-tab${activeTab === 'active' ? ' active' : ''}`}
-            onClick={() => setActiveTab('active')}
-          >
-            Active ({tabCounts.active})
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === 'applied'}
-            className={`job-tab${activeTab === 'applied' ? ' active' : ''}`}
-            onClick={() => setActiveTab('applied')}
-          >
-            Applied ({tabCounts.applied})
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === 'interview'}
-            className={`job-tab${activeTab === 'interview' ? ' active' : ''}`}
-            onClick={() => setActiveTab('interview')}
-          >
-            Interview ({tabCounts.interview})
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === 'inactive'}
-            className={`job-tab${activeTab === 'inactive' ? ' active' : ''}`}
-            onClick={() => setActiveTab('inactive')}
-          >
-            Inactive ({tabCounts.inactive})
-          </button>
+          <Tip text="Show Active jobs that are still in play" place="bottom">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'active'}
+              className={`job-tab${activeTab === 'active' ? ' active' : ''}`}
+              onClick={() => setActiveTab('active')}
+            >
+              Active ({tabCounts.active})
+            </button>
+          </Tip>
+          <Tip text="Show jobs marked Applied" place="bottom">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'applied'}
+              className={`job-tab${activeTab === 'applied' ? ' active' : ''}`}
+              onClick={() => setActiveTab('applied')}
+            >
+              Applied ({tabCounts.applied})
+            </button>
+          </Tip>
+          <Tip text="Show jobs currently in Interview" place="bottom">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'interview'}
+              className={`job-tab${activeTab === 'interview' ? ' active' : ''}`}
+              onClick={() => setActiveTab('interview')}
+            >
+              Interview ({tabCounts.interview})
+            </button>
+          </Tip>
+          <Tip text="Show Closed, Rejected, and Not Enough Experience jobs" place="bottom">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'inactive'}
+              className={`job-tab${activeTab === 'inactive' ? ' active' : ''}`}
+              onClick={() => setActiveTab('inactive')}
+            >
+              Inactive ({tabCounts.inactive})
+            </button>
+          </Tip>
         </div>
 
         {error && <div className="job-panel-error">{error}</div>}
@@ -952,16 +1239,18 @@ function JobsPage() {
                     const listId = `filter-options-${key}`;
                     return (
                       <th key={key}>
-                        <input
-                          type="search"
-                          className="column-filter-input"
-                          list={listId}
-                          aria-label={`Search ${label}`}
-                          placeholder={`Search ${label}`}
-                          value={filters[key]}
-                          onChange={(e) => updateFilter(key, e.target.value)}
-                          onClick={(e) => e.stopPropagation()}
-                        />
+                        <Tip text={`Filter the table by ${label}`} place="bottom">
+                          <input
+                            type="search"
+                            className="column-filter-input"
+                            list={listId}
+                            aria-label={`Search ${label}`}
+                            placeholder={`Search ${label}`}
+                            value={filters[key]}
+                            onChange={(e) => updateFilter(key, e.target.value)}
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                        </Tip>
                         <datalist id={listId}>
                           {columnOptions[key].map((option) => (
                             <option key={option} value={option} />
@@ -975,49 +1264,57 @@ function JobsPage() {
               </thead>
               <tbody>
                 {filteredJobs.map((job) => (
-                  <tr
+                  <Tip
                     key={`${job.jobId}-${job.source}`}
-                    className="job-row"
-                    onClick={() => setSelectedJob(job)}
+                    text="Open quick job details"
+                    place="bottom"
+                    attach
                   >
-                    {COLUMN_FILTERS.map(({ key }) => {
-                      const value = getColumnValue(job, key);
-                      if (key === 'jobId') {
-                        return <JobIdCell key={key} jobId={value} />;
-                      }
-                      if (key === 'jobDescription') {
-                        return (
-                          <JobDescriptionCell
-                            key={key}
-                            value={value}
-                            onOpen={() => setEditingJob(job)}
-                          />
-                        );
-                      }
-                      if (key === 'status') {
-                        return (
-                          <JobStatusCell
-                            key={key}
-                            job={job}
-                            onUpdated={handleJobUpdated}
-                          />
-                        );
-                      }
-                      if (key === 'analysisStatus') {
-                        return <AnalysisStatusCell key={key} job={job} />;
-                      }
-                      return <td key={key}>{value}</td>;
-                    })}
-                    <td onClick={(event) => event.stopPropagation()}>
-                      {job.url ? (
-                        <a href={job.url} target="_blank" rel="noreferrer">
-                          View
-                        </a>
-                      ) : (
-                        'n/a'
-                      )}
-                    </td>
-                  </tr>
+                    <tr className="job-row" onClick={() => setSelectedJob(job)}>
+                      {COLUMN_FILTERS.map(({ key }) => {
+                        const value = getColumnValue(job, key);
+                        if (key === 'jobId') {
+                          return <JobIdCell key={key} jobId={value} />;
+                        }
+                        if (key === 'jobDescription') {
+                          return (
+                            <JobDescriptionCell
+                              key={key}
+                              value={value}
+                              onOpen={() => setEditingJob(job)}
+                            />
+                          );
+                        }
+                        if (key === 'status') {
+                          return (
+                            <JobStatusCell
+                              key={key}
+                              job={job}
+                              onUpdated={handleJobUpdated}
+                            />
+                          );
+                        }
+                        if (key === 'fit') {
+                          return <FitCell key={key} job={job} />;
+                        }
+                        if (key === 'analysisStatus') {
+                          return <AnalysisStatusCell key={key} job={job} />;
+                        }
+                        return <td key={key}>{value}</td>;
+                      })}
+                      <td onClick={(event) => event.stopPropagation()}>
+                        {job.url ? (
+                          <Tip text="Open the original job posting in a new tab">
+                            <a href={job.url} target="_blank" rel="noreferrer">
+                              View
+                            </a>
+                          </Tip>
+                        ) : (
+                          'n/a'
+                        )}
+                      </td>
+                    </tr>
+                  </Tip>
                 ))}
               </tbody>
             </table>
@@ -1059,9 +1356,11 @@ function JobsPage() {
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<JobsPage />} />
-      <Route path="/jobs/:jobId" element={<JobDetailPage />} />
-    </Routes>
+    <AdminProvider>
+      <Routes>
+        <Route path="/" element={<JobsPage />} />
+        <Route path="/jobs/:jobId" element={<JobDetailPage />} />
+      </Routes>
+    </AdminProvider>
   );
 }

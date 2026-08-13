@@ -284,10 +284,15 @@ A. Tailored vs Original Resume
    - Penalize unnecessary rewrites of already-strong original bullets.
 
 B. Tailored vs Job Description
-   - Reward alignment with required skills/responsibilities using only supported facts.
+   - jobFit measures how well the tailored resume content actually covers the job's required
+     skills, licenses, tools, and responsibilities using only supported facts.
+   - Reward real alignment with required skills/responsibilities using only supported facts.
    - Penalize keyword stuffing, corporate fluff, or JD mirroring that adds no substance.
    - Check whether important JD requirements are covered by remaining tailored content
      without inventing new claims.
+   - Honesty is NOT job fit: adding a disclaimer that the candidate lacks the required
+     license/experience/profession may be good grounding/minimal-change behavior, but it
+     must NOT raise jobFit. jobFit scores match quality, not candor.
 
 EVALUATION RULES:
 1. Grounding: every factual claim in a replacement/tailored paragraph must be supported by
@@ -305,8 +310,8 @@ EVALUATION RULES:
 6. Scope rule: fail if edits introduce unsupported governance, compliance, security
    leadership, mentoring, or customer-advisory claims.
 7. Minimal change: penalize unnecessary paragraph edits and large rewrites.
-8. Job fit: reward edits that improve alignment with the job description using only
-   supported facts from the original resume/evidence.
+8. Job fit: score how closely the tailored resume matches the JD requirements with supported
+   facts only. Do not confuse "honest about mismatch" or "followed edit rules" with jobFit.
 9. Evidence quality: each edit should have a credible reason and evidence reference.
 10. Be strict on hard fails. Be nuanced on soft scores.
 
@@ -319,6 +324,11 @@ HARD FAIL CONDITIONS (any one => pass=false):
 - Unsupported leadership/compliance/governance claim
 - Edit changes a paragraph that did not need changing for this job
 - Deletion removes original supported content that is clearly relevant to the job description
+- Fundamental career / profession / license mismatch: the tailored resume still does not
+  cover the core JD requirements (example: software/cloud engineer resume for nursing,
+  dental hygiene, CDL trucking, teaching credential, executive chef, CPA/tax roles).
+  pass MUST be false even if grounding, honesty, and rule compliance are excellent.
+  Do not mark PASS just because the tailor added a mismatch disclaimer or made no edits.
 
 SCORING (0-5 each):
 - grounding (tailored vs original/evidence)
@@ -326,6 +336,19 @@ SCORING (0-5 each):
 - jobFit (tailored vs job description, using only supported facts)
 - minimalChange (tailored vs original: avoid unnecessary churn)
 - readability
+
+jobFit SCORING GUARDRAILS (mandatory):
+- Score jobFit from the tailored resume's coverage of JD requirements, not from edit quality,
+  honesty, or restraint.
+- Fundamental career / profession / license mismatch examples: nursing, dental hygiene,
+  teaching credential roles, CDL trucking, executive chef, CPA/tax accounting when the
+  resume is a software/cloud engineer profile with no relevant license or domain experience.
+  For these, jobFit MUST be 0 or 1 — even if the tailor correctly added a mismatch
+  disclaimer, left the resume unchanged, or otherwise followed every other rule.
+- jobFit 4-5 is reserved for strong, evidence-backed coverage of core JD requirements.
+- A perfect disclaimer about being unqualified still means low jobFit (0-1).
+- If jobFit is 0 or 1 because of a fundamental mismatch, pass MUST be false. High grounding /
+  ruleCompliance / minimalChange cannot override that.
 
 overallScore MUST be the sum of the five scores above (minimum 0, maximum 25).
 Do not use a 0-5 or 0-100 scale for overallScore.
