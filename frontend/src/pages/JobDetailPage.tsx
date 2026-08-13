@@ -1,17 +1,23 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
+  checkJobFit,
   downloadCoverLetter,
   downloadTailoredResume,
   fetchJob,
+  fetchJobDescriptionText,
   formatCoverLetterSuccessMessage,
   formatTailorSuccessMessage,
   generateCoverLetter,
   tailorResume,
   updateJobStatus,
 } from '../api/jobs';
-import type { AnalysisStatus, EvalResult, JobListing, JobStatus } from '../types/job';
-import { ANALYSIS_STATUSES, JOB_STATUSES } from '../types/job';
+import type { AnalysisStatus, EvalResult, FitStatus, JobListing, JobStatus } from '../types/job';
+import { ANALYSIS_STATUSES, FIT_STATUSES, JOB_STATUSES } from '../types/job';
+import { useAdmin } from '../auth/AdminContext';
+import ProfileButton from '../components/ProfileButton';
+import DemoModeBanner from '../components/DemoModeBanner';
+import Tip from '../components/Tip';
 import '../App.css';
 
 const SOURCE_LABELS: Record<string, string> = {
@@ -68,6 +74,15 @@ function normalizeJobStatus(value: string | undefined): JobStatus {
   return matched ?? 'Active';
 }
 
+function normalizeFitStatus(value: string | undefined): FitStatus {
+  const text = value?.trim() || '';
+  if ((FIT_STATUSES as readonly string[]).includes(text)) {
+    return text as FitStatus;
+  }
+  const matched = FIT_STATUSES.find((status) => status.toLowerCase() === text.toLowerCase());
+  return matched ?? 'Unset';
+}
+
 function normalizeJob(job: JobListing): JobListing {
   return {
     ...job,
@@ -77,6 +92,9 @@ function normalizeJob(job: JobListing): JobListing {
     applied: job.applied?.trim() || 'No',
     appliedDate: job.appliedDate?.trim() || '',
     evalResult: job.evalResult ?? null,
+    fit: normalizeFitStatus(job.fit),
+    fitReason: job.fitReason?.trim() || '',
+    fitCheckedAt: job.fitCheckedAt?.trim() || '',
   };
 }
 
@@ -291,10 +309,104 @@ function EvalResultPanel({ result }: { result: EvalResult }) {
   );
 }
 
+function ViewJobDescriptionModal({
+  job,
+  onClose,
+}: {
+  job: JobListing;
+  onClose: () => void;
+}) {
+  const [text, setText] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    void (async () => {
+      try {
+        const body = await fetchJobDescriptionText(job.jobId, job.source);
+        if (!cancelled) setText(body);
+      } catch (err) {
+        if (!cancelled) {
+          setText('');
+          setError(err instanceof Error ? err.message : 'Failed to load job description');
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [job.jobId, job.source]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [onClose]);
+
+  return (
+    <div
+      className="modal-backdrop"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <div
+        className="modal-panel job-description-view-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="view-job-description-title"
+      >
+        <div className="modal-header">
+          <div>
+            <h2 id="view-job-description-title">Job Description</h2>
+            <p>
+              {job.title || 'Untitled'}
+              {job.company ? ` · ${job.company}` : ''}
+            </p>
+          </div>
+          <Tip text="Close the job description viewer">
+            <button
+              type="button"
+              className="btn-secondary modal-close"
+              onClick={onClose}
+              aria-label="Close"
+            >
+              Close
+            </button>
+          </Tip>
+        </div>
+
+        {loading && <div className="job-panel-empty">Loading description...</div>}
+        {error && <div className="job-panel-error">{error}</div>}
+        {!loading && !error && (
+          <pre className="job-description-view-text">{text}</pre>
+        )}
+
+        <div className="modal-actions">
+          <Tip text="Close the job description viewer">
+            <button type="button" className="btn-primary" onClick={onClose}>
+              Close
+            </button>
+          </Tip>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function JobDetailPage() {
   const { jobId = '' } = useParams<{ jobId: string }>();
   const [searchParams] = useSearchParams();
   const source = searchParams.get('source')?.trim() || '';
+  const { canEdit, authEnabled, isAdmin } = useAdmin();
 
   const [job, setJob] = useState<JobListing | null>(null);
   const [loading, setLoading] = useState(true);
@@ -306,6 +418,8 @@ export default function JobDetailPage() {
   const [downloading, setDownloading] = useState(false);
   const [downloadingCoverLetter, setDownloadingCoverLetter] = useState(false);
   const [savingStatus, setSavingStatus] = useState(false);
+  const [checkingFit, setCheckingFit] = useState(false);
+  const [viewingDescription, setViewingDescription] = useState(false);
 
   const loadJob = useCallback(async () => {
     if (!jobId || !source) {
@@ -339,6 +453,8 @@ export default function JobDetailPage() {
         { label: 'Company', value: job.company || 'n/a' },
         { label: 'Location', value: job.location || 'n/a' },
         { label: 'Source', value: SOURCE_LABELS[job.source] ?? job.source ?? 'n/a' },
+        { label: 'Fit', value: normalizeFitStatus(job.fit) },
+        { label: 'Fit reason', value: job.fitReason?.trim() || 'n/a' },
         { label: 'Job Description', value: job.jobDescription },
         { label: 'Analysis Status', value: normalizeAnalysisStatus(job.analysisStatus) },
         { label: 'Applied', value: formatAppliedDate(job.appliedDate) || job.applied },
@@ -350,6 +466,9 @@ export default function JobDetailPage() {
 
   const statusValue = job ? normalizeJobStatus(job.status) : 'Active';
   const analysisStatus = job ? normalizeAnalysisStatus(job.analysisStatus) : 'Pending';
+  const desc = job?.jobDescription?.trim() || 'Not available';
+  const hasDescription =
+    !!job && (desc === 'Available' || (desc !== 'Not available' && desc.length >= 40));
   const canDownloadResume =
     !!job && (analysisStatus === 'Tailored Resume' || analysisStatus === 'Cover Letter');
   const canGenerateCoverLetter =
@@ -360,7 +479,31 @@ export default function JobDetailPage() {
     generatingCoverLetter ||
     downloading ||
     downloadingCoverLetter ||
-    savingStatus;
+    savingStatus ||
+    checkingFit;
+
+  const onCheckFit = async () => {
+    if (!job || !hasDescription) {
+      setTailorError('Paste and save a job description before checking fit');
+      setTailorSuccess(null);
+      return;
+    }
+    setCheckingFit(true);
+    setTailorError(null);
+    setTailorSuccess(null);
+    try {
+      const pasted = desc === 'Available' || desc === 'Not available' ? '' : desc;
+      const result = await checkJobFit(job.jobId, job.source, pasted);
+      const updated = normalizeJob(result.job);
+      setJob(updated);
+      setTailorSuccess(`${updated.fit}: ${updated.fitReason || 'No reason provided.'}`);
+    } catch (err) {
+      setTailorError(err instanceof Error ? err.message : 'Fit check failed');
+      setTailorSuccess(null);
+    } finally {
+      setCheckingFit(false);
+    }
+  };
 
   const onStatusChange = async (next: JobStatus) => {
     if (!job || next === statusValue) return;
@@ -430,18 +573,60 @@ export default function JobDetailPage() {
       <header className="page-header">
         <div className="page-header-top">
           <div>
-            <h1>Job details</h1>
-            <p>Loaded from GET /api/jobs/{'{job_id}'}?source=...</p>
+            <h1>
+              Job details
+              {authEnabled && !isAdmin ? <span className="demo-title-badge">Demo</span> : null}
+            </h1>
+            <p>
+              {authEnabled && !isAdmin
+                ? 'Restricted preview — sample job data'
+                : `Loaded from GET /api/jobs/{'{job_id}'}?source=...`}
+            </p>
           </div>
           <div className="header-actions">
-            <Link to="/" className="btn-secondary link-button">
-              Back to jobs
-            </Link>
-            <button type="button" className="btn-primary" onClick={() => void loadJob()} disabled={loading}>
-              {loading ? 'Loading...' : 'Refresh'}
-            </button>
+            <Tip text="Return to the main jobs table">
+              <Link to="/" className="btn-secondary link-button">
+                Back to jobs
+              </Link>
+            </Tip>
+            <Tip text="Reload this job from the server">
+              <button
+                type="button"
+                className="icon-action-button"
+                onClick={() => void loadJob()}
+                disabled={loading}
+                aria-label={loading ? 'Refreshing job' : 'Refresh job'}
+              >
+                <svg
+                  className={`refresh-icon-svg${loading ? ' is-spinning' : ''}`}
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M20 12a8 8 0 1 1-2.2-5.4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M20 4v5h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </Tip>
+            <ProfileButton />
           </div>
         </div>
+        <DemoModeBanner />
       </header>
 
       <main className="page-main">
@@ -459,9 +644,11 @@ export default function JobDetailPage() {
               </p>
               {job.url ? (
                 <p>
-                  <a href={job.url} target="_blank" rel="noreferrer">
-                    Open job posting
-                  </a>
+                  <Tip text="Open the original job posting in a new tab">
+                    <a href={job.url} target="_blank" rel="noreferrer">
+                      Open job posting
+                    </a>
+                  </Tip>
                 </p>
               ) : null}
             </div>
@@ -476,19 +663,27 @@ export default function JobDetailPage() {
               <div className="job-detail-row">
                 <dt>Status</dt>
                 <dd>
-                  <select
-                    className="job-status-select"
-                    aria-label="Status"
-                    value={statusValue}
-                    disabled={savingStatus || busy}
-                    onChange={(event) => void onStatusChange(event.target.value as JobStatus)}
+                  <Tip
+                    text={
+                      canEdit
+                        ? 'Change this job’s pipeline status'
+                        : 'Admin sign-in required to change status'
+                    }
                   >
-                    {JOB_STATUSES.map((status) => (
-                      <option key={status} value={status}>
-                        {status}
-                      </option>
-                    ))}
-                  </select>
+                    <select
+                      className="job-status-select"
+                      aria-label="Status"
+                      value={statusValue}
+                      disabled={savingStatus || busy || !canEdit}
+                      onChange={(event) => void onStatusChange(event.target.value as JobStatus)}
+                    >
+                      {JOB_STATUSES.map((status) => (
+                        <option key={status} value={status}>
+                          {status}
+                        </option>
+                      ))}
+                    </select>
+                  </Tip>
                 </dd>
               </div>
             </dl>
@@ -499,50 +694,102 @@ export default function JobDetailPage() {
             {tailorSuccess && <div className="job-panel-success">{tailorSuccess}</div>}
 
             <div className="job-full-detail-actions">
-              <button
-                type="button"
-                className="btn-secondary"
-                disabled={!canDownloadResume || busy}
-                onClick={() => void onDownloadResume()}
-                title={
+              <Tip
+                text={
+                  hasDescription
+                    ? 'Open a modal with the full job description text'
+                    : 'No job description is available to view yet'
+                }
+              >
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  disabled={!hasDescription || busy}
+                  onClick={() => setViewingDescription(true)}
+                >
+                  View description
+                </button>
+              </Tip>
+              <Tip
+                text={
+                  !canEdit
+                    ? 'Admin sign-in required for AI fit checks'
+                    : hasDescription
+                      ? 'Run AI fit scoring for this job'
+                      : 'Add a job description before checking fit'
+                }
+              >
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  disabled={!hasDescription || busy || !canEdit}
+                  onClick={() => void onCheckFit()}
+                >
+                  {checkingFit ? 'Checking fit...' : 'Check fit'}
+                </button>
+              </Tip>
+              <Tip
+                text={
                   canDownloadResume
-                    ? 'Download tailored resume'
+                    ? 'Download the tailored resume .docx for this job'
                     : 'Tailor a resume first to enable download'
                 }
               >
-                {downloading ? 'Downloading...' : 'Download Tailored Resume'}
-              </button>
-              <button
-                type="button"
-                className="btn-secondary"
-                disabled={!canDownloadCoverLetter || busy}
-                onClick={() => void onDownloadCoverLetter()}
-                title={
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  disabled={!canDownloadResume || busy}
+                  onClick={() => void onDownloadResume()}
+                >
+                  {downloading ? 'Downloading...' : 'Download Tailored Resume'}
+                </button>
+              </Tip>
+              <Tip
+                text={
                   canDownloadCoverLetter
-                    ? 'Download cover letter'
+                    ? 'Download the generated cover letter .docx'
                     : 'Generate a cover letter first to enable download'
                 }
               >
-                {downloadingCoverLetter ? 'Downloading...' : 'Download Cover Letter'}
-              </button>
-              <button
-                type="button"
-                className="btn-secondary"
-                disabled={!canGenerateCoverLetter || busy}
-                onClick={() => void onGenerateCoverLetter()}
-                title={
-                  canGenerateCoverLetter
-                    ? 'Generate cover letter'
-                    : 'Tailor a resume first to generate a cover letter'
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  disabled={!canDownloadCoverLetter || busy}
+                  onClick={() => void onDownloadCoverLetter()}
+                >
+                  {downloadingCoverLetter ? 'Downloading...' : 'Download Cover Letter'}
+                </button>
+              </Tip>
+              <Tip
+                text={
+                  !canEdit
+                    ? 'Admin sign-in required'
+                    : canGenerateCoverLetter
+                      ? 'Generate a cover letter with AI for this job'
+                      : 'Tailor a resume first to generate a cover letter'
                 }
               >
-                {generatingCoverLetter ? 'Generating cover letter...' : 'Generate Cover Letter'}
-              </button>
-              <button
-                type="button"
-                className="btn-primary"
-                disabled={busy}
-                onClick={() => {
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  disabled={!canGenerateCoverLetter || busy || !canEdit}
+                  onClick={() => void onGenerateCoverLetter()}
+                >
+                  {generatingCoverLetter ? 'Generating cover letter...' : 'Generate Cover Letter'}
+                </button>
+              </Tip>
+              <Tip
+                text={
+                  canEdit
+                    ? 'Tailor the resume with AI and run the automatic eval'
+                    : 'Admin sign-in required to tailor resumes'
+                }
+              >
+                <button
+                  type="button"
+                  className="btn-primary"
+                  disabled={busy || !canEdit}
+                  onClick={() => {
                   void (async () => {
                     if (job.jobDescription?.trim() !== 'Available') {
                       setTailorError(
@@ -579,10 +826,15 @@ export default function JobDetailPage() {
               >
                 {tailoring ? 'Tailoring & evaluating...' : 'Tailor Resume'}
               </button>
+              </Tip>
             </div>
           </section>
         )}
       </main>
+
+      {viewingDescription && job && (
+        <ViewJobDescriptionModal job={job} onClose={() => setViewingDescription(false)} />
+      )}
     </div>
   );
 }

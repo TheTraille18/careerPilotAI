@@ -10,6 +10,7 @@ from botocore.exceptions import ClientError
 from models import JobListing
 from analysis_status import DEFAULT_ANALYSIS_STATUS, normalize_analysis_status
 from config import get_local_today_iso
+from fit_status import DEFAULT_FIT_STATUS, normalize_fit_status
 from job_id import make_job_id
 from job_status import DEFAULT_JOB_STATUS, normalize_job_status
 from job_title_filters import is_excluded_title
@@ -78,6 +79,8 @@ def job_to_item(job: JobListing) -> dict:
         "JobDescription": job.job_description,
         "AnalysisStatus": normalize_analysis_status(job.analysis_status),
         "Applied": job.applied,
+        "Fit": DEFAULT_FIT_STATUS,
+        "FitReason": "",
         "updated_at": now,
     }
     if job.applied_date:
@@ -133,6 +136,16 @@ def item_to_job_dict(item: dict) -> dict:
         except json.JSONDecodeError:
             eval_result = None
 
+    fit = normalize_fit_status(
+        item.get("Fit") if item.get("Fit") is not None else item.get("fit")
+    )
+    fit_reason = item.get("FitReason")
+    if fit_reason is None:
+        fit_reason = item.get("fitReason") or item.get("fit_reason") or ""
+    fit_checked_at = item.get("FitCheckedAt")
+    if fit_checked_at is None:
+        fit_checked_at = item.get("fitCheckedAt") or item.get("fit_checked_at") or ""
+
     return {
         "jobId": item.get(PARTITION_KEY, ""),
         "title": item.get("title", ""),
@@ -149,6 +162,9 @@ def item_to_job_dict(item: dict) -> dict:
         "emailId": item.get("email_id", ""),
         "updatedAt": item.get("updated_at", ""),
         "evalResult": eval_result,
+        "fit": fit,
+        "fitReason": str(fit_reason),
+        "fitCheckedAt": str(fit_checked_at),
     }
 
 
@@ -342,6 +358,49 @@ def update_eval_result(
             },
             ExpressionAttributeValues={
                 ":eval": json.dumps(payload),
+                ":updated": now,
+            },
+            ReturnValues="ALL_NEW",
+        )
+    except ClientError as exc:
+        if exc.response["Error"]["Code"] == "ConditionalCheckFailedException":
+            raise KeyError(f"Job not found: {job_id}/{source}") from exc
+        raise
+
+    return item_to_job_dict(response["Attributes"])
+
+
+def update_fit(
+    job_id: str,
+    source: str,
+    *,
+    fit: str,
+    reason: str = "",
+    table_name: str | None = None,
+) -> dict:
+    """Persist AI fit verdict (Apply / Maybe / Skip) for one job."""
+    table_name = table_name or get_table_name()
+    table = get_dynamodb_resource().Table(table_name)
+    now = datetime.now(timezone.utc).isoformat()
+    fit_value = normalize_fit_status(fit)
+    reason_value = (reason or "").strip()
+
+    try:
+        response = table.update_item(
+            Key={PARTITION_KEY: job_id, SORT_KEY: source},
+            UpdateExpression=(
+                "SET Fit = :fit, FitReason = :reason, FitCheckedAt = :checked, "
+                "updated_at = :updated"
+            ),
+            ConditionExpression="attribute_exists(#jid) AND attribute_exists(#src)",
+            ExpressionAttributeNames={
+                "#jid": PARTITION_KEY,
+                "#src": SORT_KEY,
+            },
+            ExpressionAttributeValues={
+                ":fit": fit_value,
+                ":reason": reason_value,
+                ":checked": now,
                 ":updated": now,
             },
             ReturnValues="ALL_NEW",
@@ -565,6 +624,25 @@ def put_jobs(jobs: list[JobListing], *, table_name: str | None = None) -> int:
                         if isinstance(existing_eval, str)
                         else json.dumps(existing_eval)
                     )
+
+                existing_fit = existing.get("Fit") or existing.get("fit")
+                if existing_fit and normalize_fit_status(str(existing_fit)) != DEFAULT_FIT_STATUS:
+                    item["Fit"] = normalize_fit_status(str(existing_fit))
+                    existing_reason = (
+                        existing.get("FitReason")
+                        or existing.get("fitReason")
+                        or existing.get("fit_reason")
+                        or ""
+                    )
+                    item["FitReason"] = str(existing_reason)
+                    existing_checked = (
+                        existing.get("FitCheckedAt")
+                        or existing.get("fitCheckedAt")
+                        or existing.get("fit_checked_at")
+                        or ""
+                    )
+                    if existing_checked:
+                        item["FitCheckedAt"] = str(existing_checked)
 
             batch.put_item(Item=item)
             written += 1

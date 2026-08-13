@@ -1,4 +1,5 @@
-import type { AnalysisStatus, JobListing, JobStatus, JobsResponse } from '../types/job';
+import type { AnalysisStatus, FitStatus, JobListing, JobStatus, JobsResponse } from '../types/job';
+import { apiFetch } from './http';
 
 export type JobCreateInput = {
   title: string;
@@ -10,7 +11,7 @@ export type JobCreateInput = {
 };
 
 export async function createJob(input: JobCreateInput): Promise<JobListing> {
-  const response = await fetch('/api/jobs', {
+  const response = await apiFetch('/api/jobs', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -33,7 +34,7 @@ export async function createJob(input: JobCreateInput): Promise<JobListing> {
 }
 
 export async function fetchJobs(): Promise<JobsResponse> {
-  const response = await fetch('/api/jobs');
+  const response = await apiFetch('/api/jobs');
   if (!response.ok) {
     const body = await response.text();
     throw new Error(body || `Request failed (${response.status})`);
@@ -50,7 +51,7 @@ export async function fetchJobs(): Promise<JobsResponse> {
  */
 export async function fetchJob(jobId: string, source: string): Promise<JobListing> {
   const params = new URLSearchParams({ source });
-  const response = await fetch(`/api/jobs/${encodeURIComponent(jobId)}?${params}`);
+  const response = await apiFetch(`/api/jobs/${encodeURIComponent(jobId)}?${params}`);
   if (!response.ok) {
     const body = await response.text();
     throw new Error(body || `Request failed (${response.status})`);
@@ -65,7 +66,7 @@ export async function updateJobDescription(
   source: string,
   jobDescription: string,
 ): Promise<JobListing> {
-  const response = await fetch(`/api/jobs/${encodeURIComponent(jobId)}/description`, {
+  const response = await apiFetch(`/api/jobs/${encodeURIComponent(jobId)}/description`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ source, jobDescription }),
@@ -80,11 +81,35 @@ export async function updateJobDescription(
   return data.job;
 }
 
+/** Load full job description text for viewing (S3 / inline / demo JSON). */
+export async function fetchJobDescriptionText(
+  jobId: string,
+  source: string,
+): Promise<string> {
+  const params = new URLSearchParams({ source });
+  const response = await apiFetch(
+    `/api/jobs/${encodeURIComponent(jobId)}/description?${params}`,
+  );
+  if (!response.ok) {
+    let message = `Request failed (${response.status})`;
+    try {
+      const payload = (await response.json()) as { detail?: string };
+      if (payload.detail) message = payload.detail;
+    } catch {
+      const body = await response.text();
+      if (body) message = body;
+    }
+    throw new Error(message);
+  }
+  const data = (await response.json()) as { text?: string };
+  return (data.text || '').trim();
+}
+
 export async function fetchJobDescriptionFromUrl(
   jobId: string,
   source: string,
 ): Promise<{ job: JobListing; fetchedText: string }> {
-  const response = await fetch(
+  const response = await apiFetch(
     `/api/jobs/${encodeURIComponent(jobId)}/description/fetch`,
     {
       method: 'POST',
@@ -113,7 +138,7 @@ export async function updateAnalysisStatus(
   source: string,
   analysisStatus: AnalysisStatus,
 ): Promise<JobListing> {
-  const response = await fetch(`/api/jobs/${encodeURIComponent(jobId)}/analysis-status`, {
+  const response = await apiFetch(`/api/jobs/${encodeURIComponent(jobId)}/analysis-status`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ source, analysisStatus }),
@@ -133,7 +158,7 @@ export async function updateJobStatus(
   source: string,
   status: JobStatus,
 ): Promise<JobListing> {
-  const response = await fetch(`/api/jobs/${encodeURIComponent(jobId)}/status`, {
+  const response = await apiFetch(`/api/jobs/${encodeURIComponent(jobId)}/status`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ source, status }),
@@ -153,10 +178,109 @@ export async function updateApplied(
   source: string,
   applied: 'Yes' | 'No',
 ): Promise<JobListing> {
-  const response = await fetch(`/api/jobs/${encodeURIComponent(jobId)}/applied`, {
+  const response = await apiFetch(`/api/jobs/${encodeURIComponent(jobId)}/applied`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ source, applied }),
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(body || `Request failed (${response.status})`);
+  }
+
+  const data = (await response.json()) as { job: JobListing };
+  return data.job;
+}
+
+export type FitCheckTodayResponse = {
+  date: string;
+  candidateCount: number;
+  evaluated: number;
+  withDescription?: number;
+  skippedExisting: number;
+  errorCount: number;
+  results: Array<{
+    jobId: string;
+    source: string;
+    title?: string;
+    fit?: string;
+    reason?: string;
+    skipped?: boolean;
+    descriptionSource?: string;
+  }>;
+  errors: Array<{
+    jobId: string;
+    source: string;
+    title?: string;
+    error: string;
+  }>;
+};
+
+export async function checkTodaysFit(options?: {
+  force?: boolean;
+  limit?: number;
+}): Promise<FitCheckTodayResponse> {
+  const response = await apiFetch('/api/jobs/fit-check-today', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      force: options?.force ?? false,
+      limit: options?.limit ?? 50,
+    }),
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(body || `Request failed (${response.status})`);
+  }
+
+  return response.json() as Promise<FitCheckTodayResponse>;
+}
+
+export type FitCheckJobResponse = {
+  job: JobListing;
+  fit?: string;
+  reason?: string;
+  descriptionSource?: string;
+};
+
+export async function checkJobFit(
+  jobId: string,
+  source: string,
+  jobDescription = '',
+): Promise<FitCheckJobResponse> {
+  const response = await apiFetch(`/api/jobs/${encodeURIComponent(jobId)}/fit-check`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ source, jobDescription }),
+  });
+
+  if (!response.ok) {
+    let message = `Request failed (${response.status})`;
+    try {
+      const payload = (await response.json()) as { detail?: string };
+      if (payload.detail) message = payload.detail;
+    } catch {
+      const body = await response.text();
+      if (body) message = body;
+    }
+    throw new Error(message);
+  }
+
+  return response.json() as Promise<FitCheckJobResponse>;
+}
+
+export async function updateFit(
+  jobId: string,
+  source: string,
+  fit: FitStatus,
+  reason = '',
+): Promise<JobListing> {
+  const response = await apiFetch(`/api/jobs/${encodeURIComponent(jobId)}/fit`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ source, fit, reason }),
   });
 
   if (!response.ok) {
@@ -193,7 +317,7 @@ export function formatTailorSuccessMessage(s3?: TailorResumeResponse['s3']): str
 }
 
 export async function tailorResume(job: JobListing): Promise<TailorResumeResponse> {
-  const response = await fetch(`/api/jobs/${encodeURIComponent(job.jobId)}/tailor-resume`, {
+  const response = await apiFetch(`/api/jobs/${encodeURIComponent(job.jobId)}/tailor-resume`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -239,7 +363,7 @@ function filenameFromContentDisposition(header: string | null): string | null {
 
 /** Download the latest tailored resume .docx for a job from S3 via the API. */
 export async function downloadTailoredResume(jobId: string): Promise<void> {
-  const response = await fetch(`/api/jobs/${encodeURIComponent(jobId)}/tailored-resume`);
+  const response = await apiFetch(`/api/jobs/${encodeURIComponent(jobId)}/tailored-resume`);
   if (!response.ok) {
     const body = await response.text();
     throw new Error(body || `Request failed (${response.status})`);
@@ -276,7 +400,7 @@ export function formatCoverLetterSuccessMessage(s3?: CoverLetterResponse['s3']):
 }
 
 export async function generateCoverLetter(job: JobListing): Promise<CoverLetterResponse> {
-  const response = await fetch(`/api/jobs/${encodeURIComponent(job.jobId)}/cover-letter`, {
+  const response = await apiFetch(`/api/jobs/${encodeURIComponent(job.jobId)}/cover-letter`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -307,7 +431,7 @@ export async function generateCoverLetter(job: JobListing): Promise<CoverLetterR
 
 /** Download the latest cover letter .docx for a job from S3 via the API. */
 export async function downloadCoverLetter(jobId: string): Promise<void> {
-  const response = await fetch(`/api/jobs/${encodeURIComponent(jobId)}/cover-letter`);
+  const response = await apiFetch(`/api/jobs/${encodeURIComponent(jobId)}/cover-letter`);
   if (!response.ok) {
     const body = await response.text();
     throw new Error(body || `Request failed (${response.status})`);

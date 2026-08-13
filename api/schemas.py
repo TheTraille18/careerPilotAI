@@ -16,6 +16,9 @@ class Job(BaseModel):
     emailId: str = ""
     updatedAt: str = ""
     evalResult: dict | None = None
+    fit: str = "Unset"
+    fitReason: str = ""
+    fitCheckedAt: str = ""
 
 
 class JobCreate(BaseModel):

@@ -28,6 +28,10 @@ export const JOB_STATUSES = [
 
 export type JobStatus = (typeof JOB_STATUSES)[number];
 
+export const FIT_STATUSES = ['Unset', 'Apply', 'Maybe', 'Skip'] as const;
+
+export type FitStatus = (typeof FIT_STATUSES)[number];
+
 export interface EvalViolation {
   paragraphId?: string;
   type?: string;
@@ -80,6 +84,9 @@ export interface JobListing {
   emailId: string;
   updatedAt?: string;
   evalResult?: EvalResult | null;
+  fit?: FitStatus | string;
+  fitReason?: string;
+  fitCheckedAt?: string;
 }
 
 export interface JobsResponse {
@@ -88,4 +95,5 @@ export interface JobsResponse {
   table?: string;
   analysisStatuses?: readonly string[];
   jobStatuses?: readonly string[];
+  fitStatuses?: readonly string[];
 }

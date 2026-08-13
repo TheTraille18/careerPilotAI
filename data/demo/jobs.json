@@ -1,0 +1,1893 @@
+{
+  "jobs": [
+    {
+      "jobId": "demo-001-agent-platform",
+      "title": "Senior AI Agent Engineer",
+      "company": "Northstar Labs",
+      "location": "Atlanta, GA (Hybrid)",
+      "date": "2026-08-10T14:22:00-04:00",
+      "url": "https://example.com/jobs/senior-ai-agent-engineer",
+      "source": "linkedin",
+      "status": "Active",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "No",
+      "appliedDate": "",
+      "emailId": "demo-email-001",
+      "updatedAt": "2026-08-13T04:06:48.474832+00:00",
+      "evalResult": {
+        "pass": true,
+        "overallScore": 23,
+        "scores": {
+          "grounding": 5,
+          "ruleCompliance": 5,
+          "jobFit": 5,
+          "minimalChange": 4,
+          "readability": 4
+        },
+        "hardFails": [],
+        "violations": [],
+        "changedParagraphCount": 5,
+        "summary": "Strong tailoring that aligns well with the Senior AI Agent Engineer role. All four edits are grounded in verified evidence and directly address JD requirements. paragraph-5 (summary) correctly emphasizes 'production AI agent workflows, LLM tool calling, RAG pipelines, and event-driven automation' using supported AWS Bedrock/Lambda/Step Functions experience. paragraph-40 and paragraph-41 reframe the incident response project using JD language ('LLM agent workflows with tool calling, retrieval, and evaluation loops' and 'backend services in Python...to orchestrate agent workflows and integrate model providers') - both claims are fully supported by the verified AI-Driven Incident Response project evidence. paragraph-91 tightens the CareerPilot description to highlight 'structured tool use' which aligns with the JD's 'structured tool use' requirement. The deletion of paragraph-67 (duplicate achievement) is appropriate. Minor deductions: minimalChange loses 1 point because paragraph-91 was already strong and the edit adds modest value; readability loses 1 point because paragraph-41's phrasing 'integrate model providers (Bedrock) with internal APIs' is slightly more technical/dense than the original's clearer flow. Overall, this is high-quality work that transforms a cloud engineer resume into a competitive AI agent engineer application without inventing facts.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "replace",
+            "reason": "Deepens alignment with Senior AI Agent Engineer role by highlighting LLM agent workflows, tool calling, and production AI systems using verified AWS Bedrock and agent experience",
+            "evidence": "Document 513a481d (AI-Driven Incident Response Automation Platform) and Document d5884d47 (CareerPilot AI RAG architecture)",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": "Cloud Software Engineer with 5+ years delivering enterprise cloud solutions using AWS, Python, Go, Terraform, and Kubernetes. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building production AI agent workflows, LLM tool calling, RAG pipelines, and event-driven automation using Amazon Bedrock, Lambda, Step Functions, and DynamoDB."
+          },
+          {
+            "paragraphId": "paragraph-40",
+            "operation": "replace",
+            "reason": "Adds explicit LLM tool calling and evaluation loops terminology matching the job description while preserving verified technical details",
+            "evidence": "Document 513a481d: 'AWS DevOps Agent (AI ops agent) capabilities for root cause analysis' and 'Automated incident analysis, root cause investigation, remediation recommendations'",
+            "originalText": "Designed AI agent workflows that automated incident investigations by collecting operational evidence and generating AI-powered incident summaries, remediation recommendations, rollback plans, and validation procedures.",
+            "newText": "Designed LLM agent workflows with tool calling, retrieval, and evaluation loops that automated incident investigations by collecting operational evidence from CloudWatch and generating AI-powered remediation recommendations and rollback plans."
+          },
+          {
+            "paragraphId": "paragraph-41",
+            "operation": "replace",
+            "reason": "Mirrors job description language: 'backend services in Python', 'orchestrate agent workflows', 'integrate model providers and internal APIs'",
+            "evidence": "Document 513a481d: 'Python', 'AWS Lambda', 'Step Functions', 'EventBridge', 'CloudWatch', 'Slack', 'Amazon Bedrock'",
+            "originalText": "Developed AWS Lambda functions and Step Functions workflows to orchestrate incident investigations and integrate with CloudWatch alarms, EventBridge, ServiceNow, and Slack.",
+            "newText": "Built backend services in Python using Lambda and Step Functions to orchestrate agent workflows and integrate model providers (Bedrock) with internal APIs including CloudWatch, EventBridge, ServiceNow, and Slack."
+          },
+          {
+            "paragraphId": "paragraph-91",
+            "operation": "replace",
+            "reason": "Adds 'structured tool use' terminology from job description while keeping verified RAG and semantic retrieval facts",
+            "evidence": "Document d5884d47: 'Built a Retrieval-Augmented Generation (RAG) architecture', 'Python', 'AWS Bedrock', 'LangChain', 'ChromaDB', 'Amazon Titan Embeddings', 'Semantic Retrieval'",
+            "originalText": "Built a Retrieval-Augmented Generation (RAG) pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings to retrieve relevant resume knowledge for semantic search and AI-powered career workflows",
+            "newText": "Built a RAG pipeline using Python, AWS Bedrock, LangChain, ChromaDB, and Titan Embeddings for semantic retrieval of resume knowledge, enabling structured tool use for document-aware resume tailoring."
+          },
+          {
+            "paragraphId": "paragraph-67",
+            "operation": "delete",
+            "reason": "Removes duplicate achievement already stated in paragraph-44 and paragraph-61 to reduce redundancy and reach 2-page target",
+            "evidence": "Original resume paragraph-44: 'Reduced incident investigation effort from over 60 minutes to approximately 15 minutes'",
+            "originalText": "Built AI-driven cloud automation that reduced incident investigation time from over 60 minutes to approximately 15 minutes.",
+            "newText": ""
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:06:48.474762+00:00"
+      },
+      "fit": "Apply",
+      "fitReason": "Strong match: agent tooling, MCP, Claude tool-calling, and Go/Python backend experience.",
+      "fitCheckedAt": "2026-08-10T15:01:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: Senior AI Agent Engineer\nCompany: Northstar Labs\nLocation: Atlanta, GA (Hybrid)\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/senior-ai-agent-engineer\n\n=== JOB DESCRIPTION ===\nAbout the role\nNorthstar Labs is hiring a Senior AI Agent Engineer to design and ship production AI systems used by customers daily.\n\nWhat you'll do\n- Build and harden LLM agent workflows (tool calling, retrieval, evaluation loops)\n- Own backend services in Python and/or Go on AWS\n- Integrate model providers and internal APIs with clear contracts and observability\n- Partner with product to turn messy workflows into reliable agent experiences\n\nWhat we're looking for\n- Experience shipping cloud services (AWS, containers/Kubernetes, CI/CD)\n- Hands-on with LLM tooling (agents, RAG, structured tool use)\n- Comfortable debugging production systems and writing clear design notes\n- Strong communication and bias toward pragmatic delivery\n\nNice to have\n- MCP / IDE agent integrations\n- Bedrock or equivalent managed model platforms\n- Prior work in recruiting/ops automation or knowledge systems\n\nThis is sample demo copy for CareerPilot UI walkthroughs \u2014 not a live posting.\n"
+    },
+    {
+      "jobId": "demo-002-rag-platform",
+      "title": "Staff Software Engineer, RAG Platforms",
+      "company": "Harbor AI",
+      "location": "Remote (US)",
+      "date": "2026-08-11T09:05:00-04:00",
+      "url": "https://example.com/jobs/staff-rag-platform",
+      "source": "dice",
+      "status": "Active",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "No",
+      "appliedDate": "",
+      "emailId": "demo-email-002",
+      "updatedAt": "2026-08-13T04:07:14.949908+00:00",
+      "evalResult": {
+        "pass": true,
+        "overallScore": 23,
+        "scores": {
+          "grounding": 5,
+          "ruleCompliance": 5,
+          "jobFit": 5,
+          "minimalChange": 4,
+          "readability": 4
+        },
+        "hardFails": [],
+        "violations": [],
+        "changedParagraphCount": 5,
+        "summary": "Strong tailoring with excellent grounding and rule compliance. All four edits are well-supported by verified evidence and directly target the Staff Software Engineer, RAG Platforms role. paragraph-5 correctly emphasizes AI agent workflows, RAG systems, and LLM integrations (Bedrock/LangChain/LangGraph) while maintaining the required 'Cloud Software Engineer with' opening. paragraph-40 adds 'tool calling' and 'structured output generation' language that mirrors the JD's 'tool calling, retrieval, evaluation loops' requirement, supported by the AI incident response project evidence. paragraph-88 highlights LangGraph agent routing with Tavily fallback, demonstrating hybrid agent architectures directly relevant to 'LLM agent workflows' in the JD. paragraph-91 tightens the CareerPilot description to emphasize RAG pipeline architecture. The deletion of paragraph-67 (duplicate achievement) is appropriate. Job fit is excellent: the tailored resume now foregrounds hands-on LLM tooling (agents, RAG, structured tool use), AWS/Bedrock experience, Python/Go backend services, and production system work\u2014all core JD requirements. Minimal change score is 4 (not 5) because paragraph-91 was a moderate rewrite of already-solid content, though the edit does improve JD alignment. Readability is 4 because the edits introduce some technical density ('tool calling,' 'structured output generation,' 'hybrid agent architectures') that, while accurate and relevant, slightly reduce conversational flow compared to the original phrasing. No unsupported claims, no invented tools, no headline/title/scope violations. The candidate's AWS Bedrock, LangChain, LangGraph, and AI agent project work strongly supports this RAG platform engineering role.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "replace",
+            "reason": "Strengthens alignment with Staff RAG Platforms role by emphasizing AI agent workflows, RAG, and LLM tooling",
+            "evidence": "Verified projects: AI Agent-Powered RAG Platform, CareerPilot AI, AI-Driven Incident Response Automation Platform",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": "Cloud Software Engineer with 5+ years delivering enterprise cloud solutions using AWS, Python, Go, Terraform, and Kubernetes. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI agent workflows, Retrieval-Augmented Generation (RAG) systems, and LLM integrations using Amazon Bedrock, LangChain, and LangGraph."
+          },
+          {
+            "paragraphId": "paragraph-40",
+            "operation": "replace",
+            "reason": "Deepens job-relevant agent workflow detail with concrete tool-calling and structured-output patterns",
+            "evidence": "AI-Driven Incident Response project: 'Designed AI agent workflows that automated incident investigations by collecting operational evidence and generating AI-powered incident summaries, remediation recommendations, rollback plans, and validation procedures.'",
+            "originalText": "Designed AI agent workflows that automated incident investigations by collecting operational evidence and generating AI-powered incident summaries, remediation recommendations, rollback plans, and validation procedures.",
+            "newText": "Built LLM agent workflows using AWS Bedrock that automated incident investigations through tool calling, operational evidence collection, and structured output generation for remediation recommendations and rollback plans."
+          },
+          {
+            "paragraphId": "paragraph-88",
+            "operation": "replace",
+            "reason": "Adds concrete agent routing and tool-calling detail directly matching job requirements",
+            "evidence": "AI Agent-Powered RAG Platform: 'Extended the pipeline with a LangGraph agent that falls back to Tavily web search when transcript retrieval alone cannot answer the question.'",
+            "originalText": "Integrated Amazon Bedrock foundation models to generate context-aware responses using semantic search and grounded LLM workflows",
+            "newText": "Implemented LangGraph agent routing that falls back to Tavily web search when RAG retrieval alone cannot answer questions, demonstrating hybrid agent architectures."
+          },
+          {
+            "paragraphId": "paragraph-91",
+            "operation": "replace",
+            "reason": "Shortens while preserving core RAG architecture and Bedrock integration",
+            "evidence": "CareerPilot AI project summary and architecture",
+            "originalText": "Built a Retrieval-Augmented Generation (RAG) pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings to retrieve relevant resume knowledge for semantic search and AI-powered career workflows",
+            "newText": "Built a RAG pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings for semantic retrieval and grounded LLM generation."
+          },
+          {
+            "paragraphId": "paragraph-67",
+            "operation": "delete",
+            "reason": "Removes duplicate achievement already stated in paragraph-44 and paragraph-61",
+            "evidence": "Original resume paragraph-44: 'Reduced incident investigation effort from over 60 minutes to approximately 15 minutes'",
+            "originalText": "Built AI-driven cloud automation that reduced incident investigation time from over 60 minutes to approximately 15 minutes.",
+            "newText": ""
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:07:14.949861+00:00"
+      },
+      "fit": "Apply",
+      "fitReason": "Bedrock + vector retrieval + resume/knowledge RAG experience maps cleanly to the JD.",
+      "fitCheckedAt": "2026-08-11T10:12:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: Staff Software Engineer, RAG Platforms\nCompany: Harbor AI\nLocation: Remote (US)\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/staff-rag-platform\n\n=== JOB DESCRIPTION ===\nAbout the role\nHarbor AI is hiring a Staff Software Engineer, RAG Platforms to design and ship production AI systems used by customers daily.\n\nWhat you'll do\n- Build and harden LLM agent workflows (tool calling, retrieval, evaluation loops)\n- Own backend services in Python and/or Go on AWS\n- Integrate model providers and internal APIs with clear contracts and observability\n- Partner with product to turn messy workflows into reliable agent experiences\n\nWhat we're looking for\n- Experience shipping cloud services (AWS, containers/Kubernetes, CI/CD)\n- Hands-on with LLM tooling (agents, RAG, structured tool use)\n- Comfortable debugging production systems and writing clear design notes\n- Strong communication and bias toward pragmatic delivery\n\nNice to have\n- MCP / IDE agent integrations\n- Bedrock or equivalent managed model platforms\n- Prior work in recruiting/ops automation or knowledge systems\n\nThis is sample demo copy for CareerPilot UI walkthroughs \u2014 not a live posting.\n"
+    },
+    {
+      "jobId": "demo-003-cloud-ai",
+      "title": "Senior Cloud Engineer (AI Infrastructure)",
+      "company": "Summit Cloud",
+      "location": "Atlanta, GA",
+      "date": "2026-08-09T16:40:00-04:00",
+      "url": "https://example.com/jobs/senior-cloud-ai",
+      "source": "indeed",
+      "status": "Active",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "No",
+      "appliedDate": "",
+      "emailId": "demo-email-003",
+      "updatedAt": "2026-08-13T04:07:42.463793+00:00",
+      "evalResult": {
+        "pass": true,
+        "overallScore": 23,
+        "scores": {
+          "grounding": 5,
+          "ruleCompliance": 5,
+          "jobFit": 5,
+          "minimalChange": 4,
+          "readability": 4
+        },
+        "hardFails": [],
+        "violations": [],
+        "changedParagraphCount": 6,
+        "summary": "Strong tailoring that aligns the resume with the Senior Cloud Engineer (AI Infrastructure) role. All five edits are well-grounded in original content and verified evidence. The professional summary now explicitly mentions 'production AI agent workflows, LLM tool calling, RAG pipelines, and Bedrock integrations'\u2014directly matching JD requirements. The AI Incident Response Platform bullets (paragraph-40, paragraph-41) now emphasize tool calling, retrieval loops, and observability, mirroring the job's focus on 'LLM agent workflows (tool calling, retrieval, evaluation loops)' and 'clear contracts and observability.' The CareerPilot AI edit (paragraph-91) highlights 'structured tool use,' matching the JD's 'structured tool use' requirement. The KubeSentry AI edit (paragraph-98) adds 'tool calling and evaluation loops,' reinforcing agent workflow expertise. The deletion of paragraph-67 (duplicate achievement) improves concision. The candidate's AWS/Python/Go/Kubernetes/Bedrock experience, AI agent projects, and AWS Certified AI Practitioner credential provide strong coverage of the JD's core requirements (AWS, Python/Go, LLM tooling, Bedrock). The headline rule is preserved ('Cloud Software Engineer with'). No unsupported claims, no invented tools/metrics/employers. Minor deduction on minimalChange (five edits could have been four) and readability (paragraph-40 is slightly dense). Overall, this is a high-quality, job-focused tailoring that maintains factual integrity while significantly improving alignment with the AI Infrastructure role.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "replace",
+            "reason": "Aligns Professional Summary with target role's focus on LLM agent workflows, tool calling, and Bedrock while preserving core stack",
+            "evidence": "Verified evidence: AI Driven Incident Response Platform (paragraph-40 through paragraph-45) and CareerPilot AI project showing Bedrock, RAG, agent workflows, and tool integration",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": "Cloud Software Engineer with 5+ years delivering enterprise cloud solutions using AWS, Python, Go, Terraform, and Kubernetes. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building production AI agent workflows, LLM tool calling, RAG pipelines, and Bedrock integrations through internal innovation and personal projects."
+          },
+          {
+            "paragraphId": "paragraph-40",
+            "operation": "replace",
+            "reason": "Deepens matching AI agent workflow detail with concrete tool calling and retrieval evidence",
+            "evidence": "Verified evidence: AI Driven Incident Response Platform showing agent workflows, Bedrock integration, CloudWatch, EventBridge, ServiceNow integration",
+            "originalText": "Designed AI agent workflows that automated incident investigations by collecting operational evidence and generating AI-powered incident summaries, remediation recommendations, rollback plans, and validation procedures.",
+            "newText": "Designed AI agent workflows with tool calling and retrieval loops that automated incident investigations by collecting operational evidence from CloudWatch, EventBridge, and ServiceNow, then generating AI-powered summaries and remediation recommendations using Bedrock foundation models."
+          },
+          {
+            "paragraphId": "paragraph-41",
+            "operation": "replace",
+            "reason": "Adds concrete backend service ownership and observability detail matching job requirements",
+            "evidence": "Verified evidence: AI Driven Incident Response Platform showing Lambda, Step Functions, Bedrock API integration, and CloudWatch",
+            "originalText": "Developed AWS Lambda functions and Step Functions workflows to orchestrate incident investigations and integrate with CloudWatch alarms, EventBridge, ServiceNow, and Slack.",
+            "newText": "Developed Python Lambda functions and Step Functions workflows orchestrating agent execution, integrating Bedrock API calls with observability through CloudWatch logs and metrics."
+          },
+          {
+            "paragraphId": "paragraph-91",
+            "operation": "replace",
+            "reason": "Clarifies RAG architecture and structured tool use matching job's LLM tooling requirements",
+            "evidence": "Verified evidence: CareerPilot AI project showing RAG architecture, Bedrock, LangChain, ChromaDB, semantic retrieval, and structured workflows",
+            "originalText": "Built a Retrieval-Augmented Generation (RAG) pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings to retrieve relevant resume knowledge for semantic search and AI-powered career workflows",
+            "newText": "Built a RAG pipeline using Python, FastAPI, Bedrock, LangChain, ChromaDB, and Titan Embeddings for semantic retrieval of resume knowledge, enabling structured tool use for resume tailoring and cover letter generation."
+          },
+          {
+            "paragraphId": "paragraph-98",
+            "operation": "replace",
+            "reason": "Adds concrete agent workflow architecture detail with tool calling and evaluation loops matching job requirements",
+            "evidence": "Verified evidence: KubeSentry AI project showing Go-based agent orchestration, planner logic, and Kubernetes diagnostic workflows",
+            "originalText": "Designed and implemented a graph-based AI agent orchestration framework in Go using shared state, planner logic, and modular workflow nodes to coordinate Kubernetes incident investigations.",
+            "newText": "Designed a graph-based AI agent orchestration framework in Go using shared state and planner logic to coordinate Kubernetes diagnostic workflows with tool calling and evaluation loops."
+          },
+          {
+            "paragraphId": "paragraph-67",
+            "operation": "delete",
+            "reason": "Removes duplicate achievement already stated in paragraph-44 and paragraph-61 to reach 2-page target",
+            "evidence": "Original resume paragraph-44 and paragraph-61 contain the same incident response time reduction metric",
+            "originalText": "Built AI-driven cloud automation that reduced incident investigation time from over 60 minutes to approximately 15 minutes.",
+            "newText": ""
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:07:42.463742+00:00"
+      },
+      "fit": "Maybe",
+      "fitReason": "Strong AWS/K8s background; JD leans heavier on GPU cluster ops than agent product work.",
+      "fitCheckedAt": "2026-08-09T17:05:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: Senior Cloud Engineer (AI Infrastructure)\nCompany: Summit Cloud\nLocation: Atlanta, GA\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/senior-cloud-ai\n\n=== JOB DESCRIPTION ===\nAbout the role\nSummit Cloud is hiring a Senior Cloud Engineer (AI Infrastructure) to design and ship production AI systems used by customers daily.\n\nWhat you'll do\n- Build and harden LLM agent workflows (tool calling, retrieval, evaluation loops)\n- Own backend services in Python and/or Go on AWS\n- Integrate model providers and internal APIs with clear contracts and observability\n- Partner with product to turn messy workflows into reliable agent experiences\n\nWhat we're looking for\n- Experience shipping cloud services (AWS, containers/Kubernetes, CI/CD)\n- Hands-on with LLM tooling (agents, RAG, structured tool use)\n- Comfortable debugging production systems and writing clear design notes\n- Strong communication and bias toward pragmatic delivery\n\nNice to have\n- MCP / IDE agent integrations\n- Bedrock or equivalent managed model platforms\n- Prior work in recruiting/ops automation or knowledge systems\n\nThis is sample demo copy for CareerPilot UI walkthroughs \u2014 not a live posting.\n"
+    },
+    {
+      "jobId": "demo-004-ml-platform",
+      "title": "Senior Software Engineer, ML Platform",
+      "company": "Riverline Health",
+      "location": "Hybrid - Atlanta",
+      "date": "2026-08-08T11:18:00-04:00",
+      "url": "https://example.com/jobs/senior-ml-platform",
+      "source": "linkedin",
+      "status": "Applied",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "Yes",
+      "appliedDate": "2026-08-09",
+      "emailId": "demo-email-004",
+      "updatedAt": "2026-08-13T04:08:04.804786+00:00",
+      "evalResult": {
+        "pass": true,
+        "overallScore": 23,
+        "scores": {
+          "grounding": 5,
+          "ruleCompliance": 5,
+          "jobFit": 5,
+          "minimalChange": 4,
+          "readability": 4
+        },
+        "hardFails": [],
+        "violations": [],
+        "changedParagraphCount": 5,
+        "summary": "Strong tailoring that aligns well with the Senior ML Platform Engineer role. All four edits are grounded in verified evidence and add job-relevant terminology (LLM tool calling, agent workflows, Bedrock) without inventing facts. The professional summary correctly emphasizes production AI agent workflows and RAG pipelines, directly matching JD requirements. The incident response bullet now explicitly mentions LLM tool calling and agent workflows, strengthening alignment. The CareerPilot and KubeSentry edits tighten language around RAG and agent orchestration. The incomplete paragraph-102 deletion is appropriate. Minor deduction on minimalChange because paragraph-91 was already strong and the edit is subtle. Minor readability deduction because some bullets remain dense. Overall, this is a well-executed, evidence-backed tailoring that significantly improves job fit for an ML Platform role requiring hands-on LLM agent experience, AWS/Bedrock, and production system ownership.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "replace",
+            "reason": "Aligns Professional Summary with target role's focus on LLM agent workflows, tool calling, and Bedrock while preserving cloud engineering identity",
+            "evidence": "Document d5884d47 (CareerPilot AI RAG architecture, Bedrock, LangChain, tool calling); Document 92782bee (AI Agents Intermediate, LLM Tool Calling Intermediate, Amazon Bedrock Intermediate, RAG Intermediate)",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": "Cloud Software Engineer with 5+ years delivering enterprise cloud solutions using AWS, Python, Go, Terraform, and Kubernetes. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building production AI agent workflows, LLM tool calling, RAG pipelines, and Bedrock integrations through internal innovation and personal projects."
+          },
+          {
+            "paragraphId": "paragraph-40",
+            "operation": "replace",
+            "reason": "Deepens matching AI agent and LLM tool calling experience for ML Platform role",
+            "evidence": "Original paragraph-40 plus Document 92782bee (LLM Tool Calling Intermediate, AI Agents Intermediate, Amazon Bedrock Intermediate)",
+            "originalText": "Designed AI agent workflows that automated incident investigations by collecting operational evidence and generating AI-powered incident summaries, remediation recommendations, rollback plans, and validation procedures.",
+            "newText": "Designed AI agent workflows using AWS Bedrock and Step Functions that automated incident investigations through LLM tool calling, collecting operational evidence from CloudWatch and generating AI-powered incident summaries and remediation recommendations."
+          },
+          {
+            "paragraphId": "paragraph-91",
+            "operation": "replace",
+            "reason": "Shortens while preserving core RAG/Bedrock/semantic search technical detail matching the job",
+            "evidence": "Document d5884d47 (CareerPilot AI RAG architecture, Bedrock, LangChain, ChromaDB, semantic retrieval)",
+            "originalText": "Built a Retrieval-Augmented Generation (RAG) pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings to retrieve relevant resume knowledge for semantic search and AI-powered career workflows",
+            "newText": "Built a RAG pipeline using Python, FastAPI, AWS Bedrock, LangChain, and ChromaDB that retrieves relevant resume knowledge through semantic search to generate tailored resumes without fabricating experience."
+          },
+          {
+            "paragraphId": "paragraph-98",
+            "operation": "replace",
+            "reason": "Shortens while keeping Go, AI agent orchestration, and tool calling alignment",
+            "evidence": "Original paragraph-98 plus Document 92782bee (AI Agents Intermediate, LLM Tool Calling Intermediate)",
+            "originalText": "Designed and implemented a graph-based AI agent orchestration framework in Go using shared state, planner logic, and modular workflow nodes to coordinate Kubernetes incident investigations.",
+            "newText": "Designed a graph-based AI agent orchestration framework in Go using shared state and modular workflow nodes to coordinate Kubernetes incident investigations with LLM tool calling."
+          },
+          {
+            "paragraphId": "paragraph-102",
+            "operation": "delete",
+            "reason": "Removes incomplete sentence fragment to improve document quality and reduce length",
+            "evidence": "Original paragraph-102 ends mid-sentence with 'structure'",
+            "originalText": "Designing a modular architecture supporting future capabilities including RAG-backed runbooks, structure",
+            "newText": ""
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:08:04.804718+00:00"
+      },
+      "fit": "Apply",
+      "fitReason": "Good overlap on Python services, AWS, and LLM feature delivery in a product org.",
+      "fitCheckedAt": "2026-08-08T12:00:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: Senior Software Engineer, ML Platform\nCompany: Riverline Health\nLocation: Hybrid - Atlanta\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/senior-ml-platform\n\n=== JOB DESCRIPTION ===\nAbout the role\nRiverline Health is hiring a Senior Software Engineer, ML Platform to design and ship production AI systems used by customers daily.\n\nWhat you'll do\n- Build and harden LLM agent workflows (tool calling, retrieval, evaluation loops)\n- Own backend services in Python and/or Go on AWS\n- Integrate model providers and internal APIs with clear contracts and observability\n- Partner with product to turn messy workflows into reliable agent experiences\n\nWhat we're looking for\n- Experience shipping cloud services (AWS, containers/Kubernetes, CI/CD)\n- Hands-on with LLM tooling (agents, RAG, structured tool use)\n- Comfortable debugging production systems and writing clear design notes\n- Strong communication and bias toward pragmatic delivery\n\nNice to have\n- MCP / IDE agent integrations\n- Bedrock or equivalent managed model platforms\n- Prior work in recruiting/ops automation or knowledge systems\n\nThis is sample demo copy for CareerPilot UI walkthroughs \u2014 not a live posting.\n"
+    },
+    {
+      "jobId": "demo-005-fullstack-ai",
+      "title": "Full Stack Engineer, AI Products",
+      "company": "Brightpath",
+      "location": "Remote",
+      "date": "2026-08-12T08:30:00-04:00",
+      "url": "https://example.com/jobs/fullstack-ai",
+      "source": "remoterocketship",
+      "status": "Active",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "No",
+      "appliedDate": "",
+      "emailId": "demo-email-005",
+      "updatedAt": "2026-08-13T04:08:32.714456+00:00",
+      "evalResult": {
+        "pass": true,
+        "overallScore": 23,
+        "scores": {
+          "grounding": 5,
+          "ruleCompliance": 5,
+          "jobFit": 5,
+          "minimalChange": 4,
+          "readability": 4
+        },
+        "hardFails": [],
+        "violations": [],
+        "changedParagraphCount": 5,
+        "summary": "Strong tailoring that aligns well with the Full Stack Engineer, AI Products role. All four edits are grounded in verified evidence and directly address JD requirements: (1) Professional summary now emphasizes 'production AI agent workflows, LLM tool calling, RAG pipelines, and event-driven automation' matching the job's focus on LLM agents, tool calling, and retrieval; (2) paragraph-40 adds explicit 'tool calling' and 'structured LLM evaluation loops' language directly from the AI incident response project evidence; (3) paragraph-91 reframes the CareerPilot RAG work to highlight 'structured tool use' which maps to the JD's 'structured tool use' requirement; (4) paragraph-28 is condensed and paragraph-29 deleted to reduce non-AI database content. The candidate's AWS/Python/Go backend experience, Bedrock platform work, Kubernetes/CI/CD background, and hands-on LLM agent projects (incident response automation, CareerPilot RAG, KubeSentry MCP server) provide strong coverage of the role's core requirements. Minor deduction on minimalChange because paragraph-28/29 consolidation could have been skipped (the original Terraform validation bullet was relevant to backend services), and readability loses half a point because the new paragraph-40 is slightly dense with technical terms. No invented claims, headline rule preserved, no unsupported tools or leadership. JobFit is strong: the tailored resume demonstrates shipping cloud services on AWS with containers/Kubernetes/CI/CD, hands-on LLM tooling (agents, RAG, structured tool use via Bedrock/LangChain), production debugging experience, and clear design/implementation work. The 'nice to have' MCP and Bedrock experience are both present in the projects section. Overall, this is a well-executed, evidence-backed tailoring for a role that matches the candidate's profile.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "replace",
+            "reason": "Aligns with job requirements for LLM agent workflows, tool calling, RAG, and AWS backend services while maintaining verified technical stack",
+            "evidence": "CareerPilot AI and AI-Driven Incident Response projects demonstrate Bedrock, RAG, LangChain, Lambda, Step Functions, and agent workflows",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": "Cloud Software Engineer with 5+ years delivering enterprise cloud solutions using AWS, Python, Go, Terraform, and Kubernetes. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building production AI agent workflows, LLM tool calling, RAG pipelines, and event-driven automation using Amazon Bedrock, LangChain, and AWS serverless services."
+          },
+          {
+            "paragraphId": "paragraph-40",
+            "operation": "replace",
+            "reason": "Deepens matching AI agent workflow detail with tool calling and evaluation loops requested in job description",
+            "evidence": "AI-Driven Incident Response project: 'Designed AI agent workflows that automated incident investigations' and 'AWS Bedrock, Lambda, Step Functions, EventBridge'",
+            "originalText": "Designed AI agent workflows that automated incident investigations by collecting operational evidence and generating AI-powered incident summaries, remediation recommendations, rollback plans, and validation procedures.",
+            "newText": "Built AI agent workflows using AWS Bedrock and Step Functions that automated incident investigations through tool calling, operational evidence collection, and structured LLM evaluation loops, generating incident summaries and remediation recommendations."
+          },
+          {
+            "paragraphId": "paragraph-91",
+            "operation": "replace",
+            "reason": "Emphasizes RAG and structured tool use matching job requirements while keeping verified technical details",
+            "evidence": "CareerPilot AI project: 'Built a Retrieval-Augmented Generation (RAG) pipeline' and 'semantic search and AI-powered career workflows'",
+            "originalText": "Built a Retrieval-Augmented Generation (RAG) pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings to retrieve relevant resume knowledge for semantic search and AI-powered career workflows",
+            "newText": "Built a RAG pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings for semantic retrieval of resume knowledge, enabling structured tool use for resume tailoring and cover letter generation."
+          },
+          {
+            "paragraphId": "paragraph-28",
+            "operation": "replace",
+            "reason": "Compresses weakly relevant bullet to reach 2-page target while preserving database experience",
+            "evidence": "Original paragraph-28",
+            "originalText": "Coordinated production database migrations through formal change management",
+            "newText": "Coordinated production Aurora PostgreSQL migrations through change management."
+          },
+          {
+            "paragraphId": "paragraph-29",
+            "operation": "delete",
+            "reason": "Removes redundant Terraform validation bullet when paragraph-26 already demonstrates Aurora PostgreSQL migration leadership",
+            "evidence": "Original paragraph-29 duplicates Terraform/Aurora context from paragraph-26",
+            "originalText": "Validated Terraform configurations for multi-region Aurora PostgreSQL deployments",
+            "newText": ""
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:08:32.714402+00:00"
+      },
+      "fit": "Maybe",
+      "fitReason": "AI product work fits; JD expects deeper React/TypeScript frontend ownership than preferred.",
+      "fitCheckedAt": "2026-08-12T09:00:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: Full Stack Engineer, AI Products\nCompany: Brightpath\nLocation: Remote\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/fullstack-ai\n\n=== JOB DESCRIPTION ===\nAbout the role\nBrightpath is hiring a Full Stack Engineer, AI Products to design and ship production AI systems used by customers daily.\n\nWhat you'll do\n- Build and harden LLM agent workflows (tool calling, retrieval, evaluation loops)\n- Own backend services in Python and/or Go on AWS\n- Integrate model providers and internal APIs with clear contracts and observability\n- Partner with product to turn messy workflows into reliable agent experiences\n\nWhat we're looking for\n- Experience shipping cloud services (AWS, containers/Kubernetes, CI/CD)\n- Hands-on with LLM tooling (agents, RAG, structured tool use)\n- Comfortable debugging production systems and writing clear design notes\n- Strong communication and bias toward pragmatic delivery\n\nNice to have\n- MCP / IDE agent integrations\n- Bedrock or equivalent managed model platforms\n- Prior work in recruiting/ops automation or knowledge systems\n\nThis is sample demo copy for CareerPilot UI walkthroughs \u2014 not a live posting.\n"
+    },
+    {
+      "jobId": "demo-006-java-backend",
+      "title": "Senior Java Backend Engineer",
+      "company": "LedgerWorks",
+      "location": "New York, NY",
+      "date": "2026-08-07T13:12:00-04:00",
+      "url": "https://example.com/jobs/senior-java-backend",
+      "source": "careerbuilder",
+      "status": "Active",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "No",
+      "appliedDate": "",
+      "emailId": "demo-email-006",
+      "updatedAt": "2026-08-13T04:09:14.429850+00:00",
+      "evalResult": {
+        "pass": false,
+        "overallScore": 8,
+        "scores": {
+          "grounding": 4,
+          "ruleCompliance": 3,
+          "jobFit": 0,
+          "minimalChange": 1,
+          "readability": 0
+        },
+        "hardFails": [
+          "Fundamental career/profession mismatch: JD requires Senior Java Backend Engineer with Java/Python/Go backend services experience. Tailored resume is a Cloud/Infrastructure Engineer profile with minimal Java experience (only test frameworks at OCC, not production backend services). No evidence of shipping Java backend services, owning backend APIs, or Java production systems.",
+          "Job title mismatch: JD seeks 'Senior Java Backend Engineer' but candidate's verified title is 'Cloud Software Engineer' focused on infrastructure, Terraform, Kubernetes, and cloud platforms\u2014not Java backend development.",
+          "Deletion of paragraph-67 removes supported achievement content without clear justification for a backend engineering role.",
+          "Unnecessary edits: paragraph-91 and paragraph-93 were rewritten when original versions already contained relevant RAG/AI content and did not require changes for this specific job."
+        ],
+        "violations": [
+          {
+            "paragraphId": "paragraph-5",
+            "type": "job_fit_mismatch",
+            "quote": "Cloud Software Engineer with 5+ years delivering enterprise cloud solutions using AWS, Python, Go, Terraform, and Kubernetes. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building production AI agent workflows, LLM tool calling, RAG pipelines, and cloud-native architectures using Amazon Bedrock.",
+            "explanation": "While grounded in evidence, this summary emphasizes cloud infrastructure and AI agents but does not address the core JD requirement: Senior Java Backend Engineer shipping production backend services. The candidate's Java experience is limited to test frameworks (paragraph-20), not production backend development. The JD explicitly requires 'Own backend services in Python and/or Go' and 'Experience shipping cloud services'\u2014the candidate has cloud infrastructure experience but not backend service ownership."
+          },
+          {
+            "paragraphId": "paragraph-40",
+            "type": "minimal_change_violation",
+            "quote": "Designed AI agent workflows using AWS Bedrock that automated incident investigations through tool calling, operational evidence collection, and structured LLM outputs for incident summaries, remediation recommendations, and validation procedures.",
+            "explanation": "Original paragraph-40 already mentioned 'AI agent workflows that automated incident investigations by collecting operational evidence and generating AI-powered incident summaries, remediation recommendations, rollback plans, and validation procedures.' The edit adds 'tool calling' and 'structured LLM outputs' but removes 'rollback plans.' This is an unnecessary rewrite that changes strong original content without clear improvement for a Java backend role."
+          },
+          {
+            "paragraphId": "paragraph-67",
+            "type": "unjustified_deletion",
+            "quote": "Built AI-driven cloud automation that reduced incident investigation time from over 60 minutes to approximately 15 minutes.",
+            "explanation": "This achievement is supported by evidence and demonstrates automation/efficiency impact. Deleting it removes quantified value without clear justification, especially since the JD values 'pragmatic delivery' and production system experience."
+          },
+          {
+            "paragraphId": "paragraph-91",
+            "type": "minimal_change_violation",
+            "quote": "Built a RAG pipeline using Python, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings for semantic retrieval of resume knowledge before generating tailored content.",
+            "explanation": "Original paragraph-91 stated 'Built a Retrieval-Augmented Generation (RAG) pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings to retrieve relevant resume knowledge for semantic search and AI-powered career workflows.' The edit removes FastAPI and 'AI-powered career workflows' detail without clear benefit. Original was already strong and relevant."
+          },
+          {
+            "paragraphId": "paragraph-93",
+            "type": "minimal_change_violation",
+            "quote": "Implemented structured resume parsing, semantic search, and document-aware editing to generate ATS-friendly updates while preserving DOCX formatting and avoiding fabricated experience.",
+            "explanation": "Original paragraph-93 included 'JSON knowledge schemas' and was more detailed. The edit simplifies without clear improvement for a backend engineering role. Unnecessary churn on already-relevant content."
+          },
+          {
+            "paragraphId": "general",
+            "type": "fundamental_mismatch",
+            "quote": "entire tailored resume",
+            "explanation": "The JD requires a Senior Java Backend Engineer to 'Build and harden LLM agent workflows' and 'Own backend services in Python and/or Go on AWS.' The candidate's experience is primarily cloud infrastructure engineering (Terraform, Kubernetes, IaC migrations, database migrations) with AI agent work in Lambda/Step Functions\u2014not owning production backend services. The only Java mention is 'Developed Java Customer test frameworks' (paragraph-20), which is testing, not backend service development. This is a fundamental profession mismatch: infrastructure/platform engineer vs. backend software engineer."
+          }
+        ],
+        "changedParagraphCount": 5,
+        "summary": "HARD FAIL: Fundamental career mismatch. The JD seeks a Senior Java Backend Engineer to own production backend services in Java/Python/Go, but the tailored resume presents a Cloud Infrastructure Engineer with Terraform/Kubernetes/IaC focus and minimal Java experience (only test frameworks, not backend services). While the edits are mostly grounded (grounding=4), they introduce unnecessary rewrites of strong original content (minimalChange=1) and delete a supported achievement (paragraph-67). Most critically, jobFit=0 because the candidate's verified experience does not cover the core JD requirement of shipping and owning Java backend services\u2014only infrastructure automation and AI agent workflows in serverless contexts. The edits add 'tool calling' and 'LLM' keywords but cannot bridge the fundamental gap between platform/infrastructure engineering and backend service development. Pass must be false due to profession mismatch, even though grounding and rule compliance are partially satisfied.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "replace",
+            "reason": "Aligns Professional Summary with job requirements for LLM agent workflows, tool calling, and RAG while preserving core AWS/Python/Go stack",
+            "evidence": "Verified AI/ML skills document lists Amazon Bedrock (Intermediate), LLM Tool Calling (Intermediate), RAG (Intermediate), AI Agents (Intermediate). CareerPilot AI project evidence shows RAG architecture with Bedrock.",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": "Cloud Software Engineer with 5+ years delivering enterprise cloud solutions using AWS, Python, Go, Terraform, and Kubernetes. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building production AI agent workflows, LLM tool calling, RAG pipelines, and cloud-native architectures using Amazon Bedrock."
+          },
+          {
+            "paragraphId": "paragraph-40",
+            "operation": "replace",
+            "reason": "Deepens matching AI agent and tool calling experience for the target role",
+            "evidence": "Original paragraph-40 describes AI agent workflows. Verified AI/ML skills document confirms LLM Tool Calling (Intermediate), AI Agents (Intermediate), Amazon Bedrock (Intermediate).",
+            "originalText": "Designed AI agent workflows that automated incident investigations by collecting operational evidence and generating AI-powered incident summaries, remediation recommendations, rollback plans, and validation procedures.",
+            "newText": "Designed AI agent workflows using AWS Bedrock that automated incident investigations through tool calling, operational evidence collection, and structured LLM outputs for incident summaries, remediation recommendations, and validation procedures."
+          },
+          {
+            "paragraphId": "paragraph-91",
+            "operation": "replace",
+            "reason": "Shortens while preserving core RAG/Bedrock/semantic retrieval alignment with job requirements",
+            "evidence": "CareerPilot AI project evidence: 'Built a Retrieval-Augmented Generation (RAG) architecture that retrieves relevant resume knowledge before generating ATS-optimized resume updates.'",
+            "originalText": "Built a Retrieval-Augmented Generation (RAG) pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings to retrieve relevant resume knowledge for semantic search and AI-powered career workflows",
+            "newText": "Built a RAG pipeline using Python, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings for semantic retrieval of resume knowledge before generating tailored content."
+          },
+          {
+            "paragraphId": "paragraph-93",
+            "operation": "replace",
+            "reason": "Compresses to one sentence while keeping factual scope and technical approach",
+            "evidence": "Original paragraph-93 and CareerPilot AI project evidence support structured parsing, semantic search, and format preservation.",
+            "originalText": "Implemented structured resume parsing, JSON knowledge schemas, semantic search, and document-aware editing to generate ATS-friendly resume updates while preserving formatting and avoiding fabricated experience",
+            "newText": "Implemented structured resume parsing, semantic search, and document-aware editing to generate ATS-friendly updates while preserving DOCX formatting and avoiding fabricated experience."
+          },
+          {
+            "paragraphId": "paragraph-67",
+            "operation": "delete",
+            "reason": "Removes duplicate achievement already stated in paragraph-44 and paragraph-61 to reach 2-page target",
+            "evidence": "Original paragraph-67 duplicates the 60-to-15-minute metric from paragraph-44 and paragraph-61.",
+            "originalText": "Built AI-driven cloud automation that reduced incident investigation time from over 60 minutes to approximately 15 minutes.",
+            "newText": ""
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:09:14.429765+00:00"
+      },
+      "fit": "Skip",
+      "fitReason": "Heavy Java/Spring requirement with little AI/agent scope \u2014 weak fit.",
+      "fitCheckedAt": "2026-08-07T13:40:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: Senior Java Backend Engineer\nCompany: LedgerWorks\nLocation: New York, NY\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/senior-java-backend\n\n=== JOB DESCRIPTION ===\nAbout the role\nLedgerWorks is hiring a Senior Java Backend Engineer to design and ship production AI systems used by customers daily.\n\nWhat you'll do\n- Build and harden LLM agent workflows (tool calling, retrieval, evaluation loops)\n- Own backend services in Python and/or Go on AWS\n- Integrate model providers and internal APIs with clear contracts and observability\n- Partner with product to turn messy workflows into reliable agent experiences\n\nWhat we're looking for\n- Experience shipping cloud services (AWS, containers/Kubernetes, CI/CD)\n- Hands-on with LLM tooling (agents, RAG, structured tool use)\n- Comfortable debugging production systems and writing clear design notes\n- Strong communication and bias toward pragmatic delivery\n\nNice to have\n- MCP / IDE agent integrations\n- Bedrock or equivalent managed model platforms\n- Prior work in recruiting/ops automation or knowledge systems\n\nThis is sample demo copy for CareerPilot UI walkthroughs \u2014 not a live posting.\n"
+    },
+    {
+      "jobId": "demo-007-devops-sre",
+      "title": "Site Reliability Engineer",
+      "company": "Orbit Pay",
+      "location": "Austin, TX (Remote OK)",
+      "date": "2026-08-06T10:00:00-04:00",
+      "url": "https://example.com/jobs/sre",
+      "source": "dice",
+      "status": "Closed",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "No",
+      "appliedDate": "",
+      "emailId": "demo-email-007",
+      "updatedAt": "2026-08-13T04:09:41.728416+00:00",
+      "evalResult": {
+        "pass": true,
+        "overallScore": 22,
+        "scores": {
+          "grounding": 5,
+          "ruleCompliance": 5,
+          "jobFit": 5,
+          "minimalChange": 4,
+          "readability": 3
+        },
+        "hardFails": [],
+        "violations": [
+          {
+            "paragraphId": "paragraph-40",
+            "type": "readability_concern",
+            "quote": "Built LLM agent workflows using AWS Bedrock that automated incident investigations through tool calling (CloudWatch log retrieval, EventBridge event collection), generated AI-powered incident summaries and remediation recommendations, and integrated with ServiceNow and Slack for operational notifications.",
+            "explanation": "This 47-word sentence is dense and difficult to parse. The original bullet was clearer: 'Designed AI agent workflows that automated incident investigations by collecting operational evidence and generating AI-powered incident summaries, remediation recommendations, rollback plans, and validation procedures.' The new version front-loads technical details and loses some clarity."
+          },
+          {
+            "paragraphId": "paragraph-91",
+            "type": "minor_precision_loss",
+            "quote": "Built a RAG pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings for semantic retrieval and structured tool use in resume tailoring workflows.",
+            "explanation": "The original stated 'to retrieve relevant resume knowledge for semantic search and AI-powered career workflows' which was more descriptive. The new 'structured tool use' is accurate but slightly more abstract."
+          }
+        ],
+        "changedParagraphCount": 5,
+        "summary": "Strong tailoring with excellent grounding and rule compliance. All four edits are fully supported by verified evidence. The professional summary now explicitly mentions 'production AI agent workflows, LLM tool calling, RAG pipelines, and event-driven automation' which directly aligns with the SRE role's requirements for LLM agent workflows, tool calling, and retrieval. Paragraph-40 adds specific tool-calling examples (CloudWatch log retrieval, EventBridge event collection) that match the JD's emphasis on 'tool calling, retrieval, evaluation loops.' Paragraph-91 and paragraph-98 both add 'tool calling' language supported by the evidence. The deletion of paragraph-67 (duplicate achievement) is appropriate. Job fit is strong: the candidate has hands-on Bedrock experience, Python/Go backend services on AWS, Kubernetes/containers, CI/CD, and demonstrated LLM agent work. Minor readability concerns with paragraph-40's sentence density prevent a perfect score, but the tailoring successfully positions a qualified candidate for this SRE role without inventing claims.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "replace",
+            "reason": "Aligns Professional Summary with SRE role requirements: LLM agent workflows, tool calling, RAG, AWS backend services, observability",
+            "evidence": "Verified evidence: AI-Driven Incident Response Automation Platform (AWS Bedrock, Lambda, Step Functions, EventBridge, CloudWatch, AI ops agent for root cause analysis); CareerPilot AI (RAG architecture, Bedrock, semantic retrieval, tool integration)",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": "Cloud Software Engineer with 5+ years delivering enterprise cloud solutions using AWS, Python, Go, Terraform, and Kubernetes. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building production AI agent workflows, LLM tool calling, RAG pipelines, and event-driven automation using Amazon Bedrock, Lambda, Step Functions, and CloudWatch."
+          },
+          {
+            "paragraphId": "paragraph-40",
+            "operation": "replace",
+            "reason": "Deepens matching project detail with explicit LLM agent workflow, tool calling, and observability integration aligned with job requirements",
+            "evidence": "Verified evidence: AI-Driven Incident Response project used AWS Bedrock, Lambda, Step Functions, EventBridge, CloudWatch, and AWS DevOps Agent for root cause analysis with automated incident investigation workflows",
+            "originalText": "Designed AI agent workflows that automated incident investigations by collecting operational evidence and generating AI-powered incident summaries, remediation recommendations, rollback plans, and validation procedures.",
+            "newText": "Built LLM agent workflows using AWS Bedrock that automated incident investigations through tool calling (CloudWatch log retrieval, EventBridge event collection), generated AI-powered incident summaries and remediation recommendations, and integrated with ServiceNow and Slack for operational notifications."
+          },
+          {
+            "paragraphId": "paragraph-91",
+            "operation": "replace",
+            "reason": "Shortens while preserving RAG, Bedrock, tool integration, and Python/AWS backend alignment",
+            "evidence": "Original paragraph-91 and CareerPilot AI verified evidence",
+            "originalText": "Built a Retrieval-Augmented Generation (RAG) pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings to retrieve relevant resume knowledge for semantic search and AI-powered career workflows",
+            "newText": "Built a RAG pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings for semantic retrieval and structured tool use in resume tailoring workflows."
+          },
+          {
+            "paragraphId": "paragraph-98",
+            "operation": "replace",
+            "reason": "Deepens Go backend service ownership and agent workflow design aligned with job requirements",
+            "evidence": "Original paragraph-98 from KubeSentry AI project",
+            "originalText": "Designed and implemented a graph-based AI agent orchestration framework in Go using shared state, planner logic, and modular workflow nodes to coordinate Kubernetes incident investigations.",
+            "newText": "Designed a graph-based AI agent orchestration framework in Go using shared state and modular workflow nodes to coordinate Kubernetes incident investigations with tool calling and diagnostic evidence collection."
+          },
+          {
+            "paragraphId": "paragraph-67",
+            "operation": "delete",
+            "reason": "Removes duplicate achievement already stated in paragraph-44 and paragraph-61 to reach 2-page target",
+            "evidence": "Original paragraph-67 duplicates incident response time reduction metric",
+            "originalText": "Built AI-driven cloud automation that reduced incident investigation time from over 60 minutes to approximately 15 minutes.",
+            "newText": ""
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:09:41.728346+00:00"
+      },
+      "fit": "Skip",
+      "fitReason": "Pure SRE on-call role; not aligned with AI agent engineering target.",
+      "fitCheckedAt": "2026-08-06T10:20:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: Site Reliability Engineer\nCompany: Orbit Pay\nLocation: Austin, TX (Remote OK)\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/sre\n\n=== JOB DESCRIPTION ===\nAbout the role\nOrbit Pay is hiring a Site Reliability Engineer to design and ship production AI systems used by customers daily.\n\nWhat you'll do\n- Build and harden LLM agent workflows (tool calling, retrieval, evaluation loops)\n- Own backend services in Python and/or Go on AWS\n- Integrate model providers and internal APIs with clear contracts and observability\n- Partner with product to turn messy workflows into reliable agent experiences\n\nWhat we're looking for\n- Experience shipping cloud services (AWS, containers/Kubernetes, CI/CD)\n- Hands-on with LLM tooling (agents, RAG, structured tool use)\n- Comfortable debugging production systems and writing clear design notes\n- Strong communication and bias toward pragmatic delivery\n\nNice to have\n- MCP / IDE agent integrations\n- Bedrock or equivalent managed model platforms\n- Prior work in recruiting/ops automation or knowledge systems\n\nThis is sample demo copy for CareerPilot UI walkthroughs \u2014 not a live posting.\n"
+    },
+    {
+      "jobId": "demo-008-langchain",
+      "title": "AI Engineer (LangChain / Agents)",
+      "company": "Cascade Analytics",
+      "location": "Atlanta, GA (Hybrid)",
+      "date": "2026-08-12T12:15:00-04:00",
+      "url": "https://example.com/jobs/ai-engineer-langchain",
+      "source": "linkedin",
+      "status": "Interview",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "Yes",
+      "appliedDate": "2026-08-05",
+      "emailId": "demo-email-008",
+      "updatedAt": "2026-08-13T04:10:07.978861+00:00",
+      "evalResult": {
+        "pass": true,
+        "overallScore": 23,
+        "scores": {
+          "grounding": 5,
+          "ruleCompliance": 5,
+          "jobFit": 5,
+          "minimalChange": 4,
+          "readability": 4
+        },
+        "hardFails": [],
+        "violations": [],
+        "changedParagraphCount": 6,
+        "summary": "Strong tailoring for an AI Engineer (LangChain/Agents) role. All five edits are well-grounded in verified evidence and directly target job requirements: LLM agent workflows, tool calling, RAG, LangChain/LangGraph, AWS Bedrock, and Python backend services. The professional summary now explicitly mentions 'LLM agent workflows,' 'RAG systems,' 'LangChain, LangGraph, and Model Context Protocol (MCP)' \u2014 all supported by the candidate's AI projects and internal innovation work. The incident response bullets (paragraph-40, paragraph-41) now emphasize 'LLM agent workflows,' 'AWS DevOps Agent capabilities,' and 'event-driven incident response,' aligning with the JD's focus on agent orchestration and backend services. The RAG project edits (paragraph-88, paragraph-91) highlight 'LangGraph agent,' 'tool calling,' and 'fallback workflows,' demonstrating hands-on agent experience. The deletion of paragraph-67 (duplicate achievement) is appropriate and reduces redundancy. Minor deduction on minimalChange because paragraph-91 was already strong and the rewrite, while accurate, was not strictly necessary. Minor deduction on readability because paragraph-41 is slightly dense. Overall, the tailored resume now clearly demonstrates the candidate's experience shipping LLM agent workflows, RAG systems, and production AI on AWS \u2014 a strong match for the role's core requirements.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "replace",
+            "reason": "Strengthens alignment with LangChain/Agents role by highlighting verified LLM agent, RAG, and MCP experience",
+            "evidence": "Verified evidence documents show Intermediate proficiency in LangChain, LangGraph, AI Agents, RAG, MCP, and Amazon Bedrock",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": "Cloud Software Engineer with 5+ years delivering enterprise cloud solutions using AWS, Python, Go, Terraform, and Kubernetes. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building LLM agent workflows, Retrieval-Augmented Generation (RAG) systems, and AI-powered automation using Amazon Bedrock, LangChain, LangGraph, and Model Context Protocol (MCP)."
+          },
+          {
+            "paragraphId": "paragraph-40",
+            "operation": "replace",
+            "reason": "Deepens agent workflow detail matching the job's focus on agent tool calling and evaluation loops",
+            "evidence": "Project: AI-Driven Incident Response Automation Platform - 'AWS DevOps Agent (AI ops agent) capabilities for root cause analysis' and 'Automated incident analysis, root cause investigation, remediation recommendations'",
+            "originalText": "Designed AI agent workflows that automated incident investigations by collecting operational evidence and generating AI-powered incident summaries, remediation recommendations, rollback plans, and validation procedures.",
+            "newText": "Built LLM agent workflows using AWS Bedrock and AWS DevOps Agent capabilities that automated incident investigations, generating AI-powered summaries, remediation recommendations, and rollback plans."
+          },
+          {
+            "paragraphId": "paragraph-41",
+            "operation": "replace",
+            "reason": "Clarifies backend service ownership in Python on AWS matching job requirements",
+            "evidence": "Original paragraph-41 and verified evidence showing Lambda, Step Functions, Python, EventBridge integration",
+            "originalText": "Developed AWS Lambda functions and Step Functions workflows to orchestrate incident investigations and integrate with CloudWatch alarms, EventBridge, ServiceNow, and Slack.",
+            "newText": "Developed Python Lambda functions and Step Functions workflows orchestrating event-driven incident response integrating CloudWatch, EventBridge, ServiceNow, and Slack."
+          },
+          {
+            "paragraphId": "paragraph-88",
+            "operation": "replace",
+            "reason": "Highlights LangGraph agent routing and tool calling patterns directly relevant to the role",
+            "evidence": "Project: AI Agent-Powered RAG Platform - 'Extended the pipeline with a LangGraph agent that falls back to Tavily web search when transcript retrieval alone cannot answer the question'",
+            "originalText": "Integrated Amazon Bedrock foundation models to generate context-aware responses using semantic search and grounded LLM workflows",
+            "newText": "Extended the RAG pipeline with a LangGraph agent that routes to Tavily web search when transcript retrieval cannot answer the question, demonstrating agent tool calling and fallback workflows."
+          },
+          {
+            "paragraphId": "paragraph-91",
+            "operation": "replace",
+            "reason": "Shortens while preserving core RAG and Bedrock experience matching job requirements",
+            "evidence": "Original paragraph-91 and CareerPilot AI project evidence showing RAG architecture with Bedrock, LangChain, ChromaDB",
+            "originalText": "Built a Retrieval-Augmented Generation (RAG) pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings to retrieve relevant resume knowledge for semantic search and AI-powered career workflows",
+            "newText": "Built a RAG pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings for semantic retrieval and AI-powered resume tailoring."
+          },
+          {
+            "paragraphId": "paragraph-67",
+            "operation": "delete",
+            "reason": "Removes duplicate achievement already stated in paragraph-44 and paragraph-61 to reduce redundancy",
+            "evidence": "Original paragraph-67 duplicates the 60-to-15-minute metric from paragraph-44",
+            "originalText": "Built AI-driven cloud automation that reduced incident investigation time from over 60 minutes to approximately 15 minutes.",
+            "newText": ""
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:10:07.978833+00:00"
+      },
+      "fit": "Apply",
+      "fitReason": "Direct match on agent workflows, tool use, and production LLM services.",
+      "fitCheckedAt": "2026-08-05T09:30:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: AI Engineer (LangChain / Agents)\nCompany: Cascade Analytics\nLocation: Atlanta, GA (Hybrid)\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/ai-engineer-langchain\n\n=== JOB DESCRIPTION ===\nAbout the role\nCascade Analytics is hiring a AI Engineer (LangChain / Agents) to design and ship production AI systems used by customers daily.\n\nWhat you'll do\n- Build and harden LLM agent workflows (tool calling, retrieval, evaluation loops)\n- Own backend services in Python and/or Go on AWS\n- Integrate model providers and internal APIs with clear contracts and observability\n- Partner with product to turn messy workflows into reliable agent experiences\n\nWhat we're looking for\n- Experience shipping cloud services (AWS, containers/Kubernetes, CI/CD)\n- Hands-on with LLM tooling (agents, RAG, structured tool use)\n- Comfortable debugging production systems and writing clear design notes\n- Strong communication and bias toward pragmatic delivery\n\nNice to have\n- MCP / IDE agent integrations\n- Bedrock or equivalent managed model platforms\n- Prior work in recruiting/ops automation or knowledge systems\n\nThis is sample demo copy for CareerPilot UI walkthroughs \u2014 not a live posting.\n"
+    },
+    {
+      "jobId": "demo-009-k8s-platform",
+      "title": "Senior Platform Engineer (Kubernetes)",
+      "company": "Nebula Systems",
+      "location": "Remote (US East)",
+      "date": "2026-08-04T15:45:00-04:00",
+      "url": "https://example.com/jobs/platform-k8s",
+      "source": "indeed",
+      "status": "Rejected",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "Yes",
+      "appliedDate": "2026-07-28",
+      "emailId": "demo-email-009",
+      "updatedAt": "2026-08-13T04:10:37.665799+00:00",
+      "evalResult": {
+        "pass": true,
+        "overallScore": 23,
+        "scores": {
+          "grounding": 5,
+          "ruleCompliance": 5,
+          "jobFit": 5,
+          "minimalChange": 4,
+          "readability": 4
+        },
+        "hardFails": [],
+        "violations": [],
+        "changedParagraphCount": 6,
+        "summary": "Strong tailoring that aligns well with the Senior Platform Engineer (Kubernetes) role. All five edits are grounded in verified evidence and directly address JD requirements: (1) Professional summary now emphasizes AI agent workflows, LLM tool calling, RAG, Bedrock, and MCP\u2014all supported by project evidence and matching 'hands-on with LLM tooling' and 'Bedrock' nice-to-haves. (2) Incident response bullet adds 'tool calling' language, supported by the AI-driven incident platform project. (3-4) KubeSentry project bullets add specific MCP implementation details (mcp-go, stdio transport, tool names) and agent orchestration architecture (planner, tool execution nodes, Claude on Bedrock), all verified in project evidence and directly relevant to the role's focus on agent workflows and Kubernetes. (5) Minor edit to paragraph-28 removes unnecessary verbosity ('formal change management' \u2192 'change management'). The deletion of incomplete paragraph-102 is appropriate. Job fit is excellent: candidate has AWS/Kubernetes/Python/Go experience, Bedrock hands-on work, AI agent/RAG/tool-calling projects, and MCP integration\u2014covering core requirements and multiple nice-to-haves. Minimal-change score is 4/5 because five paragraphs were edited, but all changes are justified and targeted. Readability is 4/5 due to minor density in the new KubeSentry bullets (technical detail is appropriate but slightly verbose). No unsupported claims, no invented tools/metrics/employers, headline rule preserved, no scope creep. This is a well-executed, evidence-backed tailoring for a strong job match.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "replace",
+            "reason": "Aligns Professional Summary with job requirements for LLM agent workflows, tool calling, and MCP while maintaining Cloud Software Engineer identity",
+            "evidence": "KubeSentry AI project: 'Implemented an agent-based workflow...MCP tools...Amazon Bedrock' and CareerPilot AI: 'Built a Retrieval-Augmented Generation (RAG) architecture'",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": "Cloud Software Engineer with 5+ years delivering enterprise cloud solutions using AWS, Python, Go, Terraform, and Kubernetes. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI agent workflows, LLM tool calling, and Retrieval-Augmented Generation (RAG) systems using Amazon Bedrock and Model Context Protocol (MCP) through personal projects."
+          },
+          {
+            "paragraphId": "paragraph-40",
+            "operation": "replace",
+            "reason": "Deepens matching agent workflow and tool calling detail for platform engineering role",
+            "evidence": "AI-Driven Incident Response project: 'agent-based workflow...tool calling...root cause analysis using Amazon Bedrock...AWS DevOps Agent (AI ops agent) capabilities'",
+            "originalText": "Designed AI agent workflows that automated incident investigations by collecting operational evidence and generating AI-powered incident summaries, remediation recommendations, rollback plans, and validation procedures.",
+            "newText": "Built AI agent workflows using AWS Bedrock that automated incident investigations through tool calling, collecting operational evidence from CloudWatch and generating AI-powered root cause analysis, remediation recommendations, and rollback plans."
+          },
+          {
+            "paragraphId": "paragraph-99",
+            "operation": "replace",
+            "reason": "Adds concrete MCP implementation detail matching job's MCP requirement",
+            "evidence": "KubeSentry AI: 'Developed a Kubernetes MCP server and MCP client...MCP tools include get_pods, describe_pod, pod_logs, and list_events...mcp-go over stdio'",
+            "originalText": "Developed a Kubernetes MCP server exposing diagnostic tools for AI agents, including pod logs, events, deployments, namespaces, and workload inspection.",
+            "newText": "Built a Kubernetes MCP server in Go exposing diagnostic tools (get_pods, describe_pod, pod_logs, list_events) over Model Context Protocol using mcp-go stdio transport, enabling AI agents to investigate cluster incidents through standardized tool calls."
+          },
+          {
+            "paragraphId": "paragraph-98",
+            "operation": "replace",
+            "reason": "Clarifies agent architecture and Bedrock integration for platform role",
+            "evidence": "KubeSentry AI: 'Graph-based workflow nodes...Planner...ToolRunner...uses Claude on Amazon Bedrock for root cause analysis'",
+            "originalText": "Designed and implemented a graph-based AI agent orchestration framework in Go using shared state, planner logic, and modular workflow nodes to coordinate Kubernetes incident investigations.",
+            "newText": "Designed a graph-based agent orchestration framework in Go with planner logic and tool execution nodes to coordinate Kubernetes incident investigations using Claude on Amazon Bedrock for root cause analysis."
+          },
+          {
+            "paragraphId": "paragraph-28",
+            "operation": "replace",
+            "reason": "Compresses less relevant database migration detail to reach 2-page target",
+            "evidence": "Original paragraph-28",
+            "originalText": "Coordinated production database migrations through formal change management",
+            "newText": "Coordinated production Aurora PostgreSQL migrations through change management."
+          },
+          {
+            "paragraphId": "paragraph-102",
+            "operation": "delete",
+            "reason": "Removes incomplete sentence fragment to improve document quality and reduce length",
+            "evidence": "Original paragraph-102 ends mid-sentence: 'including RAG-backed runbooks, structure'",
+            "originalText": "Designing a modular architecture supporting future capabilities including RAG-backed runbooks, structure",
+            "newText": ""
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:10:37.665729+00:00"
+      },
+      "fit": "Maybe",
+      "fitReason": "K8s strength is real; role has limited LLM/agent surface area.",
+      "fitCheckedAt": "2026-07-28T11:00:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: Senior Platform Engineer (Kubernetes)\nCompany: Nebula Systems\nLocation: Remote (US East)\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/platform-k8s\n\n=== JOB DESCRIPTION ===\nAbout the role\nNebula Systems is hiring a Senior Platform Engineer (Kubernetes) to design and ship production AI systems used by customers daily.\n\nWhat you'll do\n- Build and harden LLM agent workflows (tool calling, retrieval, evaluation loops)\n- Own backend services in Python and/or Go on AWS\n- Integrate model providers and internal APIs with clear contracts and observability\n- Partner with product to turn messy workflows into reliable agent experiences\n\nWhat we're looking for\n- Experience shipping cloud services (AWS, containers/Kubernetes, CI/CD)\n- Hands-on with LLM tooling (agents, RAG, structured tool use)\n- Comfortable debugging production systems and writing clear design notes\n- Strong communication and bias toward pragmatic delivery\n\nNice to have\n- MCP / IDE agent integrations\n- Bedrock or equivalent managed model platforms\n- Prior work in recruiting/ops automation or knowledge systems\n\nThis is sample demo copy for CareerPilot UI walkthroughs \u2014 not a live posting.\n"
+    },
+    {
+      "jobId": "demo-010-mcp-tools",
+      "title": "Software Engineer, Developer Tooling & MCP",
+      "company": "Forge IDE",
+      "location": "Remote",
+      "date": "2026-08-11T18:20:00-04:00",
+      "url": "https://example.com/jobs/mcp-tooling",
+      "source": "aiapply",
+      "status": "Active",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "No",
+      "appliedDate": "",
+      "emailId": "demo-email-010",
+      "updatedAt": "2026-08-13T04:11:03.406066+00:00",
+      "evalResult": {
+        "pass": true,
+        "overallScore": 23,
+        "scores": {
+          "grounding": 5,
+          "ruleCompliance": 5,
+          "jobFit": 5,
+          "minimalChange": 4,
+          "readability": 4
+        },
+        "hardFails": [],
+        "violations": [],
+        "changedParagraphCount": 6,
+        "summary": "Strong tailoring with excellent grounding and job alignment. All five edits are well-supported by verified evidence (MCP projects, AI Assistant Gmail platform, kubectl-mcp-lab, and Atos AI incident response work). The professional summary now explicitly mentions 'LLM agent workflows, tool calling, RAG systems, and Model Context Protocol (MCP) integrations using Amazon Bedrock and Anthropic Claude'\u2014directly matching the JD's core requirements. Paragraph-40 and paragraph-41 add 'tool calling' and 'clear contracts and observability' language that mirrors the JD's emphasis on agent workflows and API contracts. Paragraph-99 strengthens the KubeSentry MCP server description with 'structured tool calls,' aligning with the JD's 'structured tool use' requirement. Paragraph-91 is slightly condensed but retains all factual claims. The incomplete paragraph-102 deletion is appropriate. Minor deduction on minimalChange because paragraph-91 was already strong and the edit primarily shortened it without adding new job-relevant substance. Minor readability deduction because some edits introduce denser phrasing ('orchestrating multi-step agent investigations, integrating...APIs with clear contracts and observability') that slightly reduces scan-ability. No unsupported claims, no invented tools, headline rule preserved, and the tailored resume now covers AWS, Python, Go, Kubernetes, CI/CD, LLM agents, tool calling, RAG, MCP, and Bedrock\u2014hitting all core JD requirements with verified evidence. Excellent job fit for this Developer Tooling & MCP role.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "replace",
+            "reason": "Aligns Professional Summary with target role's focus on LLM agents, tool calling, MCP, and Bedrock while preserving core cloud stack",
+            "evidence": "Verified candidate evidence: kubectl MCP Lab, AI Assistant Gmail MCP project, AI & Machine Learning skills (Bedrock, Claude, Tool Calling, RAG, MCP)",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": "Cloud Software Engineer with 5+ years delivering enterprise cloud solutions using AWS, Python, Go, Terraform, and Kubernetes. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building LLM agent workflows, tool calling, RAG systems, and Model Context Protocol (MCP) integrations using Amazon Bedrock and Anthropic Claude."
+          },
+          {
+            "paragraphId": "paragraph-40",
+            "operation": "replace",
+            "reason": "Deepens matching AI agent and tool-calling detail for the target role while keeping the verified metric",
+            "evidence": "Original paragraph-40 and paragraph-42 support Bedrock foundation models, operational data analysis, and tool-based workflows",
+            "originalText": "Designed AI agent workflows that automated incident investigations by collecting operational evidence and generating AI-powered incident summaries, remediation recommendations, rollback plans, and validation procedures.",
+            "newText": "Designed AI agent workflows using AWS Bedrock foundation models to automate incident investigations through tool calling, collecting operational evidence from CloudWatch and generating AI-powered incident summaries and remediation recommendations."
+          },
+          {
+            "paragraphId": "paragraph-41",
+            "operation": "replace",
+            "reason": "Emphasizes backend services, API integration, clear contracts, and observability\u2014direct job requirements",
+            "evidence": "Original paragraph-41 supports Lambda, Step Functions, and service integrations; job description requests 'clear contracts and observability'",
+            "originalText": "Developed AWS Lambda functions and Step Functions workflows to orchestrate incident investigations and integrate with CloudWatch alarms, EventBridge, ServiceNow, and Slack.",
+            "newText": "Developed Python Lambda functions and Step Functions workflows orchestrating multi-step agent investigations, integrating CloudWatch alarms, EventBridge, ServiceNow, and Slack APIs with clear contracts and observability."
+          },
+          {
+            "paragraphId": "paragraph-99",
+            "operation": "replace",
+            "reason": "Highlights MCP server implementation and structured tool use\u2014core job requirements",
+            "evidence": "Original paragraph-99 and verified kubectl MCP Lab evidence support MCP server development and tool-based agent workflows",
+            "originalText": "Developed a Kubernetes MCP server exposing diagnostic tools for AI agents, including pod logs, events, deployments, namespaces, and workload inspection.",
+            "newText": "Developed a Kubernetes MCP server in Go exposing diagnostic tools (pod logs, events, deployments, namespaces) so AI agents can inspect workloads through structured tool calls."
+          },
+          {
+            "paragraphId": "paragraph-91",
+            "operation": "replace",
+            "reason": "Shortens while preserving RAG, Bedrock, and retrieval tooling\u2014all job-relevant",
+            "evidence": "Original paragraph-91 supports the same technical stack",
+            "originalText": "Built a Retrieval-Augmented Generation (RAG) pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings to retrieve relevant resume knowledge for semantic search and AI-powered career workflows",
+            "newText": "Built a RAG pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings for semantic search and retrieval workflows."
+          },
+          {
+            "paragraphId": "paragraph-102",
+            "operation": "delete",
+            "reason": "Removes incomplete sentence fragment to reach 2-page target",
+            "evidence": "Original paragraph-102 is an incomplete sentence ending mid-word",
+            "originalText": "Designing a modular architecture supporting future capabilities including RAG-backed runbooks, structure",
+            "newText": ""
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:11:03.406033+00:00"
+      },
+      "fit": "Apply",
+      "fitReason": "MCP server experience and multi-runtime agent tooling are a direct hit.",
+      "fitCheckedAt": "2026-08-11T18:45:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: Software Engineer, Developer Tooling & MCP\nCompany: Forge IDE\nLocation: Remote\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/mcp-tooling\n\n=== JOB DESCRIPTION ===\nAbout the role\nForge IDE is hiring a Software Engineer, Developer Tooling & MCP to design and ship production AI systems used by customers daily.\n\nWhat you'll do\n- Build and harden LLM agent workflows (tool calling, retrieval, evaluation loops)\n- Own backend services in Python and/or Go on AWS\n- Integrate model providers and internal APIs with clear contracts and observability\n- Partner with product to turn messy workflows into reliable agent experiences\n\nWhat we're looking for\n- Experience shipping cloud services (AWS, containers/Kubernetes, CI/CD)\n- Hands-on with LLM tooling (agents, RAG, structured tool use)\n- Comfortable debugging production systems and writing clear design notes\n- Strong communication and bias toward pragmatic delivery\n\nNice to have\n- MCP / IDE agent integrations\n- Bedrock or equivalent managed model platforms\n- Prior work in recruiting/ops automation or knowledge systems\n\nThis is sample demo copy for CareerPilot UI walkthroughs \u2014 not a live posting.\n"
+    },
+    {
+      "jobId": "demo-011-unset",
+      "title": "Machine Learning Engineer",
+      "company": "PixelForge",
+      "location": "San Francisco, CA",
+      "date": "2026-08-12T16:00:00-04:00",
+      "url": "https://example.com/jobs/mle-pixelforge",
+      "source": "linkedin",
+      "status": "Active",
+      "jobDescription": "Not available",
+      "analysisStatus": "Pending",
+      "applied": "No",
+      "appliedDate": "",
+      "emailId": "demo-email-011",
+      "updatedAt": "2026-08-12T16:00:00-04:00",
+      "evalResult": null,
+      "fit": "Unset",
+      "fitReason": "",
+      "fitCheckedAt": ""
+    },
+    {
+      "jobId": "demo-012-security-ai",
+      "title": "Senior Engineer, AI/ML Security",
+      "company": "ShieldOps",
+      "location": "Atlanta, GA",
+      "date": "2026-08-03T09:50:00-04:00",
+      "url": "https://example.com/jobs/ai-ml-security",
+      "source": "manual",
+      "status": "Active",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "No",
+      "appliedDate": "",
+      "emailId": "demo-email-012",
+      "updatedAt": "2026-08-13T04:11:29.348826+00:00",
+      "evalResult": {
+        "pass": true,
+        "overallScore": 23,
+        "scores": {
+          "grounding": 5,
+          "ruleCompliance": 5,
+          "jobFit": 5,
+          "minimalChange": 4,
+          "readability": 4
+        },
+        "hardFails": [],
+        "violations": [],
+        "changedParagraphCount": 5,
+        "summary": "Strong tailoring that aligns well with the Senior Engineer, AI/ML Security role at ShieldOps. All four edits are grounded in verified evidence and directly address JD requirements: paragraph-5 adds 'production AI agent workflows, LLM tool calling, RAG pipelines' (supported by CareerPilot AI and incident response projects); paragraph-40 explicitly mentions 'tool calling and evaluation loops' (supported by AI-Driven Incident Response project using Bedrock); paragraph-91 emphasizes 'structured tool use and semantic retrieval workflows' (supported by CareerPilot RAG architecture); paragraph-99 adds 'structured LLM tool calls' for MCP server (supported by KubeSentry MCP implementation). The deletion of paragraph-67 (duplicate achievement) is appropriate. The tailored resume now clearly demonstrates hands-on LLM agent workflows, tool calling, RAG, Bedrock experience, and Python/Go on AWS\u2014all core JD requirements. Minimal change penalty applies because paragraph-91 was already strong and the edit adds modest incremental value. Readability is slightly reduced by technical density in the summary, but remains professional. No unsupported claims, no invented tools, headline rule preserved, and excellent job fit for this AI/ML Security engineering role.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "replace",
+            "reason": "Deepens alignment with AI/ML Security role by emphasizing LLM agent workflows, tool calling, and production AI systems from verified evidence",
+            "evidence": "Document 513a481d (AI-Driven Incident Response) and Document d5884d47 (CareerPilot AI RAG architecture)",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": "Cloud Software Engineer with 5+ years delivering enterprise cloud solutions using AWS, Python, Go, Terraform, and Kubernetes. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building production AI agent workflows, LLM tool calling, RAG pipelines, and event-driven automation using Amazon Bedrock, Lambda, Step Functions, and DynamoDB."
+          },
+          {
+            "paragraphId": "paragraph-40",
+            "operation": "replace",
+            "reason": "Adds explicit LLM tool calling and evaluation loops to match job requirements while keeping verified technical detail",
+            "evidence": "Document 513a481d: 'AWS Bedrock, Lambda, Step Functions, EventBridge, DynamoDB, Slack, CloudWatch, and AWS DevOps Agent (AI ops agent) capabilities for root cause analysis'",
+            "originalText": "Designed AI agent workflows that automated incident investigations by collecting operational evidence and generating AI-powered incident summaries, remediation recommendations, rollback plans, and validation procedures.",
+            "newText": "Designed LLM agent workflows with tool calling and evaluation loops that automated incident investigations by collecting operational evidence from CloudWatch and generating AI-powered remediation recommendations and rollback plans using AWS Bedrock."
+          },
+          {
+            "paragraphId": "paragraph-91",
+            "operation": "replace",
+            "reason": "Emphasizes structured tool use and retrieval workflows to align with job's LLM tooling requirements",
+            "evidence": "Document d5884d47: 'Built a Retrieval-Augmented Generation (RAG) architecture that retrieves relevant resume knowledge before generating ATS-optimized resume updates'",
+            "originalText": "Built a Retrieval-Augmented Generation (RAG) pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings to retrieve relevant resume knowledge for semantic search and AI-powered career workflows",
+            "newText": "Built a RAG pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings to retrieve relevant resume knowledge before generating tailored content, demonstrating structured tool use and semantic retrieval workflows."
+          },
+          {
+            "paragraphId": "paragraph-99",
+            "operation": "replace",
+            "reason": "Highlights MCP and structured tool calling to match job's nice-to-have requirements",
+            "evidence": "Document 92782bee: 'Model Context Protocol (MCP) (Intermediate)' and paragraph-99 original content",
+            "originalText": "Developed a Kubernetes MCP server exposing diagnostic tools for AI agents, including pod logs, events, deployments, namespaces, and workload inspection.",
+            "newText": "Developed a Kubernetes MCP server exposing diagnostic tools as structured LLM tool calls, including pod logs, events, deployments, and workload inspection for AI agent integration."
+          },
+          {
+            "paragraphId": "paragraph-67",
+            "operation": "delete",
+            "reason": "Removes duplicate achievement already stated in paragraph-44 and paragraph-61 to reduce redundancy",
+            "evidence": "Paragraph-44: 'Reduced incident investigation effort from over 60 minutes to approximately 15 minutes'",
+            "originalText": "Built AI-driven cloud automation that reduced incident investigation time from over 60 minutes to approximately 15 minutes.",
+            "newText": ""
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:11:29.348771+00:00"
+      },
+      "fit": "Maybe",
+      "fitReason": "Interesting AI + security blend; needs more formal ML research depth than current focus.",
+      "fitCheckedAt": "2026-08-03T10:15:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: Senior Engineer, AI/ML Security\nCompany: ShieldOps\nLocation: Atlanta, GA\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/ai-ml-security\n\n=== JOB DESCRIPTION ===\nAbout the role\nShieldOps is hiring a Senior Engineer, AI/ML Security to design and ship production AI systems used by customers daily.\n\nWhat you'll do\n- Build and harden LLM agent workflows (tool calling, retrieval, evaluation loops)\n- Own backend services in Python and/or Go on AWS\n- Integrate model providers and internal APIs with clear contracts and observability\n- Partner with product to turn messy workflows into reliable agent experiences\n\nWhat we're looking for\n- Experience shipping cloud services (AWS, containers/Kubernetes, CI/CD)\n- Hands-on with LLM tooling (agents, RAG, structured tool use)\n- Comfortable debugging production systems and writing clear design notes\n- Strong communication and bias toward pragmatic delivery\n\nNice to have\n- MCP / IDE agent integrations\n- Bedrock or equivalent managed model platforms\n- Prior work in recruiting/ops automation or knowledge systems\n\nThis is sample demo copy for CareerPilot UI walkthroughs \u2014 not a live posting.\n"
+    },
+    {
+      "jobId": "demo-013-dental-hygienist",
+      "title": "Dental Hygienist",
+      "company": "SmileBright Dental",
+      "location": "Marietta, GA",
+      "date": "2026-08-12T11:00:00-04:00",
+      "url": "https://example.com/jobs/dental-hygienist",
+      "source": "indeed",
+      "status": "Active",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "No",
+      "appliedDate": "",
+      "emailId": "demo-email-013",
+      "updatedAt": "2026-08-13T04:11:45.899744+00:00",
+      "evalResult": {
+        "pass": false,
+        "overallScore": 20,
+        "scores": {
+          "grounding": 5,
+          "ruleCompliance": 5,
+          "jobFit": 0,
+          "minimalChange": 5,
+          "readability": 5
+        },
+        "hardFails": [
+          "Fundamental career/profession/license mismatch: The job requires a licensed Dental Hygienist with 2+ years chairside experience, proficiency with digital X-rays and patient charting, and excellent bedside manner. The tailored resume presents a Cloud Software Engineer with AWS/Python/Go/Kubernetes expertise and zero dental hygiene credentials, clinical experience, or relevant healthcare patient care background. This is a complete profession mismatch (software engineering vs. clinical dental hygiene). Even though no edits were made and grounding is perfect, jobFit must be 0 and pass must be false."
+        ],
+        "violations": [
+          {
+            "paragraphId": "entire-resume",
+            "type": "fundamental_profession_mismatch",
+            "quote": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes...",
+            "explanation": "The job description explicitly requires: (1) Active Georgia dental hygiene license, (2) 2+ years chairside experience, (3) Proficiency with digital X-rays and patient charting, (4) Excellent bedside manner, and (5) states 'This role has no software engineering or AI responsibilities.' The tailored resume is entirely focused on cloud software engineering, AWS certifications, AI/ML projects, Kubernetes, Terraform, and enterprise software development. There is zero evidence of dental hygiene licensure, clinical patient care, chairside experience, radiography, or any healthcare credentials relevant to dental hygiene practice. This is not a skills gap\u2014it is a complete profession mismatch equivalent to submitting a software engineer resume for a nursing, teaching, or CDL trucking role."
+          }
+        ],
+        "changedParagraphCount": 0,
+        "summary": "The tailored resume is identical to the original (zero edits), demonstrating perfect grounding, rule compliance, and minimal change. However, this is a fundamental profession mismatch: the job requires a licensed Dental Hygienist with clinical chairside experience, digital X-ray proficiency, and patient care skills, while the resume presents a Cloud Software Engineer with AWS/Kubernetes/AI expertise and zero dental hygiene credentials or clinical experience. The job description explicitly states 'This role has no software engineering or AI responsibilities.' Despite flawless edit discipline, jobFit must be scored 0 due to complete absence of required licensure and profession-specific qualifications, and pass must be false per the hard fail condition for fundamental career/profession/license mismatch.",
+        "changes": [],
+        "evaluatedAt": "2026-08-13T04:11:45.899703+00:00"
+      },
+      "fit": "Skip",
+      "fitReason": "Clinical dental role \u2014 no overlap with software/AI engineering.",
+      "fitCheckedAt": "2026-08-12T11:10:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: Dental Hygienist\nCompany: SmileBright Dental\nLocation: Marietta, GA\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/dental-hygienist\n\n=== JOB DESCRIPTION ===\nWe need a licensed Dental Hygienist for a busy family practice.\n\nRequirements\n- Active Georgia dental hygiene license\n- 2+ years chairside experience\n- Proficient with digital X-rays and patient charting\n- Excellent bedside manner\n\nThis role has no software engineering or AI responsibilities.\n"
+    },
+    {
+      "jobId": "demo-014-cpa",
+      "title": "Senior Tax Accountant (CPA)",
+      "company": "Ledger & Co.",
+      "location": "Atlanta, GA",
+      "date": "2026-08-11T14:20:00-04:00",
+      "url": "https://example.com/jobs/senior-tax-cpa",
+      "source": "linkedin",
+      "status": "Active",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "No",
+      "appliedDate": "",
+      "emailId": "demo-email-014",
+      "updatedAt": "2026-08-13T04:12:08.061856+00:00",
+      "evalResult": {
+        "pass": false,
+        "overallScore": 10,
+        "scores": {
+          "grounding": 5,
+          "ruleCompliance": 5,
+          "jobFit": 0,
+          "minimalChange": 0,
+          "readability": 0
+        },
+        "hardFails": [
+          "Fundamental career/profession/license mismatch: Senior Tax Accountant (CPA) role requires active CPA license and 5+ years public accounting tax experience. Candidate is a Cloud Software Engineer with AWS certifications and software engineering background. No tax accounting experience, no CPA license, no public accounting background in original resume or verified evidence.",
+          "Unnecessary edit to paragraph-5: Added disclaimer about lacking CPA/tax qualifications, but this changes a paragraph that did not need modification for a role the candidate fundamentally cannot qualify for. The edit acknowledges the mismatch but does not improve job fit."
+        ],
+        "violations": [
+          {
+            "paragraphId": "paragraph-5",
+            "type": "unnecessary_change",
+            "quote": "This role requires CPA licensure and public accounting tax experience, which are not part of my professional background.",
+            "explanation": "While this disclaimer is honest and grounded, it represents an unnecessary edit to the professional summary for a role the candidate cannot qualify for. The original resume should not be submitted at all for this position. Adding a mismatch disclaimer does not constitute meaningful tailoring."
+          },
+          {
+            "paragraphId": "entire_resume",
+            "type": "fundamental_mismatch",
+            "quote": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes",
+            "explanation": "The job requires: (1) Active CPA license, (2) 5+ years public accounting tax experience, (3) Corporate and partnership tax return preparation, (4) Tax research skills, (5) Busy-season availability. The candidate has: AWS certifications, cloud/software engineering experience, Python/Go programming, Kubernetes/Terraform infrastructure work, AI/ML projects. Zero overlap with tax accounting profession. No amount of tailoring can bridge this gap."
+          }
+        ],
+        "changedParagraphCount": 1,
+        "summary": "This evaluation reveals a fundamental career mismatch that cannot be resolved through resume tailoring. The job requires a CPA-licensed tax accountant with public accounting experience preparing corporate and partnership returns. The candidate is a cloud software engineer with AWS certifications and no tax/accounting background. While the single edit (adding a mismatch disclaimer to paragraph-5) is perfectly grounded and rule-compliant, it does not improve job fit\u2014it simply acknowledges the unbridgeable gap. Grounding=5 and ruleCompliance=5 because the edit is honest and supported. jobFit=0 because the tailored resume provides zero coverage of CPA licensure, tax return preparation, public accounting experience, or tax research\u2014the core JD requirements. minimalChange=0 because even one edit is unnecessary when the candidate should not apply at all. readability=0 because the disclaimer awkwardly inserted into the summary damages flow. The hard fail is triggered by the fundamental profession mismatch: this is a tax accounting role requiring specific licensure and domain expertise that the candidate completely lacks. Pass must be false regardless of edit quality.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "replace",
+            "reason": "Adds transparent acknowledgment that the candidate does not match the CPA/tax accounting requirements",
+            "evidence": "Job description requires CPA license and 5+ years public accounting tax experience; candidate evidence shows only software engineering background",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects. This role requires CPA licensure and public accounting tax experience, which are not part of my professional background."
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:12:08.061808+00:00"
+      },
+      "fit": "Skip",
+      "fitReason": "CPA/tax accounting role \u2014 unrelated to AI/cloud engineering.",
+      "fitCheckedAt": "2026-08-11T14:35:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: Senior Tax Accountant (CPA)\nCompany: Ledger & Co.\nLocation: Atlanta, GA\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/senior-tax-cpa\n\n=== JOB DESCRIPTION ===\nSenior Tax Accountant for corporate and partnership returns.\n\nMust have\n- Active CPA license\n- 5+ years public accounting tax experience\n- Strong Excel and tax research skills\n- Busy-season availability\n\nNo engineering, cloud, or machine learning work.\n"
+    },
+    {
+      "jobId": "demo-015-nurse",
+      "title": "Registered Nurse \u2014 ICU",
+      "company": "Piedmont Care Hospital",
+      "location": "Atlanta, GA",
+      "date": "2026-08-10T08:45:00-04:00",
+      "url": "https://example.com/jobs/rn-icu",
+      "source": "indeed",
+      "status": "Active",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "No",
+      "appliedDate": "",
+      "emailId": "demo-email-015",
+      "updatedAt": "2026-08-13T04:12:31.251855+00:00",
+      "evalResult": {
+        "pass": false,
+        "overallScore": 8,
+        "scores": {
+          "grounding": 5,
+          "ruleCompliance": 3,
+          "jobFit": 0,
+          "minimalChange": 0,
+          "readability": 0
+        },
+        "hardFails": [
+          "Fundamental career/profession/license mismatch: JD requires active RN license (Georgia), BLS, ACLS, 2+ years ICU experience, and ability to manage critical care patients. Tailored resume presents a Cloud Software Engineer with AWS/Python/Go/Terraform/Kubernetes experience and zero nursing credentials, clinical experience, or healthcare licensure.",
+          "Edit changes paragraph-5 unnecessarily: the original professional summary already clearly identified the candidate as a Cloud Software Engineer with cloud/software focus. Adding a disclaimer about lacking clinical healthcare does not make this resume suitable for an ICU RN night shift role.",
+          "Minimal change violation: editing the summary to add a mismatch disclaimer when the entire resume is fundamentally unsuitable represents unnecessary churn that does not improve job fit."
+        ],
+        "violations": [
+          {
+            "paragraphId": "paragraph-5",
+            "type": "unnecessary_edit",
+            "quote": "This background does not include clinical healthcare, nursing, patient care, or medical licensure.",
+            "explanation": "While this disclaimer is factually accurate and grounded, it represents an unnecessary edit. The original resume already made clear the candidate is a Cloud Software Engineer. Adding a disclaimer does not address the fundamental mismatch between a software engineering profile and an ICU Registered Nurse position requiring active RN license, BLS, ACLS, and critical care experience."
+          },
+          {
+            "paragraphId": "entire resume",
+            "type": "fundamental_mismatch",
+            "quote": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes",
+            "explanation": "The JD explicitly requires: Active RN license (Georgia), BLS and ACLS certifications, 2+ years ICU experience preferred, and ability to manage critical care patients. The JD also states 'Not a technology or engineering position.' The tailored resume presents a software engineer with zero nursing education, clinical training, healthcare licensure, or patient care experience. This is a complete profession mismatch."
+          }
+        ],
+        "changedParagraphCount": 1,
+        "summary": "This evaluation represents a fundamental career mismatch case. The job description requires a Registered Nurse with active Georgia RN license, BLS, ACLS, ICU experience, and critical care patient management skills for a night shift ICU position. The tailored resume presents a Cloud Software Engineer with AWS, Python, Go, Terraform, and Kubernetes expertise but zero nursing credentials, clinical experience, or healthcare licensure. While the single edit (adding a disclaimer about lacking clinical healthcare background) is factually grounded and honest, it does not\u2014and cannot\u2014make this resume suitable for an ICU RN role. The edit is unnecessary because the original resume already clearly identified the candidate as a software engineer. Grounding scores 5/5 because the disclaimer is truthful and supported. RuleCompliance scores 3/5 for unnecessary edit and minimal-change violation. JobFit must score 0/5 because the tailored resume provides zero coverage of core JD requirements (nursing license, clinical certifications, patient care). MinimalChange scores 0/5 because editing the summary when the entire resume is fundamentally unsuitable represents unnecessary churn. Readability scores 0/5 because adding a mismatch disclaimer to an already-clear software engineering resume does not improve clarity for this nursing role. Pass is false due to fundamental profession mismatch\u2014high grounding and honesty cannot override the complete absence of required nursing qualifications.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "replace",
+            "reason": "Clarifies that the candidate's software engineering background does not align with the ICU RN clinical care requirements",
+            "evidence": "Original resume paragraph-5 and job description requirements for RN license, BLS, ACLS, and ICU patient care experience",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": "Cloud Software Engineer with 5+ years of experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, and Kubernetes. This background does not include clinical healthcare, nursing, patient care, or medical licensure."
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:12:31.251801+00:00"
+      },
+      "fit": "Skip",
+      "fitReason": "Licensed clinical nursing role \u2014 zero match to software/AI profile.",
+      "fitCheckedAt": "2026-08-10T09:00:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: Registered Nurse \u2014 ICU\nCompany: Piedmont Care Hospital\nLocation: Atlanta, GA\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/rn-icu\n\n=== JOB DESCRIPTION ===\nICU RN for night shift.\n\nRequirements\n- Active RN license (Georgia)\n- BLS and ACLS\n- 2+ years ICU experience preferred\n- Ability to manage critical care patients\n\nNot a technology or engineering position.\n"
+    },
+    {
+      "jobId": "demo-016-truck-driver",
+      "title": "CDL-A Over-the-Road Truck Driver",
+      "company": "Highway Partners Logistics",
+      "location": "Dallas, TX",
+      "date": "2026-08-09T17:30:00-04:00",
+      "url": "https://example.com/jobs/cdl-otr",
+      "source": "careerbuilder",
+      "status": "Active",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "No",
+      "appliedDate": "",
+      "emailId": "demo-email-016",
+      "updatedAt": "2026-08-13T04:13:04.936166+00:00",
+      "evalResult": {
+        "pass": false,
+        "overallScore": 10,
+        "scores": {
+          "grounding": 5,
+          "ruleCompliance": 5,
+          "jobFit": 0,
+          "minimalChange": 0,
+          "readability": 0
+        },
+        "hardFails": [
+          "Fundamental career/profession/license mismatch: JD requires CDL-A license, 1+ year OTR trucking experience, clean MVR, and willingness to be away 10-14 days driving freight. Tailored resume presents a Cloud Software Engineer with AWS/Python/Kubernetes expertise and zero commercial driving experience, CDL license, or transportation industry background. This is a core profession mismatch.",
+          "Deletion removes job-relevant content: The KEY ACHIEVEMENTS section (paragraphs 59-67) was deleted. While these achievements are software/cloud-focused and not trucking-related, they were part of the original resume's value proposition. However, given the fundamental mismatch, this deletion does not improve job fit.",
+          "Minimal change violation: The edit made unnecessary changes (summary trim, achievements deletion) when the fundamental issue is that no amount of tailoring can bridge a software engineer resume to a CDL-A truck driver role without fabricating credentials."
+        ],
+        "violations": [
+          {
+            "paragraphId": "paragraph-5",
+            "type": "unnecessary_edit",
+            "quote": "Cloud Software Engineer with 5+ years delivering enterprise cloud solutions using AWS, Python, Go, Terraform, and Kubernetes. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures.",
+            "explanation": "This edit removes 'software engineering experience' and 'modern cloud technologies' from the original summary. While the edit is grounded and maintains the headline rule, it is unnecessary because no summary adjustment can make a software engineer qualified for a CDL-A trucking position. The edit wastes effort on cosmetic changes when the fundamental mismatch cannot be resolved."
+          },
+          {
+            "paragraphId": "paragraph-59 through paragraph-67",
+            "type": "unnecessary_deletion",
+            "quote": "KEY ACHIEVEMENTS section including incident response optimization, database migration success, workflow efficiency improvements, and platform engagement metrics",
+            "explanation": "Deleting the achievements section removes quantified accomplishments from the original resume. While these achievements are irrelevant to CDL-A trucking, their deletion does not improve job fit (still 0) and represents unnecessary churn. The fundamental issue is profession mismatch, not achievement formatting."
+          },
+          {
+            "paragraphId": "entire_resume",
+            "type": "fundamental_mismatch",
+            "quote": "Cloud Software Engineer with 5+ years... AWS Certified Solutions Architect... Python, Go, Terraform, Kubernetes... vs. CDL-A OTR driver for regional freight... Valid Class A CDL... Clean MVR... 1+ year OTR experience",
+            "explanation": "The JD explicitly requires: (1) Valid Class A CDL license, (2) Clean Motor Vehicle Record, (3) 1+ year over-the-road trucking experience, (4) Willingness to be away 10-14 days driving. The tailored resume provides: Cloud/AWS engineering, software development, Kubernetes, AI/ML projects, and zero commercial driving credentials. The JD also states 'No software development responsibilities.' This is a complete profession mismatch\u2014equivalent to submitting a software engineer resume for a nursing or dental hygiene role. No tailoring can bridge this gap without fabricating a CDL license and trucking experience."
+          }
+        ],
+        "changedParagraphCount": 10,
+        "summary": "HARD FAIL: Fundamental career mismatch. The JD requires a CDL-A licensed truck driver with OTR experience, clean MVR, and willingness to drive freight 10-14 days at a time, explicitly stating 'No software development responsibilities.' The tailored resume presents a Cloud Software Engineer with AWS/Python/Kubernetes expertise and zero commercial driving credentials or transportation experience. While the edits are grounded (no fabricated claims) and rule-compliant (headline preserved, no unsupported facts added), they cannot overcome the core profession mismatch. The summary trim and achievements deletion are unnecessary changes that do not improve job fit. jobFit must be 0 because the candidate lacks the required CDL license, MVR, and trucking experience\u2014no amount of cloud engineering expertise is relevant. This is analogous to applying a software resume to a nursing or teaching credential role. Pass must be false despite perfect grounding, as the fundamental qualification gap cannot be bridged by tailoring alone.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "replace",
+            "reason": "Maintains headline rule and shortens summary while preserving core qualifications",
+            "evidence": "Original paragraph-5 and verified certifications",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": "Cloud Software Engineer with 5+ years delivering enterprise cloud solutions using AWS, Python, Go, Terraform, and Kubernetes. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures."
+          },
+          {
+            "paragraphId": "paragraph-59",
+            "operation": "delete",
+            "reason": "Removes redundant KEY ACHIEVEMENTS section header; achievements already captured in experience bullets",
+            "evidence": "Original resume structure shows achievements duplicated in experience sections",
+            "originalText": "KEY ACHIEVEMENTS",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-60",
+            "operation": "delete",
+            "reason": "Removes redundant achievement; incident response time already stated in paragraph-44",
+            "evidence": "Original paragraph-44 and paragraph-61 contain duplicate metric",
+            "originalText": "Streamlined Incident Response",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-61",
+            "operation": "delete",
+            "reason": "Removes redundant achievement detail already captured in paragraph-44",
+            "evidence": "Original paragraph-44 contains same 60-to-15-minute metric",
+            "originalText": "Reduced incident investigation time from 60 to 15 minutes with AI platform implementation.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-62",
+            "operation": "delete",
+            "reason": "Removes redundant achievement; database migration already stated in paragraph-26",
+            "evidence": "Original paragraph-26 and paragraph-63 contain duplicate Aurora PostgreSQL migration claim",
+            "originalText": "Database Migration Success",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-63",
+            "operation": "delete",
+            "reason": "Removes redundant achievement detail already captured in paragraph-26",
+            "evidence": "Original paragraph-26 contains same Aurora PostgreSQL Global Cluster migration",
+            "originalText": "Led the first successful migration of Amazon Aurora PostgreSQL Global Clusters to Terraform-managed Infrastructure as Code.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-64",
+            "operation": "delete",
+            "reason": "Removes redundant achievement; workflow optimization already stated in paragraph-17",
+            "evidence": "Original paragraph-17 and paragraph-65 contain duplicate 15-to-1-minute metric",
+            "originalText": "Enhanced Workflow Efficiency",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-65",
+            "operation": "delete",
+            "reason": "Removes redundant achievement detail already captured in paragraph-17",
+            "evidence": "Original paragraph-17 contains same workflow optimization metric",
+            "originalText": "Optimized legacy automation from 15 minutes to 1 minute via workflow improvements.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-66",
+            "operation": "delete",
+            "reason": "Removes redundant achievement header with duplicate content",
+            "evidence": "Original paragraph-67 duplicates paragraph-44 incident response metric",
+            "originalText": "Boosted Platform Engagement",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-67",
+            "operation": "delete",
+            "reason": "Removes third instance of the same 60-to-15-minute incident response metric",
+            "evidence": "Original paragraph-44 already contains this metric",
+            "originalText": "Built AI-driven cloud automation that reduced incident investigation time from over 60 minutes to approximately 15 minutes.",
+            "newText": ""
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:13:04.936121+00:00"
+      },
+      "fit": "Skip",
+      "fitReason": "Commercial driving job \u2014 completely unrelated to engineering.",
+      "fitCheckedAt": "2026-08-09T17:45:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: CDL-A Over-the-Road Truck Driver\nCompany: Highway Partners Logistics\nLocation: Dallas, TX\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/cdl-otr\n\n=== JOB DESCRIPTION ===\nCDL-A OTR driver for regional freight.\n\nRequirements\n- Valid Class A CDL\n- Clean MVR\n- 1+ year OTR experience\n- Willing to be away 10\u201314 days at a time\n\nNo software development responsibilities.\n"
+    },
+    {
+      "jobId": "demo-017-elementary-teacher",
+      "title": "Elementary School Teacher (3rd Grade)",
+      "company": "Fulton County Schools",
+      "location": "Atlanta, GA",
+      "date": "2026-08-08T12:00:00-04:00",
+      "url": "https://example.com/jobs/elementary-teacher",
+      "source": "linkedin",
+      "status": "Active",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "No",
+      "appliedDate": "",
+      "emailId": "demo-email-017",
+      "updatedAt": "2026-08-13T04:13:34.036893+00:00",
+      "evalResult": {
+        "pass": false,
+        "overallScore": 8,
+        "scores": {
+          "grounding": 4,
+          "ruleCompliance": 3,
+          "jobFit": 0,
+          "minimalChange": 1,
+          "readability": 0
+        },
+        "hardFails": [
+          "Fundamental career/profession/license mismatch: JD requires valid Georgia teaching certificate, elementary education degree, and classroom management experience for 3rd grade teaching position. Tailored resume presents a Cloud Software Engineer with AWS certifications and no teaching credentials or K-12 classroom experience.",
+          "Edit changes paragraph-5 unnecessarily: the original professional summary already clearly establishes the candidate as a Cloud Software Engineer. Adding 'Background in cloud infrastructure and software development; not an elementary education professional' does not make this resume suitable for an elementary teaching role and represents an unnecessary edit that highlights the mismatch rather than addressing it.",
+          "Deletion of job-relevant content: While no explicit deletions occurred, the tailored resume retains 100% of cloud/software engineering content while adding only a disclaimer. For a teaching position requiring classroom management and literacy/math standards commitment, none of the original content is relevant, yet it all remains."
+        ],
+        "violations": [
+          {
+            "paragraphId": "paragraph-5",
+            "type": "unnecessary_edit",
+            "quote": "Background in cloud infrastructure and software development; not an elementary education professional.",
+            "explanation": "This edit adds a disclaimer acknowledging the mismatch but does not improve job fit. The original paragraph already clearly identified the candidate as a Cloud Software Engineer. Adding 'not an elementary education professional' is an unnecessary change that highlights unsuitability rather than tailoring toward the role. The edit violates the minimal change principle by modifying content that didn't need modification for this fundamentally mismatched application."
+          },
+          {
+            "paragraphId": "entire-resume",
+            "type": "fundamental_mismatch",
+            "quote": "Cloud Software Engineer with 5+ years of software engineering experience... AWS Certified Solutions Architect... Terraform, Kubernetes, Python, Go",
+            "explanation": "The job description explicitly requires: (1) Valid Georgia teaching certificate, (2) Elementary education degree, (3) Classroom management experience, (4) Commitment to literacy and math standards. The tailored resume provides zero evidence of teaching credentials, K-12 education, classroom experience, or pedagogical training. The entire professional history is cloud/software engineering consulting. This is a fundamental profession mismatch equivalent to applying a nursing resume to a software role or vice versa."
+          },
+          {
+            "paragraphId": "paragraph-80-82",
+            "type": "missing_required_qualification",
+            "quote": "Bachelor of Science in Mechatronics Engineering, Southern Polytechnic State University",
+            "explanation": "JD requires 'Elementary education degree.' The tailored resume shows a Mechatronics Engineering degree with no teaching credential, education coursework, or Georgia teaching certificate. This is a hard requirement mismatch that cannot be overcome by disclaimer language."
+          }
+        ],
+        "changedParagraphCount": 1,
+        "summary": "HARD FAIL: Fundamental career mismatch. The JD requires a Georgia-certified elementary school teacher with classroom management experience and an elementary education degree for a 3rd grade teaching position. The tailored resume presents a Cloud Software Engineer with AWS certifications, Mechatronics Engineering degree, and 13+ years of software/cloud/automation experience across enterprise consulting. Zero teaching credentials, K-12 experience, or education training are present. The single edit adds a disclaimer ('not an elementary education professional') to paragraph-5, which is grounded and honest but unnecessary\u2014the original already clearly established software engineering identity. This edit violates minimal change by modifying content that didn't need changing and highlights rather than addresses the mismatch. Grounding scores 4/5 (the disclaimer is supported, but the edit itself is unnecessary). RuleCompliance scores 3/5 (headline rule preserved, no invention, but unnecessary edit and fundamental mismatch). JobFit scores 0/5 (no teaching license, no classroom experience, no elementary education degree\u2014core JD requirements completely unmet despite honest disclosure). MinimalChange scores 1/5 (one unnecessary edit to add a mismatch disclaimer). Readability scores 0/5 (the disclaimer makes the resume read awkwardly and emphasizes unsuitability). The tailored resume is well-grounded and honest about the mismatch but remains fundamentally unsuitable for an elementary teaching role. Being truthful about lacking qualifications does not create job fit.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "replace",
+            "reason": "Adds explicit clarification that the candidate's background is in cloud software engineering, not education, to address the complete mismatch with the elementary teaching role",
+            "evidence": "Original resume paragraph-5 and verified candidate evidence showing cloud/AI engineering focus",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects. Background in cloud infrastructure and software development; not an elementary education professional."
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:13:34.036863+00:00"
+      },
+      "fit": "Skip",
+      "fitReason": "K-12 teaching credential role \u2014 not an engineering/AI fit.",
+      "fitCheckedAt": "2026-08-08T12:20:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: Elementary School Teacher (3rd Grade)\nCompany: Fulton County Schools\nLocation: Atlanta, GA\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/elementary-teacher\n\n=== JOB DESCRIPTION ===\n3rd grade classroom teacher for the upcoming school year.\n\nRequirements\n- Valid Georgia teaching certificate\n- Elementary education degree\n- Classroom management experience\n- Commitment to literacy and math standards\n\nNot a software or AI engineering role.\n"
+    },
+    {
+      "jobId": "demo-018-chef",
+      "title": "Executive Chef",
+      "company": "Harbor Table Restaurant Group",
+      "location": "Charleston, SC",
+      "date": "2026-08-07T19:10:00-04:00",
+      "url": "https://example.com/jobs/executive-chef",
+      "source": "dice",
+      "status": "Active",
+      "jobDescription": "Available",
+      "analysisStatus": "Tailored Resume",
+      "applied": "No",
+      "appliedDate": "",
+      "emailId": "demo-email-018",
+      "updatedAt": "2026-08-13T04:14:37.993162+00:00",
+      "evalResult": {
+        "pass": false,
+        "overallScore": 10,
+        "scores": {
+          "grounding": 5,
+          "ruleCompliance": 5,
+          "jobFit": 0,
+          "minimalChange": 0,
+          "readability": 0
+        },
+        "hardFails": [
+          "Fundamental career/profession mismatch: Cloud Software Engineer resume for Executive Chef position requiring 7+ years professional kitchen leadership, culinary degree, menu costing, and inventory control",
+          "Deletion removes ALL substantive content from resume, leaving only section headers and metadata - no experience bullets, no skills, no certifications, no project details remain",
+          "Minimal change violation: 77 paragraphs deleted (75% of resume content) when job description explicitly states 'No programming, cloud, or AI work involved' - appropriate response would be to leave resume unchanged or add brief mismatch note"
+        ],
+        "violations": [
+          {
+            "paragraphId": "paragraph-5",
+            "type": "inappropriate_deletion",
+            "quote": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies...",
+            "explanation": "Professional summary deleted. While content is irrelevant to Executive Chef role, wholesale deletion of all content creates an empty resume shell rather than addressing the fundamental mismatch appropriately."
+          },
+          {
+            "paragraphId": "paragraph-10 through paragraph-102",
+            "type": "excessive_deletion",
+            "quote": "[All experience bullets, certifications, skills, achievements, and project details]",
+            "explanation": "77 paragraphs deleted representing 100% of substantive resume content. Only headers and metadata remain. This creates an unusable document rather than either (a) leaving resume unchanged with mismatch note, or (b) making targeted edits if any transferable skills existed."
+          }
+        ],
+        "changedParagraphCount": 61,
+        "summary": "This tailoring represents a fundamental failure on multiple dimensions. The job requires an Executive Chef with 7+ years kitchen leadership, culinary degree, menu costing, and inventory control - explicitly stating 'No programming, cloud, or AI work involved.' The candidate is a Cloud Software Engineer with zero culinary experience, kitchen leadership, or relevant credentials. The proposed edits delete 77 paragraphs (75% of content), leaving only section headers and contact information - creating an empty resume shell rather than a functional document. While grounding (5/5) and ruleCompliance (5/5) are perfect because no unsupported claims were added, jobFit must be 0/5 due to the fundamental profession mismatch - the tailored resume provides zero coverage of Executive Chef requirements. MinimalChange scores 0/5 because deleting 77 paragraphs is the opposite of minimal intervention; the appropriate response would be leaving the resume unchanged or adding a brief mismatch disclaimer. Readability scores 0/5 because a resume with only headers is not readable or usable. The edits demonstrate technical rule-following (no fabrication) but catastrophic judgment - destroying the resume rather than acknowledging the mismatch appropriately. Pass must be false due to fundamental career mismatch and inappropriate content destruction.",
+        "changes": [
+          {
+            "paragraphId": "paragraph-5",
+            "operation": "delete",
+            "reason": "Removes the entire Professional Summary as it describes a Cloud Software Engineer role with AWS, Python, Go, Terraform, Kubernetes, and AI/ML experience, which has zero relevance to an Executive Chef position requiring culinary leadership, menu costing, and kitchen operations",
+            "evidence": "Job description explicitly states 'No programming, cloud, or AI work involved' and requires '7+ years professional kitchen leadership' and 'Menu costing and inventory control'",
+            "originalText": "Cloud Software Engineer with 5+ years of software engineering experience delivering enterprise cloud solutions using AWS, Python, Go, Terraform, Kubernetes, and modern cloud technologies. AWS Certified Solutions Architect \u2013 Professional with hands-on experience building AI-powered applications using Amazon Bedrock, AI agents, Retrieval-Augmented Generation (RAG), and cloud-native architectures through personal projects.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-10",
+            "operation": "delete",
+            "reason": "Removes cloud software engineering experience entirely irrelevant to restaurant kitchen leadership",
+            "evidence": "Job description requires culinary degree and kitchen leadership, not cloud solutions or software engineering",
+            "originalText": "Cloud Software Engineer delivering cloud-based solutions and software engineering services for enterprise clients",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-13",
+            "operation": "delete",
+            "reason": "Removes Terraform Enterprise migration work completely unrelated to culinary operations",
+            "evidence": "Job description requires menu costing, inventory control, and kitchen leadership",
+            "originalText": "Supported migration from Terraform Enterprise to HCP Terraform as part of the Platform Engineering team",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-14",
+            "operation": "delete",
+            "reason": "Removes Infrastructure as Code work with no relevance to seafood restaurant operations",
+            "evidence": "Executive Chef role requires culinary expertise, not AWS infrastructure management",
+            "originalText": "Imported AWS infrastructure, HCP Terraform users, teams, and platform resources into Terraform-managed Infrastructure as Code",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-15",
+            "operation": "delete",
+            "reason": "Removes Python Lambda development entirely unrelated to high-volume kitchen management",
+            "evidence": "Job requires professional kitchen leadership and weekend/evening availability, not software development",
+            "originalText": "Developed Python AWS Lambda functions integrating with the HCP Terraform API to automate workspace lifecycle operations through a React-based self-service platform",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-16",
+            "operation": "delete",
+            "reason": "Removes AWS infrastructure provisioning irrelevant to culinary operations",
+            "evidence": "Executive Chef position requires menu development and kitchen operations, not cloud infrastructure",
+            "originalText": "Provisioned AWS infrastructure across development, test, and production using standardized Terraform modules",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-17",
+            "operation": "delete",
+            "reason": "Removes automation workflow optimization unrelated to restaurant kitchen efficiency",
+            "evidence": "Job description focuses on culinary leadership and menu costing, not technical automation",
+            "originalText": "Optimized legacy automation workflows from 15 minutes to 1 minute",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-20",
+            "operation": "delete",
+            "reason": "Removes Java and Python test framework development completely irrelevant to culinary work",
+            "evidence": "Executive Chef role requires kitchen leadership, not software testing expertise",
+            "originalText": "Developed Java Customer test frameworks and Python integration/unit tests",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-21",
+            "operation": "delete",
+            "reason": "Removes Kubernetes deployment management unrelated to seafood restaurant operations",
+            "evidence": "Job requires culinary degree and kitchen operations, not container orchestration",
+            "originalText": "Managed monthly Kubernetes deployments using Rancher and Helm",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-22",
+            "operation": "delete",
+            "reason": "Removes production troubleshooting with kubectl and Docker, irrelevant to kitchen management",
+            "evidence": "Executive Chef position requires menu costing and inventory control, not infrastructure debugging",
+            "originalText": "Investigated production issues using Rancher, kubectl, Docker, and application logs",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-23",
+            "operation": "delete",
+            "reason": "Removes Kubernetes platform work entirely unrelated to culinary leadership",
+            "evidence": "Job description explicitly states no programming or cloud work involved",
+            "originalText": "Supported Kubernetes platform initiatives including cluster provisioning, migrations, and modernization",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-26",
+            "operation": "delete",
+            "reason": "Removes Aurora PostgreSQL database migration completely irrelevant to restaurant operations",
+            "evidence": "Executive Chef role requires kitchen leadership and menu development, not database migrations",
+            "originalText": "Led the first successful migration of Aurora PostgreSQL Global Clusters from a legacy Infrastructure as Code platform",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-27",
+            "operation": "delete",
+            "reason": "Removes PostgreSQL version upgrade planning unrelated to culinary operations",
+            "evidence": "Job requires professional kitchen experience, not database administration",
+            "originalText": "Planned PostgreSQL major version upgrades, including multi-stage upgrade paths required by Aurora PostgreSQL",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-28",
+            "operation": "delete",
+            "reason": "Removes production database change management irrelevant to seafood restaurant work",
+            "evidence": "Executive Chef position focuses on menu costing and kitchen leadership",
+            "originalText": "Coordinated production database migrations through formal change management",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-29",
+            "operation": "delete",
+            "reason": "Removes Terraform validation work unrelated to culinary expertise",
+            "evidence": "Job requires culinary degree and kitchen operations, not infrastructure validation",
+            "originalText": "Validated Terraform configurations for multi-region Aurora PostgreSQL deployments",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-30",
+            "operation": "delete",
+            "reason": "Removes Go dependency auditing and unit testing irrelevant to restaurant management",
+            "evidence": "Executive Chef role requires menu development and kitchen leadership, not software development",
+            "originalText": "Audited Go dependencies, remediated technical debt, and developed Go unit tests",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-33",
+            "operation": "delete",
+            "reason": "Removes React application development completely unrelated to culinary work",
+            "evidence": "Job description requires kitchen leadership and menu costing, not web development",
+            "originalText": "Developed React application enhancements for a healthcare platform",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-34",
+            "operation": "delete",
+            "reason": "Removes Azure authentication implementation irrelevant to seafood restaurant operations",
+            "evidence": "Executive Chef position requires culinary expertise, not cloud authentication",
+            "originalText": "Implemented Azure App Registration authentication",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-35",
+            "operation": "delete",
+            "reason": "Removes BigQuery and Pub/Sub work unrelated to kitchen management",
+            "evidence": "Job requires professional kitchen leadership, not data pipeline experience",
+            "originalText": "Worked with BigQuery, Pub/Sub, and Artifact Registry",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-36",
+            "operation": "delete",
+            "reason": "Removes CI/CD pipeline troubleshooting irrelevant to culinary operations",
+            "evidence": "Executive Chef role focuses on menu development and kitchen operations",
+            "originalText": "Resolved Azure DevOps CI/CD pipeline issues and remediated security vulnerabilities",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-37",
+            "operation": "delete",
+            "reason": "Removes AI-assisted React development unrelated to restaurant kitchen work",
+            "evidence": "Job description explicitly states no programming work involved",
+            "originalText": "Leveraged Cursor AI to accelerate React development while maintaining code quality",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-39",
+            "operation": "delete",
+            "reason": "Removes AI incident response platform development entirely irrelevant to culinary leadership",
+            "evidence": "Executive Chef position requires kitchen operations expertise, not AI platform development",
+            "originalText": "Collaborated within a three-person team to build an AI-driven incident response platform using AWS Bedrock, Lambda, Step Functions, EventBridge, DynamoDB, ServiceNow, Slack, and CloudWatch.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-40",
+            "operation": "delete",
+            "reason": "Removes AI agent workflow design unrelated to seafood restaurant management",
+            "evidence": "Job requires menu costing and inventory control, not AI automation",
+            "originalText": "Designed AI agent workflows that automated incident investigations by collecting operational evidence and generating AI-powered incident summaries, remediation recommendations, rollback plans, and validation procedures.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-41",
+            "operation": "delete",
+            "reason": "Removes Lambda and Step Functions development irrelevant to kitchen operations",
+            "evidence": "Executive Chef role requires culinary leadership, not serverless architecture",
+            "originalText": "Developed AWS Lambda functions and Step Functions workflows to orchestrate incident investigations and integrate with CloudWatch alarms, EventBridge, ServiceNow, and Slack.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-42",
+            "operation": "delete",
+            "reason": "Removes Amazon Bedrock integration work unrelated to restaurant operations",
+            "evidence": "Job description focuses on kitchen leadership and menu development",
+            "originalText": "Integrated Amazon Bedrock foundation models to analyze operational data and generate context-aware recommendations for cloud infrastructure incidents.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-43",
+            "operation": "delete",
+            "reason": "Removes AWS DevOps Agent integration irrelevant to culinary work",
+            "evidence": "Executive Chef position requires professional kitchen experience, not DevOps automation",
+            "originalText": "Implemented integrations with AWS DevOps Agent capabilities to extend automated investigation workflows.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-44",
+            "operation": "delete",
+            "reason": "Removes incident investigation automation unrelated to kitchen management",
+            "evidence": "Job requires menu costing and kitchen operations, not incident response automation",
+            "originalText": "Reduced incident investigation effort from over 60 minutes to approximately 15 minutes by automating evidence collection and AI-assisted analysis.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-45",
+            "operation": "delete",
+            "reason": "Removes cloud operations proof of concept work irrelevant to seafood restaurant leadership",
+            "evidence": "Executive Chef role requires culinary expertise and kitchen leadership",
+            "originalText": "Contributed to the architecture, implementation, and testing of an internal proof of concept demonstrating AI-assisted cloud operations.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-48",
+            "operation": "delete",
+            "reason": "Removes Java application development for transportation systems, unrelated to culinary work",
+            "evidence": "Job description requires professional kitchen leadership, not software engineering",
+            "originalText": "Staff System Engineer developing Java applications and automation solutions for intelligent transportation systems",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-50",
+            "operation": "delete",
+            "reason": "Removes industrial automation engineering experience irrelevant to restaurant operations",
+            "evidence": "Executive Chef position requires culinary degree and kitchen management experience",
+            "originalText": "Control System Engineer developing industrial automation and control systems",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-52",
+            "operation": "delete",
+            "reason": "Removes AWS Solutions Architect certification entirely irrelevant to culinary leadership",
+            "evidence": "Job requires kitchen operations expertise, not cloud architecture certifications",
+            "originalText": "AWS Certified Solutions Architect - Professional",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-53",
+            "operation": "delete",
+            "reason": "Removes AWS Developer certification unrelated to seafood restaurant management",
+            "evidence": "Executive Chef role requires culinary credentials, not AWS certifications",
+            "originalText": "AWS Certified Developer - Associate",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-54",
+            "operation": "delete",
+            "reason": "Removes AWS SysOps certification irrelevant to kitchen operations",
+            "evidence": "Job description requires culinary degree, not cloud operations certifications",
+            "originalText": "AWS Certified SysOps Administrator - Associate",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-55",
+            "operation": "delete",
+            "reason": "Removes AWS Cloud Practitioner certification unrelated to culinary work",
+            "evidence": "Executive Chef position requires professional kitchen leadership credentials",
+            "originalText": "AWS Certified Cloud Practitioner",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-56",
+            "operation": "delete",
+            "reason": "Removes AWS AI Practitioner certification irrelevant to restaurant operations",
+            "evidence": "Job requires menu costing and kitchen management, not AI certifications",
+            "originalText": "AWS Certified AI Practitioner",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-57",
+            "operation": "delete",
+            "reason": "Removes Terraform certification unrelated to culinary expertise",
+            "evidence": "Executive Chef role requires culinary credentials, not infrastructure certifications",
+            "originalText": "HashiCorp Terraform Associate",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-58",
+            "operation": "delete",
+            "reason": "Removes Azure Fundamentals certification irrelevant to seafood restaurant leadership",
+            "evidence": "Job description requires culinary degree and kitchen operations experience",
+            "originalText": "Microsoft Azure Fundamentals (AZ-900)",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-61",
+            "operation": "delete",
+            "reason": "Removes incident response automation achievement unrelated to kitchen management",
+            "evidence": "Executive Chef position requires culinary achievements, not AI platform metrics",
+            "originalText": "Reduced incident investigation time from 60 to 15 minutes with AI platform implementation.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-63",
+            "operation": "delete",
+            "reason": "Removes database migration achievement irrelevant to restaurant operations",
+            "evidence": "Job requires menu development and kitchen leadership achievements",
+            "originalText": "Led the first successful migration of Amazon Aurora PostgreSQL Global Clusters to Terraform-managed Infrastructure as Code.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-65",
+            "operation": "delete",
+            "reason": "Removes workflow automation achievement unrelated to culinary operations",
+            "evidence": "Executive Chef role requires kitchen efficiency achievements, not technical automation",
+            "originalText": "Optimized legacy automation from 15 minutes to 1 minute via workflow improvements.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-67",
+            "operation": "delete",
+            "reason": "Removes AI-driven automation achievement irrelevant to seafood restaurant work",
+            "evidence": "Job description requires culinary leadership achievements, not cloud automation",
+            "originalText": "Built AI-driven cloud automation that reduced incident investigation time from over 60 minutes to approximately 15 minutes.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-70",
+            "operation": "delete",
+            "reason": "Removes programming languages entirely irrelevant to kitchen operations",
+            "evidence": "Executive Chef position requires culinary skills, not Python, Go, or JavaScript",
+            "originalText": "Python (Primary), Go (Primary), JavaScript",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-72",
+            "operation": "delete",
+            "reason": "Removes cloud platform skills unrelated to restaurant management",
+            "evidence": "Job requires kitchen leadership skills, not AWS or Azure expertise",
+            "originalText": "AWS, Azure",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-74",
+            "operation": "delete",
+            "reason": "Removes infrastructure and DevOps skills irrelevant to culinary work",
+            "evidence": "Executive Chef role requires menu costing and kitchen operations skills",
+            "originalText": "Terraform, HCP Terraform, Kubernetes, Helm, Docker, Linux, CI/CD, Git",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-76",
+            "operation": "delete",
+            "reason": "Removes AI/ML skills entirely unrelated to seafood restaurant operations",
+            "evidence": "Job description explicitly states no AI work involved",
+            "originalText": "AWS Bedrock, LangChain, LangGraph, AI Agents, Retrieval-Augmented Generation (RAG), ChromaDB, Amazon Titan Embeddings, Semantic Search, Prompt Engineering, Vector Databases, Model Context Protocol (MCP), AI Evaluation (AI Evals)",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-78",
+            "operation": "delete",
+            "reason": "Removes database skills irrelevant to kitchen management",
+            "evidence": "Executive Chef position requires culinary expertise, not database administration",
+            "originalText": "Aurora PostgreSQL, PostgreSQL, DynamoDB",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-81",
+            "operation": "delete",
+            "reason": "Removes Mechatronics Engineering degree unrelated to culinary credentials",
+            "evidence": "Job prefers culinary degree, not engineering education",
+            "originalText": "Southern Polytechnic State University",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-86",
+            "operation": "delete",
+            "reason": "Removes AI RAG platform project entirely irrelevant to restaurant operations",
+            "evidence": "Executive Chef role requires culinary portfolio, not AI engineering projects",
+            "originalText": "Designed and developed an AI agent-powered RAG application using Python, AWS Bedrock, LangChain, LangGraph, ChromaDB, and Amazon Titan Embeddings.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-87",
+            "operation": "delete",
+            "reason": "Removes document ingestion pipeline work unrelated to kitchen management",
+            "evidence": "Job requires menu development experience, not AI pipeline development",
+            "originalText": "Built a document ingestion pipeline to process PDFs, generate semantic embeddings, and store vectors in ChromaDB",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-88",
+            "operation": "delete",
+            "reason": "Removes Amazon Bedrock integration work irrelevant to culinary operations",
+            "evidence": "Executive Chef position requires kitchen leadership, not LLM workflows",
+            "originalText": "Integrated Amazon Bedrock foundation models to generate context-aware responses using semantic search and grounded LLM workflows",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-90",
+            "operation": "delete",
+            "reason": "Removes CareerPilot AI platform development unrelated to seafood restaurant work",
+            "evidence": "Job description requires culinary expertise, not AI career platform development",
+            "originalText": "Designed and developed CareerPilot AI, an AI-powered career optimization platform that tailors resumes and cover letters to specific job descriptions while preserving original DOCX formatting.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-91",
+            "operation": "delete",
+            "reason": "Removes RAG pipeline development irrelevant to kitchen operations",
+            "evidence": "Executive Chef role requires menu costing skills, not AI pipeline architecture",
+            "originalText": "Built a Retrieval-Augmented Generation (RAG) pipeline using Python, FastAPI, AWS Bedrock, LangChain, ChromaDB, and Amazon Titan Embeddings to retrieve relevant resume knowledge for semantic search and AI-powered career workflows",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-92",
+            "operation": "delete",
+            "reason": "Removes FastAPI REST API development unrelated to restaurant management",
+            "evidence": "Job requires kitchen leadership experience, not API development",
+            "originalText": "Developed REST APIs with FastAPI for resume ingestion, job analysis, semantic retrieval, resume tailoring, and cover letter generation",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-93",
+            "operation": "delete",
+            "reason": "Removes resume parsing and semantic search work irrelevant to culinary operations",
+            "evidence": "Executive Chef position requires menu development, not document processing systems",
+            "originalText": "Implemented structured resume parsing, JSON knowledge schemas, semantic search, and document-aware editing to generate ATS-friendly resume updates while preserving formatting and avoiding fabricated experience",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-94",
+            "operation": "delete",
+            "reason": "Removes AI evaluation framework development unrelated to seafood restaurant work",
+            "evidence": "Job description requires kitchen operations expertise, not AI evaluation systems",
+            "originalText": "Designed and implemented an AI evaluation (AI Evals) framework that scores resume quality by evaluating factual consistency, ATS keyword coverage, response relevance, and overall tailoring quality, enabling automated validation of AI-generated resume content.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-97",
+            "operation": "delete",
+            "reason": "Removes Kubernetes troubleshooting platform development irrelevant to culinary leadership",
+            "evidence": "Executive Chef role requires professional kitchen experience, not infrastructure automation",
+            "originalText": "Developing an AI-powered Kubernetes troubleshooting platform using Go, Kubernetes (client-go), AWS Bedrock, and Retrieval-Augmented Generation (RAG).",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-98",
+            "operation": "delete",
+            "reason": "Removes AI agent orchestration framework work unrelated to restaurant operations",
+            "evidence": "Job requires menu costing and kitchen management, not AI orchestration",
+            "originalText": "Designed and implemented a graph-based AI agent orchestration framework in Go using shared state, planner logic, and modular workflow nodes to coordinate Kubernetes incident investigations.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-99",
+            "operation": "delete",
+            "reason": "Removes Kubernetes MCP server development irrelevant to seafood restaurant management",
+            "evidence": "Executive Chef position requires culinary expertise, not Kubernetes tooling",
+            "originalText": "Developed a Kubernetes MCP server exposing diagnostic tools for AI agents, including pod logs, events, deployments, namespaces, and workload inspection.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-100",
+            "operation": "delete",
+            "reason": "Removes incident detection automation unrelated to kitchen operations",
+            "evidence": "Job description requires kitchen leadership skills, not cluster monitoring",
+            "originalText": "Built automated incident detection that monitors Kubernetes clusters and identifies failures such as CrashLoopBackOff, ImagePullBackOff, and PodFailed, collecting diagnostic evidence before invoking the LLM.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-101",
+            "operation": "delete",
+            "reason": "Removes Kubernetes diagnostic tooling work irrelevant to culinary work",
+            "evidence": "Executive Chef role requires menu development expertise, not container diagnostics",
+            "originalText": "Implemented Kubernetes diagnostic tooling that gathers pod descriptions, events, and current/previous container logs to support AI-powered root cause analysis.",
+            "newText": ""
+          },
+          {
+            "paragraphId": "paragraph-102",
+            "operation": "delete",
+            "reason": "Removes modular architecture design unrelated to restaurant management",
+            "evidence": "Job requires professional kitchen leadership, not software architecture design",
+            "originalText": "Designing a modular architecture supporting future capabilities including RAG-backed runbooks, structure",
+            "newText": ""
+          }
+        ],
+        "evaluatedAt": "2026-08-13T04:14:37.993101+00:00"
+      },
+      "fit": "Skip",
+      "fitReason": "Culinary leadership role \u2014 no technical overlap.",
+      "fitCheckedAt": "2026-08-07T19:25:00-04:00",
+      "descriptionText": "=== JOB INFORMATION ===\nTitle: Executive Chef\nCompany: Harbor Table Restaurant Group\nLocation: Charleston, SC\nEmployment Type: Full-time\nSource: Demo\nSource URL: https://example.com/jobs/executive-chef\n\n=== JOB DESCRIPTION ===\nExecutive Chef for a high-volume seafood restaurant.\n\nRequirements\n- 7+ years professional kitchen leadership\n- Menu costing and inventory control\n- Culinary degree preferred\n- Weekend and evening availability\n\nNo programming, cloud, or AI work involved.\n"
+    }
+  ]
+}
