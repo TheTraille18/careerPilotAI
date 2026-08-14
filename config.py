@@ -34,6 +34,14 @@ def get_resume_filename() -> str:
     return os.getenv("RESUME_FILENAME", DEFAULT_RESUME_FILENAME)
 
 
+def get_base_resume_s3_key() -> str:
+    """S3 key for the base resume. Override with CAREERPILOT_BASE_RESUME_S3_KEY."""
+    explicit = (os.getenv("CAREERPILOT_BASE_RESUME_S3_KEY") or "").strip()
+    if explicit:
+        return explicit.lstrip("/")
+    return f"resume/{get_resume_filename()}"
+
+
 def get_tailored_resume_filename_prefix() -> str:
     return os.getenv(
         "TAILORED_RESUME_FILENAME_PREFIX",

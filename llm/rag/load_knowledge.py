@@ -1,4 +1,5 @@
 import json
+from io import BytesIO
 
 from docx import Document
 from docx.oxml.table import CT_Tbl
@@ -6,8 +7,8 @@ from docx.oxml.text.paragraph import CT_P
 from docx.table import Table
 from docx.text.paragraph import Paragraph
 
-from config import get_resume_filename
 from paths import ROOT
+from s3_store import load_base_resume_bytes
 
 
 def load_knowledge_files() -> list:
@@ -46,11 +47,8 @@ def iter_resume_paragraphs(doc: Document):
 
 
 def extract_resume_blocks() -> list:
-    path = ROOT / "data" / "resume"
-    file = get_resume_filename()
     blocks = []
-
-    doc = Document(f"{path}/{file}")
+    doc = Document(BytesIO(load_base_resume_bytes()))
 
     for index, paragraph in enumerate(iter_resume_paragraphs(doc)):
         text = paragraph.text.strip()

@@ -1,8 +1,13 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
 import boto3
+from botocore.exceptions import ClientError
+
+from config import get_base_resume_s3_key, get_resume_filename
+from paths import ROOT
 
 DEFAULT_BUCKET = "careerpilotai"
 DEFAULT_REGION = "us-east-1"
@@ -24,6 +29,26 @@ def get_bucket_name() -> str:
 def get_s3_client():
     region = os.getenv("AWS_REGION") or os.getenv("AWS_DEFAULT_REGION") or DEFAULT_REGION
     return boto3.client("s3", region_name=region)
+
+
+def local_base_resume_path() -> Path:
+    return ROOT / "data" / "resume" / get_resume_filename()
+
+
+def load_base_resume_bytes() -> bytes:
+    """Load the base resume from S3; fall back to ``data/resume/`` if missing."""
+    bucket = get_bucket_name()
+    key = get_base_resume_s3_key()
+    try:
+        response = get_s3_client().get_object(Bucket=bucket, Key=key)
+        return response["Body"].read()
+    except ClientError:
+        local = local_base_resume_path()
+        if local.is_file():
+            return local.read_bytes()
+        raise FileNotFoundError(
+            f"Base resume not found in s3://{bucket}/{key} or at {local}"
+        ) from None
 
 
 def job_post_key(job_id: str) -> str:

@@ -18,7 +18,7 @@ from llm.prompt.prompt import prompt_resume_plan
 from llm.rag.embedding import create_embeddings
 from llm.rag.load_knowledge import extract_resume_blocks, iter_resume_paragraphs
 from paths import ROOT
-from s3_store import get_bucket_name, get_job_description, upload_tailored_resume
+from s3_store import get_bucket_name, get_job_description, load_base_resume_bytes, upload_tailored_resume
 from eval.evaluate import evaluate_edits
 
 
@@ -54,7 +54,7 @@ def paragraph_index(paragraph_id: str) -> int | None:
 
 
 def apply_resume_edits(
-    input_path: str,
+    input_doc: str | BytesIO,
     job_id: str,
     edits: dict[str, str],
     uploadFile: bool = True,  # TODO check if this is need for Ai eval
@@ -62,7 +62,7 @@ def apply_resume_edits(
     deletes: list[str] | None = None,
     output_filename: str | None = None,
 ) -> str:
-    doc = Document(input_path)
+    doc = Document(input_doc)
     paragraphs = list(iter_resume_paragraphs(doc))
 
     for index, paragraph in enumerate(paragraphs):
@@ -238,15 +238,13 @@ def generate_resume(job: Job):
 
     print({"replacements": edits, "deletes": deletes, "changes": len(changes)})
 
-    path = ROOT / "data" / "resume"
-    file = get_resume_filename()
     output_filename = build_tailored_resume_filename(
         company=job.company or "",
         title=job.title or "",
     )
 
     s3_key = apply_resume_edits(
-        input_path=f"{path}/{file}",
+        input_doc=BytesIO(load_base_resume_bytes()),
         job_id=job.jobId,
         edits=edits,
         deletes=deletes,

@@ -88,6 +88,8 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    # Cross-origin UI must read this to use the real .docx download name.
+    expose_headers=["Content-Disposition"],
 )
 
 AnalysisStatusValue = Literal["Pending", "Tailored Resume", "Cover Letter"]
