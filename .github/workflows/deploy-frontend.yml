@@ -13,7 +13,7 @@ permissions:
 
 env:
   AWS_REGION: us-east-1
-  S3_BUCKET: jobs.ablackcloudapp.com
+  S3_BUCKET: careerpilotai.ablackcloudapp.com
   CLOUDFRONT_DISTRIBUTION_ID: E3TMXMU980JGM5
 
 jobs:
@@ -39,9 +39,16 @@ jobs:
 
       - name: Build
         env:
-          # Optional: set repo Variable VITE_API_BASE_URL if /api is not same-origin via CloudFront
+          # Repo Variable (Settings → Secrets and variables → Actions → Variables)
           VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
-        run: npm run build
+        run: |
+          if [ -z "${VITE_API_BASE_URL}" ]; then
+            echo "Missing GitHub Actions variable VITE_API_BASE_URL"
+            echo "Set it to https://careerpilotapi.ablackcloudapp.com"
+            exit 1
+          fi
+          echo "Building with VITE_API_BASE_URL=${VITE_API_BASE_URL}"
+          npm run build
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
