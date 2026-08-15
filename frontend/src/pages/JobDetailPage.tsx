@@ -406,6 +406,8 @@ export default function JobDetailPage() {
   const { jobId = '' } = useParams<{ jobId: string }>();
   const [searchParams] = useSearchParams();
   const source = searchParams.get('source')?.trim() || '';
+  const returnQuery = searchParams.get('return')?.trim() || '';
+  const backToJobs = returnQuery ? `/?${returnQuery}` : '/';
   const { canEdit, authEnabled, isAdmin } = useAdmin();
 
   const [job, setJob] = useState<JobListing | null>(null);
@@ -584,8 +586,8 @@ export default function JobDetailPage() {
             </p>
           </div>
           <div className="header-actions">
-            <Tip text="Return to the main jobs table">
-              <Link to="/" className="btn-secondary link-button">
+            <Tip text="Return to the main jobs table (keeps your filters)">
+              <Link to={backToJobs} className="btn-secondary link-button">
                 Back to jobs
               </Link>
             </Tip>

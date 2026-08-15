@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, useSearchParams } from 'react-router-dom';
 import { fetchJobs, createJob, updateJobStatus, updateJobDescription, fetchJobDescriptionFromUrl, checkTodaysFit, checkJobFit } from './api/jobs';
 import type { AnalysisStatus, FitStatus, JobListing, JobStatus } from './types/job';
 import { ANALYSIS_STATUSES, FIT_STATUSES, JOB_STATUSES } from './types/job';
@@ -72,6 +72,39 @@ const EMPTY_FILTERS: Record<ColumnKey, string> = {
   applied: '',
   date: '',
 };
+
+type JobsTab = 'active' | 'applied' | 'interview' | 'inactive';
+
+function parseJobsTab(value: string | null): JobsTab {
+  if (value === 'applied' || value === 'interview' || value === 'inactive' || value === 'active') {
+    return value;
+  }
+  return 'active';
+}
+
+function filtersFromSearchParams(searchParams: URLSearchParams): Record<ColumnKey, string> {
+  const next = { ...EMPTY_FILTERS };
+  for (const { key } of COLUMN_FILTERS) {
+    next[key] = searchParams.get(key) || '';
+  }
+  return next;
+}
+
+function listStateToSearchParams(
+  filters: Record<ColumnKey, string>,
+  globalSearch: string,
+  activeTab: JobsTab,
+): URLSearchParams {
+  const next = new URLSearchParams();
+  if (activeTab !== 'active') next.set('tab', activeTab);
+  const q = globalSearch.trim();
+  if (q) next.set('q', q);
+  for (const { key } of COLUMN_FILTERS) {
+    const value = filters[key].trim();
+    if (value) next.set(key, value);
+  }
+  return next;
+}
 
 function formatDate(value: string): string {
   if (!value) return 'n/a';
@@ -487,6 +520,7 @@ function JobDetailModal({
   onUpdated: (job: JobListing) => void;
 }) {
   const navigate = useNavigate();
+  const [listSearchParams] = useSearchParams();
   const { canEdit } = useAdmin();
   const [checkingFit, setCheckingFit] = useState(false);
   const [fitError, setFitError] = useState<string | null>(null);
@@ -522,6 +556,8 @@ function JobDetailModal({
 
   const openFullDetails = () => {
     const params = new URLSearchParams({ source: job.source });
+    const listQuery = listSearchParams.toString();
+    if (listQuery) params.set('return', listQuery);
     navigate(`/jobs/${encodeURIComponent(job.jobId)}?${params}`);
   };
 
@@ -902,17 +938,26 @@ function normalizeJob(job: JobListing): JobListing {
 
 function JobsPage() {
   const { authEnabled, isAdmin, email, canEdit } = useAdmin();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [jobs, setJobs] = useState<JobListing[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [filters, setFilters] = useState<Record<ColumnKey, string>>(EMPTY_FILTERS);
-  const [globalSearch, setGlobalSearch] = useState('');
-  const [activeTab, setActiveTab] = useState<'active' | 'applied' | 'interview' | 'inactive'>('active');
+  const [filters, setFilters] = useState<Record<ColumnKey, string>>(() =>
+    filtersFromSearchParams(searchParams),
+  );
+  const [globalSearch, setGlobalSearch] = useState(() => searchParams.get('q') || '');
+  const [activeTab, setActiveTab] = useState<JobsTab>(() => parseJobsTab(searchParams.get('tab')));
   const [editingJob, setEditingJob] = useState<JobListing | null>(null);
   const [selectedJob, setSelectedJob] = useState<JobListing | null>(null);
   const [addingJob, setAddingJob] = useState(false);
   const [checkingFit, setCheckingFit] = useState(false);
   const [fitMessage, setFitMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const next = listStateToSearchParams(filters, globalSearch, activeTab);
+    if (next.toString() === searchParams.toString()) return;
+    setSearchParams(next, { replace: true });
+  }, [filters, globalSearch, activeTab, searchParams, setSearchParams]);
 
   const loadJobs = useCallback(async () => {
     setLoading(true);
@@ -970,7 +1015,7 @@ function JobsPage() {
     return options;
   }, [jobs]);
 
-  const tabOf = useCallback((job: JobListing): 'active' | 'applied' | 'interview' | 'inactive' => {
+  const tabOf = useCallback((job: JobListing): JobsTab => {
     const status = normalizeJobStatus(job.status);
     if (INACTIVE_STATUSES.has(status)) return 'inactive';
     if (status === 'Interview') return 'interview';
