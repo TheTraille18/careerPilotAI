@@ -24,6 +24,7 @@ data/resume/*.html
 data/resume/*_Tailored.docx
 data/resume/*_2.docx
 data/resume/*Enhancv*
+data/resume/*.docx
 
 # Misc local docs
 Customer_Reply_*.pdf

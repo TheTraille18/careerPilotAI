@@ -286,6 +286,7 @@ A. Tailored vs Original Resume
 B. Tailored vs Job Description
    - jobFit measures how well the tailored resume content actually covers the job's required
      skills, licenses, tools, and responsibilities using only supported facts.
+   - Do not reduce jobFit for remote vs on-site/hybrid or office-location preferences.
    - Reward real alignment with required skills/responsibilities using only supported facts.
    - Penalize keyword stuffing, corporate fluff, or JD mirroring that adds no substance.
    - Check whether important JD requirements are covered by remaining tailored content
@@ -329,6 +330,8 @@ HARD FAIL CONDITIONS (any one => pass=false):
   dental hygiene, CDL trucking, teaching credential, executive chef, CPA/tax roles).
   pass MUST be false even if grounding, honesty, and rule compliance are excellent.
   Do not mark PASS just because the tailor added a mismatch disclaimer or made no edits.
+  Do NOT treat remote vs on-site/hybrid, office city, commute, or travel preference as a
+  fundamental mismatch or a hard fail. Those are logistics preferences, not career identity.
 
 SCORING (0-5 each):
 - grounding (tailored vs original/evidence)
@@ -345,6 +348,14 @@ jobFit SCORING GUARDRAILS (mandatory):
   resume is a software/cloud engineer profile with no relevant license or domain experience.
   For these, jobFit MUST be 0 or 1 — even if the tailor correctly added a mismatch
   disclaimer, left the resume unchanged, or otherwise followed every other rule.
+- Do NOT score jobFit 0-1 solely because prior work was remote and the JD is on-site/hybrid
+  (or the reverse), or because the JD office is in a nearby city (e.g. Alpharetta) while
+  the resume lists remote/Atlanta. Ignore work-location modality for jobFit unless the JD
+  requires a specific licensed on-site trade the candidate cannot perform.
+- Adjacent software/AI/cloud/implementation roles with real skill overlap should score jobFit
+  in the middle range when appropriate — not automatic 0 for title wording like
+  "forward deployed," "implementation," or "customer-facing" when consulting/client delivery
+  evidence exists.
 - jobFit 4-5 is reserved for strong, evidence-backed coverage of core JD requirements.
 - A perfect disclaimer about being unqualified still means low jobFit (0-1).
 - If jobFit is 0 or 1 because of a fundamental mismatch, pass MUST be false. High grounding /

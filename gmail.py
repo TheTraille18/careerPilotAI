@@ -1,5 +1,6 @@
 import config  # noqa: F401 — load .env before AWS modules
 
+import argparse
 from pathlib import Path
 
 from google.auth.exceptions import RefreshError
@@ -61,26 +62,47 @@ def get_gmail_service():
     return build("gmail", "v1", credentials=creds, cache_discovery=False)
 
 
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Import job alert emails from Gmail into DynamoDB.",
+    )
+    parser.add_argument(
+        "days",
+        nargs="?",
+        type=int,
+        default=1,
+        help="How many days back to search Gmail (default: 1)",
+    )
+    args = parser.parse_args(argv)
+    if args.days < 1:
+        parser.error("days must be >= 1")
+    return args
+
+
 if __name__ == "__main__":
+    args = parse_args()
+    days = args.days
+
     service = get_gmail_service()
     profile = service.users().getProfile(userId="me").execute()
     print(f"Authenticated as {profile['emailAddress']}\n")
 
+    day_label = "day" if days == 1 else "days"
     print(
-        "Fetching emails from the last 7 days "
+        f"Fetching emails from the last {days} {day_label} "
         "(LinkedIn, Dice, Indeed, CareerBuilder, Remote Rocketship, AIApply)...\n"
     )
 
-    jobs = fetch_linkedin_jobs(service, max_results=100, days=7)
-    jobs.extend(fetch_dice_jobs(service, max_results=100, days=7))
-    jobs.extend(fetch_indeed_jobs(service, max_results=100, days=7))
-    jobs.extend(fetch_careerbuilder_jobs(service, max_results=100, days=7))
-    jobs.extend(fetch_remoterocketship_jobs(service, max_results=100, days=7))
-    jobs.extend(fetch_aiapply_jobs(service, max_results=100, days=7))
+    jobs = fetch_linkedin_jobs(service, max_results=100, days=days)
+    jobs.extend(fetch_dice_jobs(service, max_results=100, days=days))
+    jobs.extend(fetch_indeed_jobs(service, max_results=100, days=days))
+    jobs.extend(fetch_careerbuilder_jobs(service, max_results=100, days=days))
+    jobs.extend(fetch_remoterocketship_jobs(service, max_results=100, days=days))
+    jobs.extend(fetch_aiapply_jobs(service, max_results=100, days=days))
 
     if not jobs:
         print(
-            "No jobs found in today's emails for label:jobs-linkedin, label:jobs-dice, "
+            "No jobs found for label:jobs-linkedin, label:jobs-dice, "
             "label:jobs-indeed, label:Jobs-Careerbuilder, label:jobs-remoterocketship, "
             "or label:Jobs-AiApply"
         )
